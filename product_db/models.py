@@ -62,7 +62,7 @@ class ProductAdmin(BaseEntityAdmin):
     list_filter= ('product_type', 'product_tags')
     form = ProductAdminForm
 
-
+    pass
 
     def save_model(self, request, obj, form, change):
         obj.save()
