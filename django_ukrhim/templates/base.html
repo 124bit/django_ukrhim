@@ -1,0 +1,23 @@
+{% load cms_tags sekizai_tags %}
+<html>
+<head>
+    {% render_block "css" %}
+</head>
+<body>
+{% cms_toolbar %}
+
+{% if 1 %}
+
+{% else %}
+
+    {% placeholder base_content %}
+    {% show_placeholder "base_content" "tst" %}
+{% endif %}
+
+
+{% block base_content %}{% endblock %}
+
+
+{% render_block "js" %}
+</body>
+</html>
