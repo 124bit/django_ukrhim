@@ -47,8 +47,13 @@ class EavConfig(object):
     generic_relation_attr = 'eav_values'
     generic_relation_related_name = None
 
-
-    get_attributes=Attribute.on_site.all()
+    @classmethod
+    def get_attributes(cls):
+        '''
+        By default, all :class:`~eav.models.Attribute` object apply to an
+        entity, unless you provide a custom EavConfig class overriding this.
+        '''
+        return Attribute.on_site.all()
 
 
 class Registry(object):
@@ -153,7 +158,9 @@ class Registry(object):
         '''
         Set up the generic relation for the entity
         '''
-        rel_name = self.config_cls.generic_relation_related_name
+        rel_name = self.config_cls.generic_relation_related_name or \
+                   self.model_cls.__name__
+
         gr_name = self.config_cls.generic_relation_attr.lower()
         generic_relation = \
                      generic.GenericRelation(Value,

@@ -499,6 +499,7 @@ class Entity(object):
         values_dict = dict()
         for value in self.get_values():
             values_dict[value.attribute.slug] = value.value
+
         return values_dict
 
     def get_values(self):

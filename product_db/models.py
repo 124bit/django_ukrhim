@@ -3,8 +3,9 @@ from django.contrib.admin import ModelAdmin
 from django.utils.translation import ugettext as _
 from shop.models.defaults.product import Product as Shop_product
 from itertools import chain
+from copy import deepcopy
 
-from eav.models import Attribute
+from eav.models import Attribute, Value
 import eav
 from eav.forms import BaseDynamicEntityForm
 from eav.admin import BaseEntityAdmin
@@ -56,25 +57,23 @@ class Product(Shop_product):
 class ProductAdminForm(BaseDynamicEntityForm):
     model = Product
 
-fields_attr=[]
 class ProductAdmin(BaseEntityAdmin):
     list_display = ('slug', 'product_type', 'unit_price', 'active')
     list_filter= ('product_type', 'product_tags')
     form = ProductAdminForm
 
+    def get_form(self, request, obj=None, **kwargs):
+        if obj:
 
+            self.form.model=obj
+        return super( ProductAdmin, self).get_form(request, obj, **kwargs)
 
     def save_model(self, request, obj, form, change):
         obj.save()
 
-        if obj.product_type:
-            EavConfigClass.get_attributes=obj.product_type.fields.all() | obj.additional_fields.all()
-        else:
-            EavConfigClass.get_attributes=obj.additional_fields.all()
 
-        eav.unregister(Product)
-        ProductAdminForm.model=obj
-        eav.register(obj, EavConfigClass)
+
+
 
 
 
@@ -86,7 +85,6 @@ class ProductTagAdmin(ModelAdmin):
     list_display = ('tag_text', 'count_tagged_products')
     ordering = ['tag_text']
 
-class EavConfigClass(EavConfig):
-    get_attributes=[]
 
-eav.register(Product, EavConfigClass)
+
+eav.register(Product)

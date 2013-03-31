@@ -33,7 +33,6 @@ from django.forms import BooleanField, CharField, DateTimeField, FloatField, \
 from django.contrib.admin.widgets import AdminSplitDateTime
 from django.utils.translation import ugettext_lazy as _
 
-
 class BaseDynamicEntityForm(ModelForm):
     '''
     ModelForm for entity with support for EAV attributes. Form fields are
@@ -63,10 +62,16 @@ class BaseDynamicEntityForm(ModelForm):
     def _build_dynamic_fields(self):
         # reset form fields
         self.fields = deepcopy(self.base_fields)
+        try:
+            if self.instance.product_type:
+                secondary_fields=self.instance.product_type.fields.all() | self.instance.additional_fields.all()
+            else:
+                secondary_fields=self.instance.additional_fields.all()
+        except ValueError:
+            secondary_fields=[]
 
-        for attribute in self.entity.get_all_attributes():
+        for attribute in secondary_fields:
             value = getattr(self.entity, attribute.slug)
-
             defaults = {
                 'label': attribute.name.capitalize(),
                 'required': attribute.required,
