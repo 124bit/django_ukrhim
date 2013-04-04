@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
+
 gettext = lambda s: s
+
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
-print PROJECT_PATH
-# Django settings for django_ukrhim project.
+
+#--------- DJANGO SETTINGS for django_ukrhim project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -107,6 +109,7 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
+#    'media_tree.middleware.SessionPostMiddleware',
 #   'reversion.middleware.RevisionMiddleware',
 )
 
@@ -129,12 +132,8 @@ WSGI_APPLICATION = 'django_ukrhim.wsgi.application'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (
-
-    #'admin_tools',
-    #'admin_tools.theming',
-    #'admin_tools.menu',
-    #'admin_tools.dashboard',
-    # 'grappelli',
+    'import_export', #patched  - docs below
+#----
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -143,30 +142,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'django_extensions',
-   # 'django-i18nurls',
 
-
-    'cms', # django CMS itself
-    'mptt', # utilities for implementing a modified pre-order traversal tree
+#----
+    'cms', # django CMS itself. #patched in modifier
+    'mptt',
     'menus', #helper for model independent hierarchical website navigation
-    'south', #intelligent schema and data migrations
+    'south',
     'sekizai',
-   # 'categories',
-   # 'categories.editor',
-   # 'configurableproduct',
-  #  'cmsplugin_configurableproduct',
-   # 'ukrhim_shop',
-    'shop',
-  #  'shop.addressmodel',
-    'cms_modifier',
-    'product_db',
-    'polymorphic',
-    #'reversion',
-    'eav',
 
-
-    'easy_thumbnails',
     'filer',
     'cmsplugin_filer_file',
     'cmsplugin_filer_folder',
@@ -184,9 +167,56 @@ INSTALLED_APPS = (
     'cms.plugins.text',
     'cms.plugins.video',
     'cms.plugins.twitter',
-    'cms.plugins.inherit'
+    'cms.plugins.inherit',
+
+    'elfinder', #all places, where "magic" library is  used changed for returning nothing
+
+#------
+    'shop',
+    #'shop.addressmodel',
+
+#-----
+    'polymorphic',
+    'reversion',
+    'eav',
+    'jsonfield',
+    'smuggler',
+    'easy_thumbnails',
+    'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default',
+    # 'django-i18nurls',
+    'imagekit',
+
+#-----
+    #'ukrhim_shop',
+    'product_db',
+    'modifier', #all monkey patching of apps done her
 
 )
+#---------------import_export changes
+# patch for excel usage to change standard csv separators from ',' to ';'
+# in admin.py:
+#
+# def import_action
+#     changes:
+#     if not input_format.is_binary() and self.from_encoding:
+#         data = unicode(data, self.from_encoding).encode('utf-8')
+#     if  import_formats[int(form.cleaned_data['input_format'])]==base_formats.CSV:
+#         data=data.replace(';',',')
+#     dataset = input_format.create_dataset(data)
+#
+# def export_action
+#     changes:
+#     data = resource_class().export(queryset)
+#     if formats[int(form.cleaned_data['file_format'])]==base_formats.CSV:
+#         data_string=file_format.export_data(data)
+#         datastring=data_string.replace(',',';')
+#     response = HttpResponse(
+#         datastring,
+#         mimetype='application/octet-stream',
+#         )
+#------------------------------------
+
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -216,6 +246,13 @@ LOGGING = {
         },
     }
 }
+
+
+
+
+
+#------CMS SETTINGS
+
 TEMPLATE_DIRS = (
     # The docs say it should be absolute path: PROJECT_PATH is precisely one.
     # Life is wonderful!
@@ -233,9 +270,15 @@ LANGUAGES = [
     ]
 
 CMS_PLUGIN_PROCESSORS = (
-    'cms_modifier.cms_plugin_processors.render_with_tags',
+    'modifier.cms_plugin_processors.render_with_tags',
 )
 
-#SHOP_PRODUCT_MODEL = 'ukrhim_shop.models.UkrhimProduct'
 
-ENABLE_CPRODUCT_ADMIN=True
+#-----import_export SETTINGS
+SERIALIZATION_MODULES = {
+    'csv': 'snippetscream.csv_serializer',
+    }
+
+
+#-----------
+#SHOP_PRODUCT_MODEL = 'ukrhim_shop.models.UkrhimProduct'

@@ -26,8 +26,10 @@ from django.forms.models import BaseInlineFormSet
 from django.utils.safestring import mark_safe
 
 from .models import Attribute, Value, EnumValue, EnumGroup
+from import_export.admin import ImportExportModelAdmin
+from django.utils.translation import ugettext as _
 
-class BaseEntityAdmin(ModelAdmin):
+class BaseEntityAdmin(ImportExportModelAdmin):
     
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
         """
@@ -94,12 +96,20 @@ class BaseEntityInline(InlineModelAdmin):
         return [(None, {'fields': form.fields.keys()})]
 
 class AttributeAdmin(ModelAdmin):
-    list_display = ('name', 'slug', 'datatype', 'description', 'site')
-    list_filter = ['site']
+    list_display = ('name', 'slug', 'datatype', 'description')
+    list_filter = ['datatype']
     prepopulated_fields = {'slug': ('name',)}
+    #TODO make slug python django slug (no two underscors), make slug readonly maybe
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug', 'datatype')
+        }),
+        (_('Additional options'), {
+            'fields': ('description', 'enum_group', 'options')
+        }),
+    )
 
 admin.site.register(Attribute, AttributeAdmin)
-admin.site.register(Value)
 admin.site.register(EnumValue)
 admin.site.register(EnumGroup)
 

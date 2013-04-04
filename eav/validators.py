@@ -107,3 +107,14 @@ def validate_enum(value):
         raise ValidationError(_(u"Must be an EnumValue model object instance"))
     if not value.pk:
         raise ValidationError(_(u"EnumValue has not been saved yet"))
+
+
+def validate_file(value):
+    '''
+    '''
+    pass
+
+def validate_image(value):
+    '''
+    '''
+    pass

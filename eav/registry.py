@@ -165,8 +165,7 @@ class Registry(object):
         generic_relation = \
                      generic.GenericRelation(Value,
                                              object_id_field='entity_id',
-                                             content_type_field='entity_ct',
-                                             related_name=rel_name)
+                                             content_type_field='entity_ct')
         generic_relation.contribute_to_class(self.model_cls, gr_name)
 
     def _detach_generic_relation(self):

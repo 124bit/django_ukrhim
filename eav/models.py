@@ -43,10 +43,11 @@ from django.contrib.contenttypes import generic
 from django.contrib.sites.models import Site
 from django.contrib.sites.managers import CurrentSiteManager
 from django.conf import settings
-
+from imagekit.models import ImageSpecField
 from .validators import *
 from .fields import EavSlugField, EavDatatypeField
-
+from jsonfield import JSONField
+from elfinder.fields import ElfinderField
 
 class EnumValue(models.Model):
     '''
@@ -152,7 +153,7 @@ class Attribute(models.Model):
 
     class Meta:
         ordering = ['name']
-        unique_together = ('site', 'slug')
+
 
     TYPE_TEXT = 'text'
     TYPE_FLOAT = 'float'
@@ -161,6 +162,8 @@ class Attribute(models.Model):
     TYPE_BOOLEAN = 'bool'
     TYPE_OBJECT = 'object'
     TYPE_ENUM = 'enum'
+    TYPE_FILE = 'file'
+    TYPE_IMAGE = 'image'
 
     DATATYPE_CHOICES = (
         (TYPE_TEXT, _(u"Text")),
@@ -170,42 +173,46 @@ class Attribute(models.Model):
         (TYPE_BOOLEAN, _(u"True / False")),
         (TYPE_OBJECT, _(u"Django Object")),
         (TYPE_ENUM, _(u"Multiple Choice")),
+        (TYPE_FILE, _(u"File")),
+        (TYPE_IMAGE, _(u"Image")),
     )
 
+
     name = models.CharField(_(u"name"), max_length=100,
-                            help_text=_(u"User-friendly attribute name"))
+                            help_text=_("User-friendly attribute name"),
+                            unique=True)
 
-    site = models.ForeignKey(Site, verbose_name=_(u"site"),
-                             default=Site.objects.get_current)
+    slug = EavSlugField(_("slug"), max_length=50, db_index=True,
+                          help_text=_("Short unique attribute label"),
+                          unique=True)
 
-    slug = EavSlugField(_(u"slug"), max_length=50, db_index=True,
-                          help_text=_(u"Short unique attribute label"))
+    datatype = EavDatatypeField(_("data type"), max_length=6,
+                                help_text=_("select type of field data"),
+                                choices=DATATYPE_CHOICES)
 
-    description = models.CharField(_(u"description"), max_length=256,
+    description = models.CharField(_("description"), max_length=256,
                                      blank=True, null=True,
-                                     help_text=_(u"Short description"))
+                                     help_text=_("Short description"))
 
-    enum_group = models.ForeignKey(EnumGroup, verbose_name=_(u"choice group"),
-                                   blank=True, null=True)
 
-    type = models.CharField(_(u"type"), max_length=20, blank=True, null=True)
+
 
     @property
     def help_text(self):
         return self.description
 
-    datatype = EavDatatypeField(_(u"data type"), max_length=6,
-                                choices=DATATYPE_CHOICES)
 
-    created = models.DateTimeField(_(u"created"), default=datetime.now,
-                                   editable=False)
 
-    modified = models.DateTimeField(_(u"modified"), auto_now=True)
+    enum_group = models.ForeignKey(EnumGroup, verbose_name=_("choice group"),
+                                   help_text=_("select choice group, if type of field is Multiple Choice"),
+                                   blank=True, null=True)
 
-    required = models.BooleanField(_(u"required"), default=False)
+    created = models.DateTimeField(_("created"), default=datetime.now, editable=False)
+    modified = models.DateTimeField(_("modified"), auto_now=True)
+
+    options = JSONField(verbose_name=_("Specific options"), blank=True, default="{}" , help_text=_("Additional options for field in JSON format"))
 
     objects = models.Manager()
-    on_site = CurrentSiteManager()
 
     def get_validators(self):
         '''
@@ -225,6 +232,8 @@ class Attribute(models.Model):
             'bool': validate_bool,
             'object': validate_object,
             'enum': validate_enum,
+            'file': validate_file,
+            'image': validate_image,
         }
 
         validation_function = DATATYPE_VALIDATORS[self.datatype]
@@ -314,6 +323,7 @@ class Attribute(models.Model):
         return u"%s (%s)" % (self.name, self.get_datatype_display())
 
 
+
 class Value(models.Model):
     '''
     Putting the **V** in *EAV*. This model stores the value for one particular
@@ -346,6 +356,8 @@ class Value(models.Model):
     value_bool = models.NullBooleanField(blank=True, null=True)
     value_enum = models.ForeignKey(EnumValue, blank=True, null=True,
                                    related_name='eav_values')
+    value_file = ElfinderField(blank=True, null=True)
+    value_image = ElfinderField(blank=True, null=True, optionset='image')
 
     generic_value_id = models.IntegerField(blank=True, null=True)
     generic_value_ct = models.ForeignKey(ContentType, blank=True, null=True,
@@ -363,8 +375,47 @@ class Value(models.Model):
         '''
         Validate and save this value
         '''
+
+
+
         self.full_clean()
+
+
         super(Value, self).save(*args, **kwargs)
+
+        if self.attribute.datatype=='image':
+            self.options=self.attribute.options
+
+
+
+            class NoImage:
+                url=None
+            if 'image' in self.options:
+                image_specs=self.options['image']
+                if 'processors' in image_specs:
+                    eval('processors='+image_specs['processors'])
+                elif 'mode' in image_specs:
+                    processors=[]
+                else:
+                    processors=[]
+
+                if 'format' not in image_specs:
+                    image_specs['format']="JPEG"
+
+                if 'options' not in image_specs:
+                    image_specs['options']={}
+
+                self.image=ImageSpecField(image_field='image_field',
+                                          processors=processors,
+                                          format=image_specs['format'],
+                                          options=image_specs['options'])
+            else:
+                self.image=ImageSpecField(image_field='image_field',
+                                          processors=[],
+                                          format="JPEG",
+                                          options={'quality':90})
+
+
 
     def clean(self):
         '''
@@ -483,10 +534,7 @@ class Entity(object):
                 value = values_dict.get(attribute.slug, None)
             
             if value is None:
-                if attribute.required:
-                    raise ValidationError(_(u"%(attr)s EAV field cannot " \
-                                                u"be blank") % \
-                                              {'attr': attribute.slug})
+                pass
             else:
                 try:
                     attribute.validate_value(value)

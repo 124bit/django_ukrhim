@@ -1,21 +1,16 @@
 from django.db import models
-from django.contrib.admin import ModelAdmin
 from django.utils.translation import ugettext as _
 from shop.models.defaults.product import Product as Shop_product
-from itertools import chain
-from copy import deepcopy
-
-from eav.models import Attribute, Value
+from eav.models import Attribute
 import eav
-from eav.forms import BaseDynamicEntityForm
-from eav.admin import BaseEntityAdmin
-from eav.registry import EavConfig
-from eav.forms import BaseDynamicEntityForm
+from cms.models.pluginmodel import CMSPlugin
+from elfinder.fields import ElfinderField
+from eav.fields import EavSlugField
+
 
 class ProductType(models.Model):
-    type_name=models.CharField(max_length=30,verbose_name=_("type name"))
+    type_name=models.CharField(max_length=30,verbose_name=_("type name"), unique=True)
     fields=models.ManyToManyField(Attribute, verbose_name=_("fields of type"), blank=True)
-
     class Meta:
         verbose_name = _('product type')
         verbose_name_plural = _('product types')
@@ -27,8 +22,12 @@ class ProductType(models.Model):
     def __unicode__(self):
         return self.type_name
 
+
+
+
+
 class ProductTag(models.Model):
-    tag_text=models.CharField(max_length=30,verbose_name=_("tag"))
+    tag_text=models.CharField(max_length=30,verbose_name=_("tag"), unique=True)
 
     class Meta:
         verbose_name = _('Product tag')
@@ -41,35 +40,33 @@ class ProductTag(models.Model):
     def __unicode__(self):
         return self.tag_text
 
+
+
+
 class Product(Shop_product):
     product_type=models.ForeignKey(ProductType, verbose_name=_("product type"), blank=True, null=True)
     additional_fields=models.ManyToManyField(Attribute, verbose_name=_("additional fields"), blank=True)
     product_tags=models.ManyToManyField(ProductTag, verbose_name=_("product tags"), blank=True)
 
+    #TODO make name unique, make slug field - python slug, mayby slug readonly
+    #name = models.CharField(max_length=255, verbose_name=_('Name'), unique=True)
+
+
     class Meta:
         verbose_name = _('product')
         verbose_name_plural = _('products')
-
     def __unicode__(self):
         return self.name
 
 
-class ProductAdminForm(BaseDynamicEntityForm):
-    model = Product
 
-class ProductAdmin(BaseEntityAdmin):
-    list_display = ('slug', 'product_type', 'unit_price', 'active')
-    list_filter= ('product_type', 'product_tags')
-    form = ProductAdminForm
 
-    def get_form(self, request, obj=None, **kwargs):
-        if obj:
 
-            self.form.model=obj
-        return super( ProductAdmin, self).get_form(request, obj, **kwargs)
 
-    def save_model(self, request, obj, form, change):
-        obj.save()
+
+class ElfinderFileHolder(CMSPlugin):
+
+    file_field = ElfinderField()
 
 
 
@@ -77,13 +74,7 @@ class ProductAdmin(BaseEntityAdmin):
 
 
 
-class ProductTypeAdmin(ModelAdmin):
-    list_display = ('type_name', 'count_products_of_type')
-    ordering = ['type_name']
 
-class ProductTagAdmin(ModelAdmin):
-    list_display = ('tag_text', 'count_tagged_products')
-    ordering = ['tag_text']
 
 
 

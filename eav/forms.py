@@ -31,7 +31,8 @@ from copy import deepcopy
 from django.forms import BooleanField, CharField, DateTimeField, FloatField, \
                          IntegerField, ModelForm, ChoiceField, ValidationError
 from django.contrib.admin.widgets import AdminSplitDateTime
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
+from elfinder.fields import ElfinderFormField
 
 class BaseDynamicEntityForm(ModelForm):
     '''
@@ -51,35 +52,45 @@ class BaseDynamicEntityForm(ModelForm):
         'date': DateTimeField,
         'bool': BooleanField,
         'enum': ChoiceField,
+        'file': ElfinderFormField,
+        'image': ElfinderFormField
     }
 
     def __init__(self, data=None, *args, **kwargs):
         super(BaseDynamicEntityForm, self).__init__(data, *args, **kwargs)
         config_cls = self.instance._eav_config_cls
         self.entity = getattr(self.instance, config_cls.eav_attr)
+
+        try:
+            if self.instance.product_type:
+                self.secondary_fields=self.instance.product_type.fields.all() | self.instance.additional_fields.all()
+            else:
+                self.secondary_fields=self.instance.additional_fields.all()
+        except ValueError:
+           self.secondary_fields=[]
+
         self._build_dynamic_fields()
 
     def _build_dynamic_fields(self):
         # reset form fields
         self.fields = deepcopy(self.base_fields)
-        try:
-            if self.instance.product_type:
-                secondary_fields=self.instance.product_type.fields.all() | self.instance.additional_fields.all()
-            else:
-                secondary_fields=self.instance.additional_fields.all()
-        except ValueError:
-            secondary_fields=[]
 
-        for attribute in secondary_fields:
+
+        for attribute in self.secondary_fields:
             value = getattr(self.entity, attribute.slug)
             defaults = {
-                'label': attribute.name.capitalize(),
-                'required': attribute.required,
+                'label': attribute.name,
+                'required': False,
                 'help_text': attribute.help_text,
                 'validators': attribute.get_validators(),
             }
-
             datatype = attribute.datatype
+
+
+
+
+
+
             if datatype == attribute.TYPE_ENUM:
                 enums = attribute.get_choices() \
                                  .values_list('id', 'value')
@@ -95,8 +106,27 @@ class BaseDynamicEntityForm(ModelForm):
             elif datatype == attribute.TYPE_OBJECT:
                 continue
 
+
+
+            if datatype=='image':
+                defaults["optionset"]="image"
+
+            print datatype
+            print defaults
+
+            options=defaults.copy()
+            if attribute.options:
+                if 'field' in attribute.options:
+                    for option in attribute.options['field'].keys():
+                        options[option]=attribute.options['field'][option]
+
+
             MappedField = self.FIELD_CLASSES[datatype]
-            self.fields[attribute.slug] = MappedField(**defaults)
+            try:
+                self.fields[attribute.slug] = MappedField(**options)
+            except TypeError:
+                defaults["help_text"]+=_('<br>ERROR IN FIELD OPTIONS!')
+                self.fields[attribute.slug] = MappedField(**defaults)
 
             # fill initial data (if attribute was already defined)
             if value and not datatype == attribute.TYPE_ENUM: #enum done above
@@ -115,11 +145,12 @@ class BaseDynamicEntityForm(ModelForm):
                              u"didn't validate.") % \
                              self.instance._meta.object_name)
 
+
         # create entity instance, don't save yet
         instance = super(BaseDynamicEntityForm, self).save(commit=False)
 
         # assign attributes
-        for attribute in self.entity.get_all_attributes():
+        for attribute in self.secondary_fields:
             value = self.cleaned_data.get(attribute.slug)
             if attribute.datatype == attribute.TYPE_ENUM:
                 if value:
