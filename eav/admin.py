@@ -25,7 +25,7 @@ from django.contrib.admin.options import (
 from django.forms.models import BaseInlineFormSet
 from django.utils.safestring import mark_safe
 
-from .models import Attribute, Value, EnumValue, EnumGroup
+from .models import Attribute, Value
 from import_export.admin import ImportExportModelAdmin
 from django.utils.translation import ugettext as _
 
@@ -105,11 +105,10 @@ class AttributeAdmin(ModelAdmin):
             'fields': ('name', 'slug', 'datatype')
         }),
         (_('Additional options'), {
-            'fields': ('description', 'enum_group', 'options')
+            'fields': ('description', 'options')
         }),
     )
 
 admin.site.register(Attribute, AttributeAdmin)
-admin.site.register(EnumValue)
-admin.site.register(EnumGroup)
+
 

@@ -58,7 +58,16 @@ class Product(Shop_product):
     def __unicode__(self):
         return self.name
 
+    def get_secondary_fields(self):
+        try:
+            if self.product_type:
+                secondary_fields=self.product_type.fields.all() | self.additional_fields.all()
+            else:
+                secondary_fields=self.additional_fields.all()
+        except ValueError:
+            secondary_fields=[]
 
+        return secondary_fields
 
 
 

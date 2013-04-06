@@ -1,1 +1,1 @@
-print '/asd'
+print list({'1':1})

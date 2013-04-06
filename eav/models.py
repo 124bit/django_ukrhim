@@ -49,57 +49,6 @@ from .fields import EavSlugField, EavDatatypeField
 from jsonfield import JSONField
 from elfinder.fields import ElfinderField
 
-class EnumValue(models.Model):
-    '''
-    *EnumValue* objects are the value 'choices' to multiple choice
-    *TYPE_ENUM* :class:`Attribute` objects.
-
-    They have only one field, *value*, a``CharField`` that must be unique.
-
-    For example:
-
-    >>> yes = EnumValue.objects.create(value='yes')
-    >>> no = EnumValue.objects.create(value='no')
-    >>> unkown = EnumValue.objects.create(value='unkown')
-
-    >>> ynu = EnumGroup.objects.create(name='Yes / No / Unkown')
-    >>> ynu.enums.add(yes, no, unkown)
-
-    >>> Atrribute.objects.create(name='Has Fever?',
-    ...                          datatype=Attribute.TYPE_ENUM,
-    ...                          enum_group=ynu)
-
-    .. note::
-       The same *EnumValue* objects should be reused within multiple
-       *EnumGroups*.  For example, if you have one *EnumGroup*
-       called: *Yes / No / Unkown* and another called *Yes / No /
-       Not applicable*, you should only have a total of four *EnumValues*
-       objects, as you should have used the same *Yes* and *No* *EnumValues*
-       for both *EnumGroups*.
-    '''
-    value = models.CharField(_(u"value"), db_index=True,
-                             unique=True, max_length=50)
-
-    def __unicode__(self):
-        return self.value
-
-
-class EnumGroup(models.Model):
-    '''
-    *EnumGroup* objects have two fields- a *name* ``CharField`` and *enums*,
-    a ``ManyToManyField`` to :class:`EnumValue`. :class:`Attribute` classes
-    with datatype *TYPE_ENUM* have a ``ForeignKey`` field to *EnumGroup*.
-
-    See :class:`EnumValue` for an example.
-
-    '''
-    name = models.CharField(_(u"name"), unique=True, max_length=100)
-
-    enums = models.ManyToManyField(EnumValue, verbose_name=_(u"enum group"))
-
-    def __unicode__(self):
-        return self.name
-
 
 class Attribute(models.Model):
     '''
@@ -130,7 +79,7 @@ class Attribute(models.Model):
         * enum (TYPE_ENUM)
 
     Examples:
-
+    >>>from eav.models import  Attribute
     >>> Attribute.objects.create(name='Height', datatype=Attribute.TYPE_INT)
     <Attribute: Height (Integer)>
 
@@ -202,15 +151,10 @@ class Attribute(models.Model):
         return self.description
 
 
-
-    enum_group = models.ForeignKey(EnumGroup, verbose_name=_("choice group"),
-                                   help_text=_("select choice group, if type of field is Multiple Choice"),
-                                   blank=True, null=True)
-
     created = models.DateTimeField(_("created"), default=datetime.now, editable=False)
     modified = models.DateTimeField(_("modified"), auto_now=True)
 
-    options = JSONField(verbose_name=_("Specific options"), blank=True, default="{}" , help_text=_("Additional options for field in JSON format"))
+    options = JSONField(verbose_name=_("Specific options"), default="{}" , help_text=_("Additional options for field in JSON format"))
 
     objects = models.Manager()
 
@@ -246,11 +190,6 @@ class Attribute(models.Model):
         '''
         for validator in self.get_validators():
             validator(value)
-        if self.datatype == self.TYPE_ENUM:
-            if value not in self.enum_group.enums.all():
-                raise ValidationError(_(u"%(enum)s is not a valid choice "
-                                        u"for %(attr)s") % \
-                                       {'enum': value, 'attr': self})
 
     def save(self, *args, **kwargs):
         '''
@@ -262,21 +201,6 @@ class Attribute(models.Model):
         self.full_clean()
         super(Attribute, self).save(*args, **kwargs)
 
-    def clean(self):
-        '''
-        Validates the attribute.  Will raise ``ValidationError`` if
-        the attribute's datatype is *TYPE_ENUM* and enum_group is not set,
-        or if the attribute is not *TYPE_ENUM* and the enum group is set.
-        '''
-        if self.datatype == self.TYPE_ENUM and not self.enum_group:
-            raise ValidationError(_(
-                u"You must set the choice group for multiple choice" \
-                u"attributes"))
-
-        if self.datatype != self.TYPE_ENUM and self.enum_group:
-            raise ValidationError(_(
-                u"You can only assign a choice group to multiple choice " \
-                u"attributes"))
 
     def get_choices(self):
         '''
@@ -354,8 +278,7 @@ class Value(models.Model):
     value_int = models.IntegerField(blank=True, null=True)
     value_date = models.DateTimeField(blank=True, null=True)
     value_bool = models.NullBooleanField(blank=True, null=True)
-    value_enum = models.ForeignKey(EnumValue, blank=True, null=True,
-                                   related_name='eav_values')
+    value_enum = models.CharField(max_length=30, blank=True, null=True)
     value_file = ElfinderField(blank=True, null=True)
     value_image = ElfinderField(blank=True, null=True, optionset='image')
 
@@ -375,8 +298,6 @@ class Value(models.Model):
         '''
         Validate and save this value
         '''
-
-
 
         self.full_clean()
 
@@ -417,18 +338,6 @@ class Value(models.Model):
 
 
 
-    def clean(self):
-        '''
-        Raises ``ValidationError`` if this value's attribute is *TYPE_ENUM*
-        and value_enum is not a valid choice for this value's attribute.
-        '''
-        if self.attribute.datatype == Attribute.TYPE_ENUM and \
-           self.value_enum:
-            if self.value_enum not in self.attribute.enum_group.enums.all():
-                raise ValidationError(_(u"%(choice)s is not a valid " \
-                                        u"choice for %s(attribute)") % \
-                                        {'choice': self.value_enum,
-                                         'attribute': self.attribute})
 
     def _get_value(self):
         '''

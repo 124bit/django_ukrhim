@@ -181,7 +181,7 @@ INSTALLED_APPS = (
     'eav',
     'jsonfield',
     'smuggler',
-    'easy_thumbnails',
+   # 'easy_thumbnails',
     'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default',
     # 'django-i18nurls',
     'imagekit',

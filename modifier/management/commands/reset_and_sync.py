@@ -10,3 +10,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         call_command('reset_db')
         os.system('python manage.py syncdb --all')
+        os.system('python manage.py migrate --fake')

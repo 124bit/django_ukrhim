@@ -61,13 +61,7 @@ class BaseDynamicEntityForm(ModelForm):
         config_cls = self.instance._eav_config_cls
         self.entity = getattr(self.instance, config_cls.eav_attr)
 
-        try:
-            if self.instance.product_type:
-                self.secondary_fields=self.instance.product_type.fields.all() | self.instance.additional_fields.all()
-            else:
-                self.secondary_fields=self.instance.additional_fields.all()
-        except ValueError:
-           self.secondary_fields=[]
+        self.secondary_fields=self.instance.get_secondary_fields()
 
         self._build_dynamic_fields()
 
@@ -78,41 +72,30 @@ class BaseDynamicEntityForm(ModelForm):
 
         for attribute in self.secondary_fields:
             value = getattr(self.entity, attribute.slug)
+
             defaults = {
                 'label': attribute.name,
                 'required': False,
                 'help_text': attribute.help_text,
                 'validators': attribute.get_validators(),
             }
-            datatype = attribute.datatype
 
 
-
-
-
-
-            if datatype == attribute.TYPE_ENUM:
-                enums = attribute.get_choices() \
-                                 .values_list('id', 'value')
-
-                choices = [('', '-----')] + list(enums)
-
+            if attribute.datatype == attribute.TYPE_ENUM:
+                if 'choices' in attribute.options:
+                    choices = attribute.options['choices'].items()
+                else:
+                    choices = [('', '-----')]
                 defaults.update({'choices': choices})
-                if value:
-                    defaults.update({'initial': value.pk})
-
-            elif datatype == attribute.TYPE_DATE:
+                #if value:
+                #    defaults.update({'initial': value.pk})
+            elif attribute.datatype == attribute.TYPE_DATE:
                 defaults.update({'widget': AdminSplitDateTime})
-            elif datatype == attribute.TYPE_OBJECT:
+            elif attribute.datatype == attribute.TYPE_OBJECT:
                 continue
-
-
-
-            if datatype=='image':
+            elif attribute.datatype==attribute.TYPE_IMAGE:
                 defaults["optionset"]="image"
 
-            print datatype
-            print defaults
 
             options=defaults.copy()
             if attribute.options:
@@ -121,7 +104,7 @@ class BaseDynamicEntityForm(ModelForm):
                         options[option]=attribute.options['field'][option]
 
 
-            MappedField = self.FIELD_CLASSES[datatype]
+            MappedField = self.FIELD_CLASSES[attribute.datatype]
             try:
                 self.fields[attribute.slug] = MappedField(**options)
             except TypeError:
@@ -129,7 +112,7 @@ class BaseDynamicEntityForm(ModelForm):
                 self.fields[attribute.slug] = MappedField(**defaults)
 
             # fill initial data (if attribute was already defined)
-            if value and not datatype == attribute.TYPE_ENUM: #enum done above
+            if value: #enum done above
                 self.initial[attribute.slug] = value
 
     def save(self, commit=True):
@@ -152,12 +135,6 @@ class BaseDynamicEntityForm(ModelForm):
         # assign attributes
         for attribute in self.secondary_fields:
             value = self.cleaned_data.get(attribute.slug)
-            if attribute.datatype == attribute.TYPE_ENUM:
-                if value:
-                    value = attribute.enum_group.enums.get(pk=value)
-                else:
-                    value = None
-
             setattr(self.entity, attribute.slug, value)
 
         # save entity and its attributes
