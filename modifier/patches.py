@@ -19,14 +19,18 @@ def monkeypatch_method(cls):
 
 
 
-# override the page_link field in inherit_plugin to containt not only pages for
+# override the page_link field in inherit_plugin to contain not only pages for
 # current site
 @monkeypatch_method(InheritForm)
 def for_site(self, site):
     self.fields['from_page'].queryset = Page.objects.drafts().on_site(1)
 
 # add shortning to Site model. For auto selecting site-dependent information
-Site.add_to_class('cutting', EavSlugField(_('cutting'), max_length=50))
+Site.add_to_class('site_cutting', EavSlugField(_('site cutting'), max_length=14, unique=True))
+Site.add_to_class('price_field_slug', EavSlugField(_('price field slug'), max_length=14))
 
+
+#prints time of start
+#TODO put in log?
 from time import gmtime, strftime
 print 'start time: ', strftime("%Y-%m-%d %H:%M:%S", gmtime())

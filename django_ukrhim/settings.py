@@ -19,9 +19,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ukrhim',                      # Or path to database file if using sqlite3.
-        'USER': 'developer',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'NAME': 'ukrhim1',                      # Or path to database file if using sqlite3.
+        'USER': 'kata',                      # Not used with sqlite3.
+        'PASSWORD': '777777',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -109,8 +109,7 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
-#    'media_tree.middleware.SessionPostMiddleware',
-#   'reversion.middleware.RevisionMiddleware',
+    'reversion.middleware.RevisionMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -132,30 +131,35 @@ WSGI_APPLICATION = 'django_ukrhim.wsgi.application'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (
-    'import_export', #patched  - docs below
-#----
+
+    #-------important
+    'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default etting for images folder - files
+    'imagekit', #patched  #todo rewrite patches, conspect
+    'import_export', #patched
+     #TODO repatch, update for xls
+
+     #------not important
+     'jsonfield',
+     'smuggler',
+     'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
+
+    #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    'django.contrib.sites', #patched in modifier
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
 
-#----
-    'cms', # django CMS itself. #patched in modifier
+    #----django-cms
+    'cms', #patched in modifier
     'mptt',
-    'menus', #helper for model independent hierarchical website navigation
+    'menus',
     'south',
     'sekizai',
 
-    'filer',
-    'cmsplugin_filer_file',
-    'cmsplugin_filer_folder',
-    'cmsplugin_filer_image',
-    'cmsplugin_filer_teaser',
-    'cmsplugin_filer_video',
 
     'cms.plugins.file',
     'cms.plugins.flash',
@@ -169,52 +173,17 @@ INSTALLED_APPS = (
     'cms.plugins.twitter',
     'cms.plugins.inherit',
 
-    'elfinder', #all places, where "magic" library is  used changed for returning nothing
-
-#------
-    'shop',
-    #'shop.addressmodel',
-
-#-----
     'polymorphic',
     'reversion',
-    'eav',
-    'jsonfield',
-    'smuggler',
-   # 'easy_thumbnails',
-    'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default',
-    # 'django-i18nurls',
-    'imagekit',
 
-#-----
+    #-----our
     #'ukrhim_shop',
+    'eav',
     'product_db',
-    'modifier', #all monkey patching of apps done her
+    'modifier', #all monkey patching of apps done her, some twix, glue for all apps
 
 )
-#---------------import_export changes
-# patch for excel usage to change standard csv separators from ',' to ';'
-# in admin.py:
-#
-# def import_action
-#     changes:
-#     if not input_format.is_binary() and self.from_encoding:
-#         data = unicode(data, self.from_encoding).encode('utf-8')
-#     if  import_formats[int(form.cleaned_data['input_format'])]==base_formats.CSV:
-#         data=data.replace(';',',')
-#     dataset = input_format.create_dataset(data)
-#
-# def export_action
-#     changes:
-#     data = resource_class().export(queryset)
-#     if formats[int(form.cleaned_data['file_format'])]==base_formats.CSV:
-#         data_string=file_format.export_data(data)
-#         datastring=data_string.replace(',',';')
-#     response = HttpResponse(
-#         datastring,
-#         mimetype='application/octet-stream',
-#         )
-#------------------------------------
+
 
 
 

@@ -10,9 +10,13 @@ object_tools.autodiscover()
 urlpatterns = patterns('',
 
                        (r'^admin/', include(admin.site.urls)),
-    #                   (r'^shop/', include('shop.urls')),
-                       url(r'^', include('cms.urls')),
+
                        url(r'^elfinder/', include('elfinder.urls')),
+
+
+
+                       #-------cms.urls must be last
+                       url(r'^', include('cms.urls')),
                        )
 
 

@@ -34,21 +34,20 @@ Classes
 '''
 
 from datetime import datetime
-
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.contrib.sites.models import Site
-from django.contrib.sites.managers import CurrentSiteManager
 from django.conf import settings
-from imagekit.models import ImageSpecField
 from .validators import *
-from .fields import EavSlugField, EavDatatypeField
-from jsonfield import JSONField
+from .fields import EavSlugField, EavDatatypeField, MultiSelectField, MultiSelectFormField
 from elfinder.fields import ElfinderField
+from django.forms import BooleanField, CharField, DateTimeField, FloatField, \
+    IntegerField, ChoiceField
 
+from elfinder.fields import ElfinderFormField
+from jsonfield import JSONField
 
 class Attribute(models.Model):
     '''
@@ -113,6 +112,7 @@ class Attribute(models.Model):
     TYPE_ENUM = 'enum'
     TYPE_FILE = 'file'
     TYPE_IMAGE = 'image'
+    TYPE_LIST = 'list'
 
     DATATYPE_CHOICES = (
         (TYPE_TEXT, _(u"Text")),
@@ -120,12 +120,37 @@ class Attribute(models.Model):
         (TYPE_INT, _(u"Integer")),
         (TYPE_DATE, _(u"Date")),
         (TYPE_BOOLEAN, _(u"True / False")),
-        (TYPE_OBJECT, _(u"Django Object")),
-        (TYPE_ENUM, _(u"Multiple Choice")),
+        (TYPE_OBJECT, _(u"Object")),
+        (TYPE_ENUM, _(u"Choice")),
         (TYPE_FILE, _(u"File")),
         (TYPE_IMAGE, _(u"Image")),
+        (TYPE_LIST, _(u"List"))
     )
 
+    DATATYPE_VALIDATORS = {
+        TYPE_TEXT: validate_text,
+        TYPE_FLOAT: validate_float,
+        TYPE_INT: validate_int,
+        TYPE_DATE: validate_date,
+        TYPE_BOOLEAN: validate_bool,
+        TYPE_OBJECT: validate_object,
+        TYPE_ENUM: validate_enum,
+        TYPE_FILE: validate_file,
+        TYPE_IMAGE: validate_image,
+        TYPE_LIST: validate_list,
+        }
+
+    FIELD_CLASSES = {
+        TYPE_TEXT: CharField,
+        TYPE_FLOAT: FloatField,
+        TYPE_INT: IntegerField,
+        TYPE_DATE: DateTimeField,
+        TYPE_BOOLEAN: BooleanField,
+        TYPE_ENUM: ChoiceField,
+        TYPE_FILE: ElfinderFormField,
+        TYPE_IMAGE: ElfinderFormField,
+        TYPE_LIST: MultiSelectFormField
+    }
 
     name = models.CharField(_(u"name"), max_length=100,
                             help_text=_("User-friendly attribute name"),
@@ -135,7 +160,7 @@ class Attribute(models.Model):
                           help_text=_("Short unique attribute label"),
                           unique=True)
 
-    datatype = EavDatatypeField(_("data type"), max_length=6,
+    datatype = EavDatatypeField(_("data type"), max_length=15,
                                 help_text=_("select type of field data"),
                                 choices=DATATYPE_CHOICES)
 
@@ -143,6 +168,9 @@ class Attribute(models.Model):
                                      blank=True, null=True,
                                      help_text=_("Short description"))
 
+    importance = models.IntegerField(_("Importance"),
+                                  blank=True, null=True,
+                                  help_text=_("Affect on attribute position when edit"), default=0)
 
 
 
@@ -154,7 +182,7 @@ class Attribute(models.Model):
     created = models.DateTimeField(_("created"), default=datetime.now, editable=False)
     modified = models.DateTimeField(_("modified"), auto_now=True)
 
-    options = JSONField(verbose_name=_("Specific options"), default="{}" , help_text=_("Additional options for field in JSON format"))
+    options = JSONField(verbose_name=_("Specific options"), default="{}" , blank=True, help_text=_("Additional options for field in JSON format"))
 
     objects = models.Manager()
 
@@ -168,19 +196,9 @@ class Attribute(models.Model):
            method to look elsewhere for additional attribute specific
            validators to return as well as the default, built-in one.
         '''
-        DATATYPE_VALIDATORS = {
-            'text': validate_text,
-            'float': validate_float,
-            'int': validate_int,
-            'date': validate_date,
-            'bool': validate_bool,
-            'object': validate_object,
-            'enum': validate_enum,
-            'file': validate_file,
-            'image': validate_image,
-        }
 
-        validation_function = DATATYPE_VALIDATORS[self.datatype]
+
+        validation_function = self.DATATYPE_VALIDATORS[self.datatype]
         return [validation_function]
 
     def validate_value(self, value):
@@ -281,6 +299,7 @@ class Value(models.Model):
     value_enum = models.CharField(max_length=30, blank=True, null=True)
     value_file = ElfinderField(blank=True, null=True)
     value_image = ElfinderField(blank=True, null=True, optionset='image')
+    value_list = MultiSelectField(blank=True, null=True)
 
     generic_value_id = models.IntegerField(blank=True, null=True)
     generic_value_ct = models.ForeignKey(ContentType, blank=True, null=True,
@@ -300,41 +319,9 @@ class Value(models.Model):
         '''
 
         self.full_clean()
-
-
         super(Value, self).save(*args, **kwargs)
 
-        if self.attribute.datatype=='image':
-            self.options=self.attribute.options
 
-
-
-            class NoImage:
-                url=None
-            if 'image' in self.options:
-                image_specs=self.options['image']
-                if 'processors' in image_specs:
-                    eval('processors='+image_specs['processors'])
-                elif 'mode' in image_specs:
-                    processors=[]
-                else:
-                    processors=[]
-
-                if 'format' not in image_specs:
-                    image_specs['format']="JPEG"
-
-                if 'options' not in image_specs:
-                    image_specs['options']={}
-
-                self.image=ImageSpecField(image_field='image_field',
-                                          processors=processors,
-                                          format=image_specs['format'],
-                                          options=image_specs['options'])
-            else:
-                self.image=ImageSpecField(image_field='image_field',
-                                          processors=[],
-                                          format="JPEG",
-                                          options={'quality':90})
 
 
 
@@ -350,13 +337,13 @@ class Value(models.Model):
         Set the object this value is holding
         '''
         setattr(self, 'value_%s' % self.attribute.datatype, new_value)
-
     value = property(_get_value, _set_value)
+
+
 
     def __unicode__(self):
         return u"%s - %s: \"%s\"" % (self.entity, self.attribute.name,
                                      self.value)
-
 
 class Entity(object):
     '''
@@ -383,6 +370,7 @@ class Entity(object):
         class:`Value` object, otherwise it hasn't been set, so it returns
         None.
         '''
+        #Todo think, rewrite
         if not name.startswith('_'):
             try:
                 attribute = self.get_attribute_by_slug(name)
@@ -391,9 +379,12 @@ class Entity(object):
                                        u"'%(attr)s'") % \
                                      {'obj': self.model, 'attr': name})
             try:
-                return self.get_value_by_attribute(attribute).value
+                if self.model.get_secondary_attributes().filter(slug=name).count()!=0:
+                    return self.get_value_by_attribute(attribute).value
+                else:
+                    return ''
             except Value.DoesNotExist:
-                return None
+                return ''
         return getattr(super(Entity, self), name)
 
     def get_all_attributes(self):

@@ -32,7 +32,11 @@ from django.forms import BooleanField, CharField, DateTimeField, FloatField, \
                          IntegerField, ModelForm, ChoiceField, ValidationError
 from django.contrib.admin.widgets import AdminSplitDateTime
 from django.utils.translation import ugettext as _
-from elfinder.fields import ElfinderFormField
+
+from os import listdir, path
+from django.core.files.storage import FileSystemStorage
+from django.conf import  settings
+from django.contrib.sites.models import Site
 
 class BaseDynamicEntityForm(ModelForm):
     '''
@@ -45,23 +49,14 @@ class BaseDynamicEntityForm(ModelForm):
     Rubric is not defined).
     '''
 
-    FIELD_CLASSES = {
-        'text': CharField,
-        'float': FloatField,
-        'int': IntegerField,
-        'date': DateTimeField,
-        'bool': BooleanField,
-        'enum': ChoiceField,
-        'file': ElfinderFormField,
-        'image': ElfinderFormField
-    }
+
 
     def __init__(self, data=None, *args, **kwargs):
         super(BaseDynamicEntityForm, self).__init__(data, *args, **kwargs)
         config_cls = self.instance._eav_config_cls
         self.entity = getattr(self.instance, config_cls.eav_attr)
 
-        self.secondary_fields=self.instance.get_secondary_fields()
+        self.secondary_fields=self.instance.get_secondary_attributes()
 
         self._build_dynamic_fields()
 
@@ -72,6 +67,10 @@ class BaseDynamicEntityForm(ModelForm):
 
         for attribute in self.secondary_fields:
             value = getattr(self.entity, attribute.slug)
+
+            # fill initial data (if attribute was already defined)
+            if value:
+                self.initial[attribute.slug] = value
 
             defaults = {
                 'label': attribute.name,
@@ -87,33 +86,69 @@ class BaseDynamicEntityForm(ModelForm):
                 else:
                     choices = [('', '-----')]
                 defaults.update({'choices': choices})
-                #if value:
-                #    defaults.update({'initial': value.pk})
+
             elif attribute.datatype == attribute.TYPE_DATE:
                 defaults.update({'widget': AdminSplitDateTime})
             elif attribute.datatype == attribute.TYPE_OBJECT:
                 continue
             elif attribute.datatype==attribute.TYPE_IMAGE:
                 defaults["optionset"]="image"
+                defaults["start_path"]="files"
+            elif attribute.datatype==attribute.TYPE_FILE:
+                defaults["optionset"]="default"
+                defaults["start_path"]="files"
+            elif attribute.datatype==attribute.TYPE_LIST:
+                if 'image_list' in attribute.options:
+                    list_options=attribute.options['image_list']
+                    folder_path=''
+                    if "image_folder" in list_options:
+                        if 'path' in  list_options['image_folder']:
+                            folder_path=list_options['image_folder']['path']
+                        elif 'field' in  list_options['image_folder']:
+                            try:
+                                file_path=getattr(self.entity, list_options['choices_folder']['field']).url
+                                folder_path=path.dirname(file_path[1:])
+                            except AttributeError:
+                                pass
+                    else:
+                        for field in self.secondary_fields:
+                            if field.datatype==attribute.TYPE_FILE or field.datatype==attribute.TYPE_IMAGE:
+
+                                try:
+                                    file_path=getattr(self.entity, field.slug).url
+                                    folder_path=path.dirname(file_path[1:])
+                                    break
+                                except AttributeError:
+                                    pass
+                    if folder_path=='':
+                        choices = []
+                    else:
+                        folder_path =path.join(settings.PROJECT_PATH, folder_path)
+                        print folder_path
+                        choices = [ (path.join(folder_path,file_name),file_name) for file_name in listdir(folder_path) if path.isfile(path.join(folder_path,file_name)) ]
+
+                elif 'site_list' in attribute.options:
+                    choices = [(site.pk, site.name) for site in Site.objects.all()]
+
+                defaults.update({'choices': choices})
+
 
 
             options=defaults.copy()
             if attribute.options:
-                if 'field' in attribute.options:
+                if 'field_options' in attribute.options:
                     for option in attribute.options['field'].keys():
                         options[option]=attribute.options['field'][option]
 
 
-            MappedField = self.FIELD_CLASSES[attribute.datatype]
+            MappedField = attribute.FIELD_CLASSES[attribute.datatype]
             try:
                 self.fields[attribute.slug] = MappedField(**options)
             except TypeError:
                 defaults["help_text"]+=_('<br>ERROR IN FIELD OPTIONS!')
                 self.fields[attribute.slug] = MappedField(**defaults)
 
-            # fill initial data (if attribute was already defined)
-            if value: #enum done above
-                self.initial[attribute.slug] = value
+
 
     def save(self, commit=True):
         """

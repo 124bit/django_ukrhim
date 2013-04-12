@@ -117,3 +117,11 @@ def validate_image(value):
     '''
     '''
     pass
+
+
+def validate_list(value):
+    '''
+    '''
+    pass
+
+

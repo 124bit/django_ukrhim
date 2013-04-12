@@ -20,16 +20,15 @@
 
 from django.contrib import admin
 from django.contrib.admin.options import (
-    ModelAdmin, InlineModelAdmin, StackedInline
+    ModelAdmin, InlineModelAdmin
 )
 from django.forms.models import BaseInlineFormSet
 from django.utils.safestring import mark_safe
 
-from .models import Attribute, Value
-from import_export.admin import ImportExportModelAdmin
+from .models import Attribute
 from django.utils.translation import ugettext as _
 
-class BaseEntityAdmin(ImportExportModelAdmin):
+class BaseEntityAdmin(ModelAdmin):
     
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
         """
@@ -96,7 +95,7 @@ class BaseEntityInline(InlineModelAdmin):
         return [(None, {'fields': form.fields.keys()})]
 
 class AttributeAdmin(ModelAdmin):
-    list_display = ('name', 'slug', 'datatype', 'description')
+    list_display = ('name', 'slug', 'datatype', 'description', 'importance')
     list_filter = ['datatype']
     prepopulated_fields = {'slug': ('name',)}
     #TODO make slug python django slug (no two underscors), make slug readonly maybe
@@ -105,7 +104,7 @@ class AttributeAdmin(ModelAdmin):
             'fields': ('name', 'slug', 'datatype')
         }),
         (_('Additional options'), {
-            'fields': ('description', 'options')
+            'fields': ('description', 'importance', 'options')
         }),
     )
 
