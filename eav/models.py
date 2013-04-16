@@ -220,15 +220,6 @@ class Attribute(models.Model):
         super(Attribute, self).save(*args, **kwargs)
 
 
-    def get_choices(self):
-        '''
-        Returns a query set of :class:`EnumValue` objects for this attribute.
-        Returns None if the datatype of this attribute is not *TYPE_ENUM*.
-        '''
-        if not self.datatype == Attribute.TYPE_ENUM:
-            return None
-        return self.enum_group.enums.all()
-
     def save_value(self, entity, value):
         '''
         Called with *entity*, any django object registered with eav, and

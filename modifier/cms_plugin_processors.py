@@ -1,7 +1,8 @@
 __author__ = 'Agafon'
-from django.template import Context, Template, TemplateSyntaxError
+from django.template import Context, Template
 from django.contrib.sites.models import Site
 from product_db.models import Product, ProductType, ProductTag
+
 
 def render_with_tags(instance, placeholder, rendered_content, original_context):
     '''
@@ -14,7 +15,7 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
 
     #if error show it only in admin
     try:
-        plugin_text=Template(rendered_content)
+        plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
     except Exception, exc_text:
         if original_context['request'].path.startswith('/admin'):
             return  exc_text
@@ -55,14 +56,14 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
         plugin_context_dict['all_'+product_tag.slug]=all_products.filter(product_tags__in=product_tag)
 
     for product_type in ProductType.objects.all():
-        plugin_context_dict['all_'+product_type.slug]=all_products.filter(product_type__exact=product_type)
+        plugin_context_dict['all_'+product_type.slug]=all_products.filter(product_type=product_type)
 
 
     for product_tag in ProductTag.objects.all():
-        plugin_context_dict[product_tag.slug]=site_products.filter(product_tags__in=product_tag)
+        plugin_context_dict[product_tag.slug]=site_products.filter(product_tags_in=product_tag)
 
     for product_type in ProductType.objects.all():
-        plugin_context_dict[product_type.slug]=site_products.filter(product_type__exact=product_type)
+        plugin_context_dict[product_type.slug]=site_products.filter(product_type=product_type)
 
     plugin_context_dict['site']=current_site.site_cutting
     plugin_context_dict[current_site.site_cutting]=1

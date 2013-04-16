@@ -212,9 +212,9 @@ def parse_ik_tag_bits(parser, bits):
 
     return (tag_name, bits, html_attrs, varname)
 
-
+#changed
 #@register.tag
-def generateimage(parser, token):
+def img(parser, token):
     """
     Creates an image based on the provided arguments.
 
@@ -312,6 +312,6 @@ def thumbnail(parser, token):
         return ThumbnailImageTagNode(generator_id, dimensions, source, kwargs,
                 html_attrs)
 
+#changed
+img = register.tag(img)
 
-generateimage = register.tag(generateimage)
-thumbnail = register.tag(thumbnail)

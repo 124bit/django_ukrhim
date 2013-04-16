@@ -139,13 +139,48 @@ class ImageSpecModel(models.Model):
 
 
 
-#----model for cms file plugin
+#----model for cms file and image plugin
 from cms.models.pluginmodel import CMSPlugin
+from cms.plugin_base import CMSPluginBase
 from elfinder.fields import ElfinderField
+from django.db.models import ForeignKey, BooleanField,CharField,TextField
+from django import forms
 
 class ElfinderFileHolder(CMSPlugin):
     file_field = ElfinderField()
+    def __unicode__(self):
+        return self.file_field.url
 
+
+
+
+class ElfinderPictureHolder(CMSPlugin):
+    #todo write help
+
+    file_field = ElfinderField(optionset='image',verbose_name=_("Choose image"))
+
+    LOGIC_CHOICES=(
+        ('1', _('generate img tag with attrs')),
+        ('2', _('get img tag with original url')),
+        ('3', _('generate image url to variable')),
+        ('4', _('get original image url')),
+    )
+
+    logic = CharField(_("chose logic"), max_length=10, choices=LOGIC_CHOICES)
+
+    html_tags = TextField(_("image html tags"), blank=True)
+    generator = ForeignKey(ImageSpecModel,verbose_name=_("Choose convertation options"),blank=True, null=True)
+    var_name= CharField(_("variable name"), max_length=20, blank='true')
+
+    def __unicode__(self):
+        return self.file_field.url
+
+
+
+class ElfinderPictureHolderForm(CMSPluginBase):
+    class Meta:
+        model = ElfinderPictureHolder
+        widgets = {'gender': forms.RadioSelect()}
 
 #------fixture for significant attributs
 
@@ -158,3 +193,4 @@ try:
         Attribute.objects.create(name=_('Exclude from sites'), slug='include_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product is shown') , options={'site_list':1})
 except:
     pass
+

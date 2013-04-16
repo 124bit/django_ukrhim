@@ -5,13 +5,14 @@ from models import *
 from eav.forms import BaseDynamicEntityForm
 from eav.admin import BaseEntityAdmin
 from import_export.resources import ModelResource
-from import_export.admin import ImportExportModelAdmin
+
 class ProductAdminForm(BaseDynamicEntityForm):
     model = Product
 
 
 #TODO no new products IMPORT!
 class ProductResource(ModelResource):
+
     class Meta:
         model = Product
         fields = ('name',)
@@ -21,7 +22,7 @@ class ProductResource(ModelResource):
 
 
 
-class ProductAdmin(BaseEntityAdmin,ImportExportModelAdmin):
+class ProductAdmin(BaseEntityAdmin):
     list_display = ('slug', 'product_type', 'active')
     list_filter= ('product_type', 'product_tags')
     list_editable = ('active',)
@@ -48,6 +49,8 @@ class ProductTagAdmin(ModelAdmin):
 
 
 
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductType, ProductTypeAdmin)
 admin.site.register(ProductTag, ProductTagAdmin)
+

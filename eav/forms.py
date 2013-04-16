@@ -34,7 +34,6 @@ from django.contrib.admin.widgets import AdminSplitDateTime
 from django.utils.translation import ugettext as _
 
 from os import listdir, path
-from django.core.files.storage import FileSystemStorage
 from django.conf import  settings
 from django.contrib.sites.models import Site
 
@@ -124,7 +123,6 @@ class BaseDynamicEntityForm(ModelForm):
                         choices = []
                     else:
                         folder_path =path.join(settings.PROJECT_PATH, folder_path)
-                        print folder_path
                         choices = [ (path.join(folder_path,file_name),file_name) for file_name in listdir(folder_path) if path.isfile(path.join(folder_path,file_name)) ]
 
                 elif 'site_list' in attribute.options:

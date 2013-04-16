@@ -84,9 +84,13 @@ class Product(models.Model):
 
 
 
-    def price(self):
+    def price(self, site=None):
         ''' get price field depending on site options'''
-        price_slug=Site.objects.get_current().price_field_slug
+        if site:
+            price_slug=Site.objects.get(site_cutting=site).price_field_slug
+        else:
+            price_slug=Site.objects.get_current().price_field_slug
+
         try:
             return getattr(self, price_slug)
         except AttributeError:

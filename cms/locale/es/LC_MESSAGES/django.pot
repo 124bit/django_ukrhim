@@ -1,0 +1,467 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-09 09:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cms_toolbar.py:71
+msgid "Revert"
+msgstr ""
+
+#: cms_toolbar.py:75
+msgid "Edit mode"
+msgstr ""
+
+#: cms_toolbar.py:109
+msgid "django CMS"
+msgstr ""
+
+#: cms_toolbar.py:133
+msgid "Publish"
+msgstr ""
+
+#: cms_toolbar.py:154
+msgid "Logout"
+msgstr ""
+
+#: cms_toolbar.py:171
+msgid "Template"
+msgstr ""
+
+#: cms_toolbar.py:179
+msgid "Move/add Pages"
+msgstr ""
+
+#: cms_toolbar.py:184
+msgid "Add child page"
+msgstr ""
+
+#: cms_toolbar.py:190
+msgid "Add sibling page"
+msgstr ""
+
+#: cms_toolbar.py:196
+msgid "Delete Page"
+msgstr ""
+
+#: cms_toolbar.py:199
+msgid "Page"
+msgstr ""
+
+#: cms_toolbar.py:208
+msgid "Site Administration"
+msgstr ""
+
+#: cms_toolbar.py:214
+msgid "Page Settings"
+msgstr ""
+
+#: cms_toolbar.py:220
+msgid "View History"
+msgstr ""
+
+#: cms_toolbar.py:224
+msgid "Admin"
+msgstr ""
+
+#: plugin_base.py:72
+msgid "Advanced options"
+msgstr ""
+
+#: admin/forms.py:61
+msgid "Title"
+msgstr ""
+
+#: admin/forms.py:62
+msgid "The default title"
+msgstr ""
+
+#: admin/forms.py:63
+msgid "Slug"
+msgstr ""
+
+#: admin/forms.py:64
+msgid "The part of the title that is used in the URL"
+msgstr ""
+
+#: admin/forms.py:65
+msgid "Language"
+msgstr ""
+
+#: admin/forms.py:66
+msgid "The current language of the content fields."
+msgstr ""
+
+#: admin/forms.py:113
+msgid "Another page with this slug already exists"
+msgstr ""
+
+#: admin/forms.py:151
+msgid "Menu Title"
+msgstr ""
+
+#: admin/forms.py:152
+msgid "Overwrite what is displayed in the menu"
+msgstr ""
+
+#: admin/forms.py:153
+msgid "Page Title"
+msgstr ""
+
+#: admin/forms.py:154
+msgid "Overwrites what is displayed at the top of your browser or in bookmarks"
+msgstr ""
+
+#: admin/forms.py:155
+msgid "Application"
+msgstr ""
+
+#: admin/forms.py:157
+msgid "Hook application to this page."
+msgstr ""
+
+#: admin/forms.py:158
+msgid "Overwrite URL"
+msgstr ""
+
+#: admin/forms.py:159
+msgid "Keep this field empty if standard path should be used."
+msgstr ""
+
+#: admin/forms.py:161
+msgid "Redirect"
+msgstr ""
+
+#: admin/forms.py:162
+msgid "Redirects to this URL."
+msgstr ""
+
+#: admin/forms.py:164
+msgid "A description of the page sometimes used by search engines."
+msgstr ""
+
+#: admin/forms.py:166
+msgid "A list of comma seperated keywords sometimes used by search engines."
+msgstr ""
+
+#: admin/forms.py:182
+msgid "A page with this reverse URL id exists already."
+msgstr ""
+
+#: admin/forms.py:199 admin/forms.py:200
+msgid "user"
+msgstr ""
+
+#: admin/forms.py:224
+msgid ""
+"Add page permission requires also access to children, or descendants, "
+"otherwise added page can't be changed by its creator."
+msgstr ""
+
+#: admin/forms.py:229
+msgid "Add page permission also requires edit page permission."
+msgstr ""
+
+#: admin/forms.py:256
+msgid "can_view"
+msgstr ""
+
+#: admin/forms.py:268
+msgid "Please select user or group first."
+msgstr ""
+
+#: admin/forms.py:275 admin/forms.py:282 admin/forms.py:286
+msgid "Add"
+msgstr ""
+
+#: admin/forms.py:276 admin/forms.py:283 admin/forms.py:287
+msgid "Change"
+msgstr ""
+
+#: admin/forms.py:277 admin/forms.py:284 admin/forms.py:288
+msgid "Delete"
+msgstr ""
+
+#: admin/forms.py:278
+msgid "Recover (any) pages"
+msgstr ""
+
+#: admin/forms.py:305
+msgid "Notify user"
+msgstr ""
+
+#: admin/forms.py:306
+msgid ""
+"Send email notification to user about username or password change. Requires "
+"user email."
+msgstr ""
+
+#: admin/forms.py:326
+msgid "New password"
+msgstr ""
+
+#: admin/forms.py:328
+msgid "New password confirmation"
+msgstr ""
+
+#: admin/forms.py:347
+msgid "Email notification requires valid email address."
+msgstr ""
+
+#: admin/forms.py:349
+msgid ""
+"The permission to add new pages requires the permission to change pages!"
+msgstr ""
+
+#: admin/forms.py:351
+msgid ""
+"The permission to add new users requires the permission to change users!"
+msgstr ""
+
+#: admin/forms.py:353
+msgid "To add permissions you also need to edit them!"
+msgstr ""
+
+#: admin/pageadmin.py:103
+msgid "Basic Settings"
+msgstr ""
+
+#: admin/pageadmin.py:106
+msgid "Note: This page reloads if you change the selection. Save it first."
+msgstr ""
+
+#: admin/pageadmin.py:108 admin/pageadmin.py:159
+msgid "Hidden"
+msgstr ""
+
+#: admin/pageadmin.py:112
+msgid "Advanced Settings"
+msgstr ""
+
+#: admin/pageadmin.py:119
+msgid "SEO Settings"
+msgstr ""
+
+#: admin/pageadmin.py:638
+msgid "You do not have permission to change pages."
+msgstr ""
+
+#: admin/pageadmin.py:650
+msgid "Database error"
+msgstr ""
+
+#: admin/pageadmin.py:743
+msgid "You do not have permission to change the template"
+msgstr ""
+
+#: admin/pageadmin.py:747
+msgid "Template not valid"
+msgstr ""
+
+#: admin/pageadmin.py:752
+#, python-format
+msgid "Template changed to %s"
+msgstr ""
+
+#: admin/pageadmin.py:754
+msgid "The template was successfully changed"
+msgstr ""
+
+#: admin/pageadmin.py:776
+msgid ""
+"Error! You don't have permissions to move this page. Please reload the page"
+msgstr ""
+
+#: admin/pageadmin.py:780
+msgid "Page moved"
+msgstr ""
+
+#: admin/pageadmin.py:866 admin/pageadmin.py:1054
+msgid "You do not have permission to publish this page"
+msgstr ""
+
+#: admin/pageadmin.py:868
+#, python-format
+msgid "The page \"%s\" was successfully published."
+msgstr ""
+
+#: admin/pageadmin.py:910 admin/pageadmin.py:946 admin/pageadmin.py:1178
+#: admin/pageadmin.py:1211 admin/pageadmin.py:1344 admin/pageadmin.py:1376
+msgid "You do not have permission to change this page"
+msgstr ""
+
+#: admin/pageadmin.py:914
+#, python-format
+msgid "The page \"%s\" was successfully reverted."
+msgstr ""
+
+#: admin/pageadmin.py:950
+#, python-format
+msgid "%(name)s object with primary key %(key)r does not exist."
+msgstr ""
+
+#: admin/pageadmin.py:956
+msgid "There only exists one translation for this page"
+msgstr ""
+
+#: admin/pageadmin.py:985
+#, python-format
+msgid "Title and plugins with language %(language)s was deleted"
+msgstr ""
+
+#: admin/pageadmin.py:1007
+msgid "Are you sure?"
+msgstr ""
+
+#: admin/pageadmin.py:1063
+#, python-format
+msgid "The page \"%s\" was successfully unpublished"
+msgstr ""
+
+#: admin/pageadmin.py:1065
+#, python-format
+msgid "The page \"%s\" was successfully published"
+msgstr ""
+
+#: admin/pageadmin.py:1083
+msgid "You do not have permission to change this page's in_navigation status"
+msgstr ""
+
+#: admin/pageadmin.py:1108
+msgid "You do not have permission to add a plugin"
+msgstr ""
+
+#: admin/pageadmin.py:1149 admin/pageadmin.py:1180
+msgid "Language must be set to a supported language!"
+msgstr ""
+
+#: admin/pageadmin.py:1160
+#, python-format
+msgid "%(plugin_name)s plugin added to %(placeholder)s"
+msgstr ""
+
+#: admin/pageadmin.py:1182
+msgid "Language must be different than the copied language!"
+msgstr ""
+
+#: admin/pageadmin.py:1188
+msgid "You do not have permission to add plugins"
+msgstr ""
+
+#: admin/pageadmin.py:1193
+#, python-format
+msgid "Copied %(language)s plugins to %(placeholder)s"
+msgstr ""
+
+#: admin/pageadmin.py:1243
+msgid "This plugin is not saved in a revision"
+msgstr ""
+
+#: admin/pageadmin.py:1246 admin/pageadmin.py:1340
+msgid "You do not have permission to edit a plugin"
+msgstr ""
+
+#: admin/pageadmin.py:1306
+#, python-format
+msgid ""
+"%(plugin_name)s plugin edited at position %(position)s in %(placeholder)s"
+msgstr ""
+
+#: admin/pageadmin.py:1371
+msgid "You do not have permission to move a plugin"
+msgstr ""
+
+#: admin/pageadmin.py:1390
+msgid "Plugins were moved"
+msgstr ""
+
+#: admin/pageadmin.py:1403 admin/pageadmin.py:1412
+msgid "You do not have permission to remove a plugin"
+msgstr ""
+
+#: admin/pageadmin.py:1422
+#, python-format
+msgid ""
+"%(plugin_name)s plugin at position %(position)s in %(placeholder)s was "
+"deleted."
+msgstr ""
+
+#: admin/permissionadmin.py:75
+msgid "View restriction"
+msgstr ""
+
+#: admin/permissionadmin.py:76
+msgid "View restrictions"
+msgstr ""
+
+#: admin/permissionadmin.py:130
+msgid "Page permissions"
+msgstr ""
+
+#: admin/permissionadmin.py:131
+msgid "User & Group permissions"
+msgstr ""
+
+#: admin/permissionadmin.py:132
+msgid "Page permissions management"
+msgstr ""
+
+#: admin/placeholderadmin.py:190 admin/placeholderadmin.py:216
+msgid "You don't have permission to add content here."
+msgstr ""
+
+#: admin/placeholderadmin.py:212
+msgid "You don't have permission to add plugins"
+msgstr ""
+
+#: admin/placeholderadmin.py:344
+msgid "You don't have permission to delete a plugin"
+msgstr ""
+
+#: admin/placeholderadmin.py:348
+#, python-format
+msgid ""
+"%(plugin_name)s plugin at position %(position)s in %(placeholder)s was "
+"deleted."
+msgstr ""
+
+#: admin/useradmin.py:26
+msgid "User details"
+msgstr ""
+
+#: admin/useradmin.py:27
+msgid "Groups"
+msgstr ""
+
+#: admin/useradmin.py:37
+msgid "Password"
+msgstr ""
+
+#: admin/dialog/forms.py:9
+msgid "Copy permissions"
+msgstr ""
+
+#: forms/fields.py:19
+msgid "Select a valid site"
+msgstr ""
+
+#: forms/fields.py:20
+msgid "Select a valid page"
+msgstr ""
+
+#: forms/widgets.py:176
+msgid "Add Another"
+msgstr ""

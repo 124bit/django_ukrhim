@@ -19,8 +19,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ukrhim1',                      # Or path to database file if using sqlite3.
-        'USER': 'kata',                      # Not used with sqlite3.
+        'NAME': 'ukrhim',                      # Or path to database file if using sqlite3.
+        'USER': 'vasa',                      # Not used with sqlite3.
         'PASSWORD': '777777',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
@@ -100,12 +100,14 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'cms.middleware.multilingual.MultilingualURLMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
@@ -133,10 +135,15 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').repl
 INSTALLED_APPS = (
 
     #-------important
-    'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default etting for images folder - files
+    'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default setting for images folder - files
     'imagekit', #patched  #todo rewrite patches, conspect
     'import_export', #patched
      #TODO repatch, update for xls
+
+     'admin_tools',
+     'admin_tools.theming',
+     'admin_tools.menu',
+     'admin_tools.dashboard',
 
      #------not important
      'jsonfield',
@@ -150,6 +157,7 @@ INSTALLED_APPS = (
     'django.contrib.sites', #patched in modifier
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'django.contrib.admin',
     'django.contrib.admindocs',
 
@@ -161,16 +169,7 @@ INSTALLED_APPS = (
     'sekizai',
 
 
-    'cms.plugins.file',
-    'cms.plugins.flash',
-    'cms.plugins.googlemap',
-    'cms.plugins.link',
-    'cms.plugins.picture',
-    'cms.plugins.snippet',
-    'cms.plugins.teaser',
     'cms.plugins.text',
-    'cms.plugins.video',
-    'cms.plugins.twitter',
     'cms.plugins.inherit',
 
     'polymorphic',
@@ -180,6 +179,7 @@ INSTALLED_APPS = (
     #'ukrhim_shop',
     'eav',
     'product_db',
+    'pdf_gen',
     'modifier', #all monkey patching of apps done her, some twix, glue for all apps
 
 )
@@ -242,6 +242,11 @@ CMS_PLUGIN_PROCESSORS = (
     'modifier.cms_plugin_processors.render_with_tags',
 )
 
+APPEND_SLASH=True
+CMS_MENU_TITLE_OVERWRITE=True
+CMS_REDIRECTS=True
+#CMS_SOFTROOT=True
+CMS_SEO_FIELDS=True
 
 #-----import_export SETTINGS
 SERIALIZATION_MODULES = {
@@ -249,5 +254,10 @@ SERIALIZATION_MODULES = {
     }
 
 
-#-----------
-#SHOP_PRODUCT_MODEL = 'ukrhim_shop.models.UkrhimProduct'
+#-----------django_admin_tools settings
+ADMIN_TOOLS_MENU = 'modifier.custom_menu.CustomMenu'
+ADMIN_TOOLS_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashboard'
+
+#ADMIN_TOOLS_THEMING_CSS = 'css/theming.css'
+#A good start is to copy the admin_tools/media/admin_tools/css/theming.css to your custom file and to modify it to suits your needs.
