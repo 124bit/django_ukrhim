@@ -1167,7 +1167,9 @@ class Page(MPTTModel):
             for plugin in placeholder.get_plugins():
                 plugin.delete_with_public()
             for language in get_language_tuple():
-                add_plugin(placeholder,InheritPagePlaceholderPlugin,language[0],from_page=self,from_language=language[0])
+                add_plugin(placeholder,InheritPagePlaceholderPlugin,language[0],from_language=language[0])
+
+
 
 
 

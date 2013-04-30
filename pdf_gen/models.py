@@ -8,7 +8,7 @@ from appy.pod.renderer import Renderer
 from os import path
 from product_db.models import Product, ProductTag, ProductType
 from datetime import datetime
-
+from django.utils.timezone import now
 
 class Price(models.Model):
     prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'prices')
@@ -30,7 +30,7 @@ class Price(models.Model):
         for template in self.pricetemplate_set.all():
             if template.template_file and template.template_file.hash:
                 template.generate_price(self.prices_path)
-        self.last_update=datetime.now()
+        self.last_update=now() #todo test this piece of code and its repr
         self.save()
 
 class PriceTemplate(models.Model):

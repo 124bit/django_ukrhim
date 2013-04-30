@@ -821,7 +821,7 @@ class PageAdmin(ModelAdmin):
     #changed
 
     def transfer_page(self, page, sites,mirror):
-        results=''
+        results='Procedure result: \n'
         for site in sites:
             permission_check=page.get_copy_permission(int(site))
             if  permission_check==True:

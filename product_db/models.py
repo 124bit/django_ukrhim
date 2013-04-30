@@ -3,8 +3,10 @@ from django.utils.translation import ugettext as _
 from eav.models import Attribute
 from eav.fields import EavSlugField
 import eav
+from django.utils.translation import get_language
 
 from django.contrib.sites.models import Site
+from cms.utils.i18n import get_fallback_languages
 
 class ProductType(models.Model):
     name=models.CharField(max_length=30,verbose_name=_("type name"), unique=True)
@@ -58,6 +60,11 @@ class Product(models.Model):
                                          verbose_name=_('Last modified'))
 
 
+    def get_prices_for_list(self):
+
+        return self.product_set.count()
+    get_prices_for_list.short_description = _("Tagged producs")
+
     #TODO make name unique, make slug field - python slug, mayby slug readonly
 
 
@@ -85,7 +92,7 @@ class Product(models.Model):
 
 
     def price(self, site=None):
-        ''' get price field depending on site options'''
+        ''' get price field depending on site options and lang'''
         if site:
             price_slug=Site.objects.get(site_cutting=site).price_field_slug
         else:
@@ -98,13 +105,25 @@ class Product(models.Model):
 
     #----for direct EAV attr access
     def __getattr__(self, attr):
+        current_lang=get_language()
+        try:
+            res=getattr(self.eav, attr+'_'+current_lang)
+            return res
+        except  AttributeError:
+            for lang in get_fallback_languages(current_lang):
+                try:
+                    res=getattr(self.eav, attr+'_'+lang)
+                    return res
+                except  AttributeError:
+                    pass
+
         return getattr(self.eav, attr)
+
 
     #----for export_import attribute import
     def set_attr(self, attr, value):
         #Todo think, rewrite
         try:
-                print value, type(value)
                 getattr(self.__dict__['eav'],attr)
                 if self.get_secondary_attributes().filter(slug=attr).count()!=0:
                     if (str(value)!='-' and str(value)!=''):
