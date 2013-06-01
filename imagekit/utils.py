@@ -1,10 +1,17 @@
 import logging
 from tempfile import NamedTemporaryFile
 
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.files import File
 from django.utils.importlib import import_module
+from hashlib import md5
 from pilkit.utils import *
+import re
+from .lib import NullHandler
+
+
+bad_memcached_key_chars = re.compile(ur'[\u0000-\u001f\s]+')
 
 
 def get_nonabstract_descendants(model):
@@ -76,7 +83,7 @@ def autodiscover():
 def get_logger(logger_name='imagekit', add_null_handler=True):
     logger = logging.getLogger(logger_name)
     if add_null_handler:
-        logger.addHandler(logging.NullHandler())
+        logger.addHandler(NullHandler())
     return logger
 
 
@@ -118,8 +125,22 @@ def generate(generator):
     return File(content)
 
 
-def call_strategy_method(generator, method_name, *args, **kwargs):
-    strategy = getattr(generator, 'cachefile_strategy', None)
+def call_strategy_method(file, method_name):
+    strategy = getattr(file, 'cachefile_strategy', None)
     fn = getattr(strategy, method_name, None)
     if fn is not None:
-        fn(*args, **kwargs)
+        fn(file)
+
+
+def sanitize_cache_key(key):
+    if settings.IMAGEKIT_USE_MEMCACHED_SAFE_CACHE_KEY:
+        # Memcached keys can't contain whitespace or control characters.
+        new_key = bad_memcached_key_chars.sub('', key)
+
+        # The also can't be > 250 chars long. Since we don't know what the
+        # user's cache ``KEY_FUNCTION`` setting is like, we'll limit it to 200.
+        if len(new_key) >= 200:
+            new_key = '%s:%s' % (new_key[:200-33], md5(key).hexdigest())
+
+        key = new_key
+    return key

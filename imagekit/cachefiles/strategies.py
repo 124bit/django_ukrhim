@@ -8,7 +8,10 @@ class JustInTime(object):
 
     """
 
-    def before_access(self, file):
+    def on_existence_required(self, file):
+        file.generate()
+
+    def on_content_required(self, file):
         file.generate()
 
 
@@ -20,10 +23,7 @@ class Optimistic(object):
 
     """
 
-    def on_source_created(self, file):
-        file.generate()
-
-    def on_source_changed(self, file):
+    def on_source_saved(self, file):
         file.generate()
 
 

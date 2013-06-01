@@ -1,4 +1,4 @@
-import os, re, time, shutil
+import os, re, time, shutil, magic
 try:
     from PIL import Image
 except ImportError:
@@ -176,7 +176,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Attempt to read the file's mimetype
         """
-        return None #unicode filename support
+        return magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
     
     def _readlink(self, path):
         """

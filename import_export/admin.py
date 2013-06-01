@@ -1,15 +1,17 @@
+from __future__ import with_statement
+
+import os
 import tempfile
 from datetime import datetime
 
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from django.template.response import TemplateResponse
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from eav.models import Attribute
-from import_export import fields
+
 from .forms import (
         ImportForm,
         ConfirmImportForm,
@@ -68,29 +70,12 @@ class ImportMixin(object):
         """
         return [f for f in self.formats if f().can_import()]
 
-    #changed her, and all places, where used
-    def update_resource_class(self, resource):
-        for attr in Attribute.objects.all():
-            if 'price_field' in attr.options:
-                slug=attr.slug
-                field=fields.Field()
-                field.column_name=slug
-                field.attribute=slug
-                setattr(resource, slug, field)
-                def dehidr(obj):
-                    return getattr(obj,slug)
-                setattr(resource, 'dehydrate_'+attr.slug, dehidr)
-                resource.fields[slug]=getattr(resource,slug)
-
-        return resource
-
     def process_import(self, request, *args, **kwargs):
         '''
         Perform the actuall import action (after the user has confirmed he wishes to import)
         '''
         opts = self.model._meta
         resource = self.get_resource_class()()
-        resource= self.update_resource_class(resource)
 
         confirm_form = ConfirmImportForm(request.POST)
         if confirm_form.is_valid():
@@ -124,7 +109,7 @@ class ImportMixin(object):
         will be used by 'process_import' for the actual import.
         '''
         resource = self.get_resource_class()()
-        resource= self.update_resource_class(resource)
+
         context = {}
 
         import_formats = self.get_import_formats()
@@ -137,25 +122,27 @@ class ImportMixin(object):
                     int(form.cleaned_data['input_format'])
                     ]()
             import_file = form.cleaned_data['import_file']
-            import_file.open(input_format.get_read_mode())
-            data = import_file.read()
-            if not input_format.is_binary() and self.from_encoding:
-                data = unicode(data, self.from_encoding).encode('utf-8')
-            #changed
-            if  import_formats[int(form.cleaned_data['input_format'])]==base_formats.CSV:
-                data=data.replace(';',',')
-            dataset = input_format.create_dataset(data)
-            result = resource.import_data(dataset, dry_run=True,
-                    raise_errors=False)
+            # first always write the uploaded file to disk as it may be a 
+            # memory file or else based on settings upload handlers
+            with tempfile.NamedTemporaryFile(delete=False) as uploaded_file:
+                 for chunk in import_file.chunks():
+                     uploaded_file.write(chunk)
+
+            # then read the file, using the proper format-specific mode
+            with open(uploaded_file.name, input_format.get_read_mode()) as uploaded_import_file:
+                # warning, big files may exceed memory
+                data = uploaded_import_file.read()
+                if not input_format.is_binary() and self.from_encoding:
+                    data = unicode(data, self.from_encoding).encode('utf-8')
+                dataset = input_format.create_dataset(data)
+                result = resource.import_data(dataset, dry_run=True,
+                        raise_errors=False)
 
             context['result'] = result
 
             if not result.has_errors():
-                tmp_file = tempfile.NamedTemporaryFile(delete=False)
-                tmp_file.write(data)
-                tmp_file.close()
                 context['confirm_form'] = ConfirmImportForm(initial={
-                    'import_file_name': tmp_file.name,
+                    'import_file_name': uploaded_file.name,
                     'input_format': form.cleaned_data['input_format'],
                     })
 
@@ -234,15 +221,10 @@ class ExportMixin(object):
                     ]()
 
             resource_class = self.get_resource_class()
-            resource= self.update_resource_class(resource_class())
             queryset = self.get_export_queryset(request)
-            data = resource.export(queryset)
-            #changed
-            if formats[int(form.cleaned_data['file_format'])]==base_formats.CSV:
-                data_string=file_format.export_data(data)
-                datastring=data_string.replace(',',';')
+            data = resource_class().export(queryset)
             response = HttpResponse(
-                    datastring,
+                    file_format.export_data(data),
                     mimetype='application/octet-stream',
                     )
             response['Content-Disposition'] = 'attachment; filename=%s' % (

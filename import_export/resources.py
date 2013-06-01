@@ -9,6 +9,7 @@ from diff_match_patch import diff_match_patch
 from django.utils.safestring import mark_safe
 from django.utils.datastructures import SortedDict
 from django.db import transaction
+from django.db.models.related import RelatedObject
 from django.conf import settings
 
 from .results import Error, Result, RowResult
@@ -109,7 +110,6 @@ class Resource(object):
         """
         Returns fields in ``export_order`` order.
         """
-
         return [self.fields[f] for f in self.get_export_order()]
 
     def init_instance(self, row=None):
@@ -124,9 +124,6 @@ class Resource(object):
             return (instance, False)
         else:
             return (self.init_instance(row), True)
-
-    def set_instance_attr(self, instance, row, field):
-        setattr(instance, self.get_mapping()[field], row[field])
 
     def save_instance(self, instance, dry_run=False):
         self.before_save_instance(instance, dry_run)
@@ -164,12 +161,8 @@ class Resource(object):
         """
         pass
 
-
-    #changed
     def import_field(self, field, obj, data):
-        if field.column_name in data:
-            if not field.attribute:
-                field.attribute=field.column_name
+        if field.attribute and field.column_name in data:
             field.save(obj, data)
 
     def import_obj(self, obj, data):
@@ -299,12 +292,8 @@ class Resource(object):
 
         return result
 
-    #Todo think, rewrite
-    #changed
     def get_export_order(self):
-        export_list=self._meta.export_order
-        new_fields=[field_name for field_name in self.fields.keys() if field_name not in export_list]
-        return  list(export_list)+new_fields
+        return self._meta.export_order or self.fields.keys()
 
     def export_field(self, field, obj):
         method = getattr(self, 'dehydrate_%s' % field.column_name, None)
@@ -320,7 +309,7 @@ class Resource(object):
         return headers
 
     def export(self, queryset=None):
-        if not queryset:
+        if queryset is None:
             queryset = self.get_queryset()
         headers = self.get_export_headers()
         data = tablib.Dataset(headers=headers)
@@ -376,6 +365,8 @@ class ModelDeclarativeMetaclass(DeclarativeMetaclass):
                         f = model._meta.get_field_by_name(attr)[0]
                         model = f.rel.to
                     f = model._meta.get_field_by_name(attrs[-1])[0]
+                    if isinstance(f, RelatedObject):
+                        f = f.field
 
                     FieldWidget = new_class.widget_from_django_field(f)
                     widget_kwargs = new_class.widget_kwargs_for_field(field_name)
@@ -405,7 +396,7 @@ class ModelResource(Resource):
         if internal_type in ('ManyToManyField', ):
             result = functools.partial(widgets.ManyToManyWidget,
                     model=f.rel.to)
-        if internal_type in ('ForeignKey', ):
+        if internal_type in ('ForeignKey', 'OneToOneField', ):
             result = functools.partial(widgets.ForeignKeyWidget,
                     model=f.rel.to)
         if internal_type in ('DecimalField', ):

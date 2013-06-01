@@ -1,12 +1,10 @@
 from django.conf import settings
 from django.db.models.fields.files import ImageFieldFile
-from hashlib import md5
-import pickle
 from ..cachefiles.backends import get_default_cachefile_backend
 from ..cachefiles.strategies import StrategyWrapper
+from .. import hashers
 from ..exceptions import AlreadyRegistered, MissingSource
-from ..processors import ProcessorPipeline
-from ..utils import open_image, img_to_fobj, get_by_qname
+from ..utils import open_image, get_by_qname, process_image
 from ..registry import generator_registry, register
 
 
@@ -115,13 +113,13 @@ class ImageSpec(BaseImageSpec):
             self.source = getattr(field_data['instance'], field_data['attname'])
 
     def get_hash(self):
-        return md5(pickle.dumps([
+        return hashers.pickle([
             self.source.name,
             self.processors,
             self.format,
             self.options,
             self.autoconvert,
-        ])).hexdigest()
+        ])
 
     def generate(self):
         if not self.source:
@@ -130,17 +128,17 @@ class ImageSpec(BaseImageSpec):
 
         # TODO: Move into a generator base class
         # TODO: Factor out a generate_image function so you can create a generator and only override the PIL.Image creating part. (The tricky part is how to deal with original_format since generator base class won't have one.)
-        img = open_image(self.source)
-        original_format = img.format
+        try:
+            img = open_image(self.source)
+        except ValueError:
 
-        # Run the processors
-        processors = self.processors
-        img = ProcessorPipeline(processors or []).process(img)
+            # Re-open the file -- https://code.djangoproject.com/ticket/13750
+            self.source.open()
+            img = open_image(self.source)
 
-        options = dict(self.options or {})
-        format = self.format or img.format or original_format or 'JPEG'
-        content = img_to_fobj(img, format, **options)
-        return content
+        return process_image(img, processors=self.processors,
+                             format=self.format, autoconvert=self.autoconvert,
+                             options=self.options)
 
 
 def create_spec_class(class_attrs):

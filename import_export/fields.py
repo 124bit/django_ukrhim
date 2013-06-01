@@ -76,11 +76,8 @@ class Field(object):
         """
         Cleans this field value and assign it to provided object.
         """
-
-        #Todo think, rewrite
-        #changed
         if not self.readonly:
-            getattr(obj,'set_attr')(self.attribute, self.clean(data))
+            setattr(obj, self.attribute, self.clean(data))
 
     def export(self, obj):
         """

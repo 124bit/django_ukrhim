@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
-import os
+import os#, sys
 
 gettext = lambda s: s
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+#MODULES_PATH = os.path.normpath(os.path.join(PROJECT_PATH, '..', '..')) #for importing third-party modules vonnected to git
+#import_export_path = os.path.join(MODULES_PATH, 'django-import-export')
+#imagekit_path = os.path.join(MODULES_PATH, 'django-imagekit')
+#elfinder_path = os.path.join(MODULES_PATH, 'yawd-elfinder')
+#sys.path.append(import_export_path)
+#sys.path.append(imagekit_path)
+#sys.path.append(elfinder_path)
 
 #--------- DJANGO SETTINGS for django_ukrhim project.
 
@@ -18,12 +26,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ukrhim',                      # Or path to database file if using sqlite3.
-        'USER': 'vasa',                      # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'postgres',                      # Or path to database file if using sqlite3.
+        'USER': 'postgres',                      # Not used with sqlite3.
         'PASSWORD': '777777',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -73,6 +81,9 @@ STATIC_ROOT = os.path.join(PROJECT_PATH, "static")
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+
+
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -135,9 +146,9 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').repl
 INSTALLED_APPS = (
 
     #-------important
-    'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default setting for images folder - files
-    'imagekit', #patched  #todo rewrite patches, conspect
-    'import_export', #patched
+     'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default setting for images folder - files
+     'imagekit', #patched  #todo rewrite patches, conspect
+     'import_export', #patched
      #TODO repatch, update for xls
 
      'admin_tools',
@@ -147,7 +158,6 @@ INSTALLED_APPS = (
 
      #------not important
      'jsonfield',
-     'smuggler',
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
 
     #----django
@@ -172,7 +182,7 @@ INSTALLED_APPS = (
     'cms.plugins.text',
     'cms.plugins.inherit',
 
-    'polymorphic',
+    #'polymorphic',
     'reversion',
 
     #-----our

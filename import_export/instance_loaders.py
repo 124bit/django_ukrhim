@@ -24,8 +24,7 @@ class ModelInstanceLoader(BaseInstanceLoader):
     def get_instance(self, row):
         try:
             params = {}
-            fields=self.resource.get_import_id_fields()
-            for key in fields:
+            for key in self.resource.get_import_id_fields():
                 field = self.resource.fields[key]
                 params[field.attribute] = field.clean(row)
             return self.get_queryset().get(**params)

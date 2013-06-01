@@ -9,15 +9,32 @@ class ImageKitConf(AppConf):
     DEFAULT_CACHEFILE_BACKEND = 'imagekit.cachefiles.backends.Simple'
     DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.JustInTime'
 
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    DEFAULT_FILE_STORAGE = None
 
     CACHE_BACKEND = None
     CACHE_PREFIX = 'imagekit:'
+    USE_MEMCACHED_SAFE_CACHE_KEY = True
 
     def configure_cache_backend(self, value):
         if value is None:
-            if getattr(settings, 'CACHES', None):
-                value = 'django.core.cache.backends.dummy.DummyCache' if settings.DEBUG else 'default'
+            try:
+                from django.core.cache.backends.dummy import DummyCache
+            except ImportError:
+                dummy_cache = 'dummy://'
             else:
-                value = 'dummy://' if settings.DEBUG else settings.CACHE_BACKEND
+                dummy_cache = 'django.core.cache.backends.dummy.DummyCache'
+
+            if settings.DEBUG:
+                value = dummy_cache
+            else:
+                value = (
+                    getattr(settings, 'CACHES', {}).get('default')
+                    or getattr(settings, 'CACHE_BACKEND', None)
+                    or dummy_cache
+                )
+        return value
+
+    def configure_default_file_storage(self, value):
+        if value is None:
+            value = settings.DEFAULT_FILE_STORAGE
         return value

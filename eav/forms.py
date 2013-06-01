@@ -105,7 +105,7 @@ class BaseDynamicEntityForm(ModelForm):
                             folder_path=list_options['image_folder']['path']
                         elif 'field' in  list_options['image_folder']:
                             try:
-                                file_path=getattr(self.entity, list_options['choices_folder']['field']).url
+                                file_path=getattr(self.entity, list_options['image_folder']['field']).url
                                 folder_path=path.dirname(file_path[1:])
                             except AttributeError:
                                 pass

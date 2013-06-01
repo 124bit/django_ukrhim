@@ -1,4 +1,4 @@
-import os, re, time, tempfile, shutil, mimetypes
+import os, re, magic, time, tempfile, shutil, mimetypes
 try:
     from PIL import Image
 except ImportError:
@@ -258,7 +258,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         Attempt to read the file's mimetype.
         """
         fp = self._fopen(path)
-        mime = None
+        mime = magic.Magic(mime=True).from_buffer(fp.read())
         fp.close()
         return mime
     
@@ -493,7 +493,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
                 raise Exception('Could not create temporary directory')
             else:
                 shutil.rmtree(quarantine_dir)
-        print os.getcwd()
+        #print os.getcwd()
         os.mkdir(quarantine_dir)
         
         for file_ in files:
@@ -525,7 +525,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         if os.path.isdir(path):
             return 'directory'
 
-        mime = None
+        mime = magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
         int_mime = None
 
         if not mime or mime in ['inode/x-empty', 'application/empty']:
@@ -584,7 +584,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         """
         Extract files from archive.
         """
-        print os.getcwd() 
+        #print os.getcwd() 
         archive_name = self._basename(path)
         archive_dir = self._dirname(path)
         quarantine_dir = self._join_path(self._quarantine, u'%s%s' % (str(time.time()).replace(' ', '_'), archive_name))

@@ -1,13 +1,12 @@
-from django.conf import settings
-from django.contrib.admin.views.decorators import staff_member_required
+import json
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
-from django.utils import simplejson as json
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
 from exceptions import ElfinderErrorMessages
 from elfinder.connector import ElfinderConnector
 from elfinder.conf import settings as ls
+
 
 class ElfinderConnectorView(View):
     """
@@ -19,10 +18,6 @@ class ElfinderConnectorView(View):
         It returns a json-encoded response, unless it was otherwise requested
         by the command operation
         """
-        
-        if not settings.DEBUG and not self.request.is_ajax():
-            raise Http404
-
         kwargs = {}
         additional_headers = {}
         #create response headers
@@ -99,7 +94,6 @@ class ElfinderConnectorView(View):
                 root['startPath'] = kwargs['start_path']
         return set_
     
-    @method_decorator(staff_member_required)
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
         if not kwargs['optionset'] in ls.ELFINDER_CONNECTOR_OPTION_SETS:
