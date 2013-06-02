@@ -24,8 +24,7 @@ urlpatterns = i18n_patterns('',
 
 if settings.DEBUG:
     urlpatterns = patterns('',
-
-                           (r'^admin/', include('smuggler.urls')), # put it before admin url patterns
+                           url(r'^rosetta/', include('rosetta.urls')),
 
                            url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
                                {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),

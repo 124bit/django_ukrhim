@@ -8,7 +8,7 @@ from django.contrib.sites.models import Site
 
 class PriceTemplateForm(ModelForm):
     SITE_CHOICES = [(site.pk, site.name) for site in Site.objects.all()]
-    site = ChoiceField(label='site',choices=SITE_CHOICES,  initial='default', help_text=_("choose documnts site. If it is default or universal document - choose default") )
+    site = ChoiceField(label=_('Site'),choices=SITE_CHOICES,  initial='default', help_text=_("Choose site of document.") )
 
     class Meta:
             model = PriceTemplate
@@ -25,7 +25,7 @@ class PriceTemplateInline(StackedInline):
 def update_price(modeladmin, request, queryset):
     for price in queryset:
         price.generate_new_prices()
-update_price.short_description = _("update prices info")
+update_price.short_description = _("Update prices info")
 
 class PriceAdmin(ModelAdmin):
     list_display = ('name', 'get_update_time')

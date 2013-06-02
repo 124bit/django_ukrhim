@@ -101,6 +101,8 @@ class Attribute(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('attribute')
+        verbose_name_plural = _('Attributes')
 
 
     TYPE_TEXT = 'text'
@@ -120,7 +122,6 @@ class Attribute(models.Model):
         (TYPE_INT, _(u"Integer")),
         (TYPE_DATE, _(u"Date")),
         (TYPE_BOOLEAN, _(u"True / False")),
-        (TYPE_OBJECT, _(u"Object")),
         (TYPE_ENUM, _(u"Choice")),
         (TYPE_FILE, _(u"File")),
         (TYPE_IMAGE, _(u"Image")),
@@ -133,7 +134,6 @@ class Attribute(models.Model):
         TYPE_INT: validate_int,
         TYPE_DATE: validate_date,
         TYPE_BOOLEAN: validate_bool,
-        TYPE_OBJECT: validate_object,
         TYPE_ENUM: validate_enum,
         TYPE_FILE: validate_file,
         TYPE_IMAGE: validate_image,
@@ -152,25 +152,25 @@ class Attribute(models.Model):
         TYPE_LIST: MultiSelectFormField
     }
 
-    name = models.CharField(_(u"name"), max_length=100,
-                            help_text=_("User-friendly attribute name"),
+    name = models.CharField(_("Name"), max_length=100,
+                            help_text=_("User-friendly data field name."),
                             unique=True)
 
-    slug = EavSlugField(_("slug"), max_length=50, db_index=True,
-                          help_text=_("Short unique attribute label"),
+    slug = EavSlugField(_("Attribute slug"), max_length=50, db_index=True,
+                          help_text=_("Short unique data field label."),
                           unique=True)
 
-    datatype = EavDatatypeField(_("data type"), max_length=15,
-                                help_text=_("select type of field data"),
+    datatype = EavDatatypeField(_("Data type"), max_length=15,
+                                help_text=_("Select type of data."),
                                 choices=DATATYPE_CHOICES)
 
-    description = models.CharField(_("description"), max_length=256,
-                                     blank=True, null=True,
-                                     help_text=_("Short description"))
+    description = models.CharField(_("Description"), max_length=256,
+                                        blank=True, null=True,
+                                     help_text=_("Short description."))
 
     importance = models.IntegerField(_("Importance"),
                                   blank=True, null=True,
-                                  help_text=_("Affect on attribute position when edit"), default=0)
+                                  help_text=_("Affect on attribute position when edit."), default=0)
 
 
 
@@ -179,10 +179,10 @@ class Attribute(models.Model):
         return self.description
 
 
-    created = models.DateTimeField(_("created"), default=datetime.now, editable=False)
-    modified = models.DateTimeField(_("modified"), auto_now=True)
+    created = models.DateTimeField(_("Сreated"), default=datetime.now, editable=False)
+    modified = models.DateTimeField(_("Modified"), auto_now=True)
 
-    options = JSONField(verbose_name=_("Specific options"), default="{}" , blank=True, help_text=_("Additional options for field in JSON format"))
+    options = JSONField(verbose_name=_("Specific options"), default="{}" , blank=True, help_text=_("Additional options for field in JSON format."))
 
     objects = models.Manager()
 
@@ -292,17 +292,13 @@ class Value(models.Model):
     value_image = ElfinderField(blank=True, null=True, optionset='image')
     value_list = MultiSelectField(blank=True, null=True)
 
-    generic_value_id = models.IntegerField(blank=True, null=True)
-    generic_value_ct = models.ForeignKey(ContentType, blank=True, null=True,
-                                         related_name='value_values')
-    value_object = generic.GenericForeignKey(ct_field='generic_value_ct',
-                                             fk_field='generic_value_id')
 
-    created = models.DateTimeField(_(u"created"), default=datetime.now)
-    modified = models.DateTimeField(_(u"modified"), auto_now=True)
+
+    created = models.DateTimeField(_(u"Created"), default=datetime.now)
+    modified = models.DateTimeField(_(u"Modified"), auto_now=True)
 
     attribute = models.ForeignKey(Attribute, db_index=True,
-                                  verbose_name=_(u"attribute"))
+                                  verbose_name=_(u"Attribute"))
 
     def save(self, *args, **kwargs):
         '''

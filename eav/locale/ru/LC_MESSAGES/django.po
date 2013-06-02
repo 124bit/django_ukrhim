@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-02 15:23+0300\n"
+"PO-Revision-Date: 2013-06-02 15:34+0300\n"
+"Last-Translator:   <124bit@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Translated-Using: django-rosetta 0.7.2\n"
+
+#: .\admin.py:106
+msgid "Additional options"
+msgstr "Дополнительно"
+
+#: .\fields.py:55
+msgid ""
+"Must be all lower case, start with a letter, and contain only letters, "
+"numbers, or underscores. Must not contain '__'"
+msgstr ""
+
+#: .\forms.py:146
+msgid "<br>Error in field options!"
+msgstr "<br>Ошибка в дополнительных опциях поля"
+
+#: .\forms.py:160
+#, python-format
+msgid "The %s could not be saved because the datadidn't validate."
+msgstr ""
+
+#: .\models.py:104
+msgid "attribute"
+msgstr "поле данных"
+
+#: .\models.py:105
+msgid "Attributes"
+msgstr "Поля данных"
+
+#: .\models.py:120
+msgid "Text"
+msgstr "Текст"
+
+#: .\models.py:121
+msgid "Float"
+msgstr "Десятичное"
+
+#: .\models.py:122
+msgid "Integer"
+msgstr "Целое"
+
+#: .\models.py:123
+msgid "Date"
+msgstr "Дата"
+
+#: .\models.py:124
+msgid "True / False"
+msgstr "Да/Нет"
+
+#: .\models.py:125
+msgid "Choice"
+msgstr "Выпадаюший выбор"
+
+#: .\models.py:126
+msgid "File"
+msgstr "Файл любого типа"
+
+#: .\models.py:127
+msgid "Image"
+msgstr "Изображение"
+
+#: .\models.py:128
+msgid "List"
+msgstr "Список"
+
+#: .\models.py:155
+msgid "Name"
+msgstr "Название"
+
+#: .\models.py:156
+msgid "User-friendly data field name."
+msgstr ""
+"Название поля данных. Поля данных создаются для того, чтобы вводить данные "
+"об изделиях."
+
+#: .\models.py:159
+msgid "Attribute slug"
+msgstr "Аттрибут"
+
+#: .\models.py:160
+msgid "Short unique data field label."
+msgstr ""
+"Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
+
+#: .\models.py:163
+msgid "Data type"
+msgstr "Тип данных"
+
+#: .\models.py:164
+msgid "Select type of data."
+msgstr "Выберите тип данных поля."
+
+#: .\models.py:167
+msgid "Description"
+msgstr "Описание"
+
+#: .\models.py:169
+msgid "Short description."
+msgstr "Короткое описание предназначения поля."
+
+#: .\models.py:171
+msgid "Importance"
+msgstr "Важность"
+
+#: .\models.py:173
+msgid "Affect on attribute position when edit."
+msgstr "Влияет на позицию поля данных в списке полей при вводе."
+
+#: .\models.py:182
+msgid "Сreated"
+msgstr "Дата создания"
+
+#: .\models.py:183 .\models.py:298
+msgid "Modified"
+msgstr "Дата изменения"
+
+#: .\models.py:185
+msgid "Specific options"
+msgstr "Дополнительные опции"
+
+#: .\models.py:185
+msgid "Additional options for field in JSON format."
+msgstr "Дополнительные настройки поля (формат JSON)."
+
+#: .\models.py:297
+msgid "Created"
+msgstr "Дата создания"
+
+#: .\models.py:301
+msgid "Attribute"
+msgstr "Поле данных"
+
+#: .\models.py:365
+#, python-format
+msgid " EAV attribute doesen't exist '%(attr)s'"
+msgstr ""
+
+#: .\models.py:372
+#, python-format
+msgid "%(obj)s hasn't no EAV attribute named '%(attr)s'"
+msgstr ""
+
+#: .\models.py:431
+#, python-format
+msgid "%(attr)s EAV field %(err)s"
+msgstr ""
+
+#: .\validators.py:49
+msgid "Must be str or unicode"
+msgstr ""
+
+#: .\validators.py:59
+msgid "Must be a float"
+msgstr ""
+
+#: .\validators.py:69
+msgid "Must be an integer"
+msgstr ""
+
+#: .\validators.py:78
+msgid "Must be a date or datetime"
+msgstr ""
+
+#: .\validators.py:86
+msgid "Must be a boolean"
+msgstr ""
+
+#: .\validators.py:95
+msgid "Must be a django model object instance"
+msgstr ""
+
+#: .\validators.py:97
+msgid "Model has not been saved yet"
+msgstr ""
+
+#: .\validators.py:106
+msgid "Must be an unicode object instance"
+msgstr ""
+
+#: .\validators.py:108
+msgid "Must be maximum 30 symbols"
+msgstr ""

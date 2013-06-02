@@ -16,6 +16,8 @@ def price_file(name, site='auto',lang='auto'):
         site='_'+site
     if lang=='auto':
         lang='_'+get_language()
+    elif lang=='universal' or lang=='':
+        lang=''
     else:
         lang='_'+lang
 

@@ -161,8 +161,11 @@ class Resource(object):
         """
         pass
 
+    #changed
     def import_field(self, field, obj, data):
-        if field.attribute and field.column_name in data:
+        if field.column_name in data:
+            if not field.attribute:
+                field.attribute=field.column_name
             field.save(obj, data)
 
     def import_obj(self, obj, data):
@@ -292,8 +295,12 @@ class Resource(object):
 
         return result
 
+    #Todo think, rewrite
+    #changed
     def get_export_order(self):
-        return self._meta.export_order or self.fields.keys()
+        export_list=self._meta.export_order
+        new_fields=[field_name for field_name in self.fields.keys() if field_name not in export_list]
+        return  list(export_list)+new_fields
 
     def export_field(self, field, obj):
         method = getattr(self, 'dehydrate_%s' % field.column_name, None)

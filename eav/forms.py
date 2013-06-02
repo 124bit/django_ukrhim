@@ -143,7 +143,7 @@ class BaseDynamicEntityForm(ModelForm):
             try:
                 self.fields[attribute.slug] = MappedField(**options)
             except TypeError:
-                defaults["help_text"]+=_('<br>ERROR IN FIELD OPTIONS!')
+                defaults["help_text"]+=_('<br>Error in field options!')
                 self.fields[attribute.slug] = MappedField(**defaults)
 
 

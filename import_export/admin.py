@@ -2,6 +2,7 @@ from __future__ import with_statement
 
 import os
 import tempfile
+from eav.models import Attribute
 from datetime import datetime
 
 from django.contrib import admin
@@ -70,12 +71,29 @@ class ImportMixin(object):
         """
         return [f for f in self.formats if f().can_import()]
 
+    #changed her, and all places, where used
+    def update_resource_class(self, resource):
+        for attr in Attribute.objects.all():
+            if 'price_field' in attr.options:
+                slug=attr.slug
+                field=fields.Field()
+                field.column_name=slug
+                field.attribute=slug
+                setattr(resource, slug, field)
+                def dehidr(obj):
+                    return getattr(obj,slug)
+                setattr(resource, 'dehydrate_'+attr.slug, dehidr)
+                resource.fields[slug]=getattr(resource,slug)
+
+        return resource
+
     def process_import(self, request, *args, **kwargs):
         '''
         Perform the actuall import action (after the user has confirmed he wishes to import)
         '''
         opts = self.model._meta
         resource = self.get_resource_class()()
+        resource= self.update_resource_class(resource)
 
         confirm_form = ConfirmImportForm(request.POST)
         if confirm_form.is_valid():
@@ -109,6 +127,7 @@ class ImportMixin(object):
         will be used by 'process_import' for the actual import.
         '''
         resource = self.get_resource_class()()
+        resource= self.update_resource_class(resource)
 
         context = {}
 
@@ -134,24 +153,30 @@ class ImportMixin(object):
                 data = uploaded_import_file.read()
                 if not input_format.is_binary() and self.from_encoding:
                     data = unicode(data, self.from_encoding).encode('utf-8')
+                #changed
+                if  import_formats[int(form.cleaned_data['input_format'])]==base_formats.CSV:
+                    data=data.replace(';',',')
                 dataset = input_format.create_dataset(data)
                 result = resource.import_data(dataset, dry_run=True,
                         raise_errors=False)
 
-            context['result'] = result
+                context['result'] = result
 
-            if not result.has_errors():
-                context['confirm_form'] = ConfirmImportForm(initial={
-                    'import_file_name': uploaded_file.name,
-                    'input_format': form.cleaned_data['input_format'],
-                    })
+                if not result.has_errors():
+                    tmp_file = tempfile.NamedTemporaryFile(delete=False)
+                    tmp_file.write(data)
+                    tmp_file.close()
+                    context['confirm_form'] = ConfirmImportForm(initial={
+                        'import_file_name': tmp_file.name,
+                        'input_format': form.cleaned_data['input_format'],
+                        })
 
-        context['form'] = form
-        context['opts'] = self.model._meta
-        context['fields'] = [f.column_name for f in resource.get_fields()]
+            context['form'] = form
+            context['opts'] = self.model._meta
+            context['fields'] = [f.column_name for f in resource.get_fields()]
 
-        return TemplateResponse(request, [self.import_template_name],
-                context, current_app=self.admin_site.name)
+            return TemplateResponse(request, [self.import_template_name],
+                    context, current_app=self.admin_site.name)
 
 
 class ExportMixin(object):
@@ -221,10 +246,15 @@ class ExportMixin(object):
                     ]()
 
             resource_class = self.get_resource_class()
+            resource= self.update_resource_class(resource_class())
             queryset = self.get_export_queryset(request)
             data = resource_class().export(queryset)
+            #changed
+            if formats[int(form.cleaned_data['file_format'])]==base_formats.CSV:
+                data_string=file_format.export_data(data)
+                datastring=data_string.replace(',',';')
             response = HttpResponse(
-                    file_format.export_data(data),
+                    datastring,
                     mimetype='application/octet-stream',
                     )
             response['Content-Disposition'] = 'attachment; filename=%s' % (

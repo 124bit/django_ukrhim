@@ -26,12 +26,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'postgres',                      # Or path to database file if using sqlite3.
-        'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': '777777',                  # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'ukrhim_db.sqlite',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -144,7 +144,7 @@ WSGI_APPLICATION = 'django_ukrhim.wsgi.application'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (
-
+# s = s.replace(/[-\s]+/g, '_'); // convert spaces to hyphens #changed  indjango urlify.js
     #-------important
      'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default setting for images folder - files
      'imagekit', #patched  #todo rewrite patches, conspect
@@ -156,10 +156,12 @@ INSTALLED_APPS = (
      'admin_tools.menu',
      'admin_tools.dashboard',
 
+
      #------not important
      'jsonfield',
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
 
+    'rosetta',
     #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -260,7 +262,7 @@ CMS_SEO_FIELDS=True
 
 #-----import_export SETTINGS
 SERIALIZATION_MODULES = {
-    'csv': 'snippetscream.csv_serializer',
+ #   'csv': 'snippetscream.csv_serializer',
     }
 
 

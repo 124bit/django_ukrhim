@@ -9,12 +9,12 @@ from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
 
 class ProductType(models.Model):
-    name=models.CharField(max_length=30,verbose_name=_("type name"), unique=True)
-    fields=models.ManyToManyField(Attribute, verbose_name=_("fields of type"), blank=True)
-    slug=EavSlugField(max_length=30,verbose_name=_("type slug"), unique=True)
+    name=models.CharField(max_length=30,verbose_name=_("Type name"), unique=True)
+    slug=EavSlugField(max_length=30,verbose_name=_("Type slug"),help_text=_("Short unique type label."), unique=True)
+    fields=models.ManyToManyField(Attribute, verbose_name=_("Fields of type"), help_text=_("Data fields always assigned to products of this type."), blank=True)
     class Meta:
         verbose_name = _('product type')
-        verbose_name_plural = _('product types')
+        verbose_name_plural = _('Product types')
 
     def count_products_of_type(self):
       return self.product_set.count()
@@ -29,10 +29,10 @@ class ProductType(models.Model):
 
 
 class ProductTag(models.Model):
-    name=models.CharField(max_length=30,verbose_name=_("tag name"), unique=True)
-    slug=EavSlugField(max_length=30,verbose_name=_("tag slug"), unique=True)
+    name=models.CharField(max_length=30,verbose_name=_("Tag name"), unique=True)
+    slug=EavSlugField(max_length=30,verbose_name=_("Tag slug"),help_text=_("Short unique tag label."), unique=True)
     class Meta:
-        verbose_name = _('Product tag')
+        verbose_name = _('product tag')
         verbose_name_plural = _('Product tags')
 
     def count_tagged_products(self):
@@ -49,11 +49,11 @@ class ProductTag(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name=_('Name'),unique=True)
-    slug = EavSlugField(max_length=60, verbose_name=_('Slug'), unique=True)
-    product_type=models.ForeignKey(ProductType, verbose_name=_("product type"), blank=True, null=True)
-    additional_fields=models.ManyToManyField(Attribute, verbose_name=_("additional fields"), blank=True)
-    product_tags=models.ManyToManyField(ProductTag, verbose_name=_("product tags"), blank=True)
-    active = models.BooleanField(default=True, verbose_name=_('Active'))
+    slug = EavSlugField(max_length=60, verbose_name=_('Slug'),help_text=_("Short unique product label."), unique=True)
+    product_type=models.ForeignKey(ProductType, verbose_name=_("Product type"),help_text=_("Product type assigns some data fields to products."), blank=True, null=True)
+    additional_fields=models.ManyToManyField(Attribute, verbose_name=_("Additional fields"), blank=True)
+    product_tags=models.ManyToManyField(ProductTag, verbose_name=_("Product tags"),help_text=_("Tags are used for quick searching for products."), blank=True)
+    active = models.BooleanField(default=True, verbose_name=_('Active'),help_text=_("If product is deactivated - it doesn't shown anywhere."))
     date_added = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_('Date added'))
     last_modified = models.DateTimeField(auto_now=True,
@@ -71,7 +71,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name = _('product')
-        verbose_name_plural = _('products')
+        verbose_name_plural = _('Products')
 
     def __unicode__(self):
         return self.name

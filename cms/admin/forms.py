@@ -145,7 +145,13 @@ class PageAddForm(forms.ModelForm):
         if not language in get_language_list():
             raise ValidationError("Given language does not match language settings.")
         return language
-        
+
+#changed
+class DialogForm(forms.Form):
+    #todo helptext
+    sites_to_mirror =  forms.MultipleChoiceField(label=_('sites transfere to'), widget=forms.CheckboxSelectMultiple)
+    mirror = forms.ChoiceField(choices=((1,_("mirror")),(0,_('copy'))), widget=forms.RadioSelect, initial=1)
+
     
 class PageForm(PageAddForm):
     menu_title = forms.CharField(label=_("Menu Title"), widget=forms.TextInput(),

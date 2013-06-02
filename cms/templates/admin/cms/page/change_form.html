@@ -80,6 +80,52 @@
 {% if change %}{% if not is_popup %}
   <ul class="object-tools">
 	{% if can_publish %}
+        {#changed#}
+    {# todo put in a propper place for user acces, translate all, ability to show many times, hide at first #}
+
+    <div id="dialog" title="Transfete to">
+        <form action="/lalla/" method="post">
+        {{ adminForm.mirror }}
+        </form>
+    </div>
+    <li><a href="#" onClick="return false;" class="transferdialoglink" id="transferdialog">{% trans "Transfer page" %}</a></li>
+
+      <style>
+          .loading { background: url(/img/spinner.gif) center no-repeat !important}
+      </style>
+
+
+      <script type="text/javascript">
+          $(function (){
+              $('#transferdialog').click(function() {
+                  var url = this.href.split('#')[0].split('?')[0]+'transfer_dialog/';
+                  // show a spinner or something via css
+                  var dialog = django.jQuery('<div style="display:none" class="loading"></div>').appendTo('body');
+                  // open the dialog
+                  dialog.dialog({
+                      // add a close listener to prevent adding multiple divs to the document
+                      close: function(event, ui) {
+                          // remove div with all data and events
+                          dialog.remove();
+                      },
+                      modal: true
+                  });
+                  // load remote content
+                  dialog.load(
+                          url,// omit this param object to issue a GET request instead a POST request, otherwise you may provide post parameters within the object
+                          function (responseText, textStatus, XMLHttpRequest) {
+                              // remove the loading class
+                              dialog.removeClass('loading');
+                          }
+                  );
+                  //prevent the browser to follow the link
+                  return false;
+              });
+          });
+      </script>
+
+
+
 	<li><a href="publish/" class="publishlink">{% trans "Publish draft" %}</a></li>
 	<li><a href="preview/?language={{ language }}" class="previewdraftlink">{% trans "Preview draft" %}</a></li>
 	{% endif %}

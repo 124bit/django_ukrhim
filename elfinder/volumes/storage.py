@@ -258,7 +258,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         Attempt to read the file's mimetype.
         """
         fp = self._fopen(path)
-        mime = magic.Magic(mime=True).from_buffer(fp.read())
+        mime = None#magic.Magic(mime=True).from_buffer(fp.read())
         fp.close()
         return mime
     
@@ -525,7 +525,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         if os.path.isdir(path):
             return 'directory'
 
-        mime = magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
+        mime = None#magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
         int_mime = None
 
         if not mime or mime in ['inode/x-empty', 'application/empty']:

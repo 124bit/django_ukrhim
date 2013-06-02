@@ -13,18 +13,18 @@ from django.utils.timezone import now
 class Price(models.Model):
     prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'prices')
 
-    name=SlugField(_("document name"), max_length=50, help_text=_("Use this name like 'price usage example'" ),
+    name=SlugField(_("Document name"), max_length=50, help_text=_("Use this name like '{% load price_file %} {% price_file site='auto'lang='auto' %}'." ),
                    unique=True)
-    last_update= DateTimeField(_("last document update"), default=datetime(1980,2,2), editable=False)
+    last_update= DateTimeField(_("Last document update"), default=datetime(1980,2,2), editable=False)
 
 
     #todo show normal datetime everywhere
     def get_update_time(self):
         if self.last_update.year==1980:
-            return "Price never generated"
+            return _("Price never generated")
         else:
             return self.last_update
-    get_update_time.short_description = _("update time")
+    get_update_time.short_description = _("Update time")
 
     def generate_new_prices(self):
         for template in self.pricetemplate_set.all():
@@ -33,18 +33,26 @@ class Price(models.Model):
         self.last_update=now() #todo test this piece of code and its repr
         self.save()
 
+    class Meta:
+        verbose_name = _('price')
+        verbose_name_plural = _('Prices')
+
 class PriceTemplate(models.Model):
 
     LANG_CHOICES = settings.LANGUAGES  + [('default','default')]
 
     price= ForeignKey(Price)
     site = CharField(max_length=15)
-    language =  CharField(_("template language"),max_length=15, choices=LANG_CHOICES, default='default', help_text=_("choose documnts language. If it is on default or universal language - choose default") )
+    language =  CharField(_("Template language"),max_length=15, choices=LANG_CHOICES, default='default', help_text=_("Choose language of document. If it is on default or universal language - choose default.") )
 
     #todo only odt
     #todo label of set template and modular inline
     #todo normal save
     template_file = ElfinderField(optionset='odt',blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('price template')
+        verbose_name_plural = _('Price templates')
 
     def generate_price(self, folder):
         res_path=path.join(folder, self.get_price_name())

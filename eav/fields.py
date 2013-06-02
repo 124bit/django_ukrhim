@@ -51,7 +51,7 @@ class EavSlugField(models.SlugField):
         '''
         super(EavSlugField, self).validate(value, instance)
         slug_regex = r'[a-z][a-z0-9_]*'
-        if not re.match(slug_regex, value) or '__' in value:
+        if not re.match(slug_regex, value) or '__' in value or '-' in value:
             raise ValidationError(_(u"Must be all lower case, " \
                                     u"start with a letter, and contain " \
                                     u"only letters, numbers, or underscores. Must not contain '__'"))
@@ -64,7 +64,7 @@ class EavSlugField(models.SlugField):
         name = name.strip().lower()
 
         # Change spaces to underscores
-        name = '_'.join(name.split())
+        name = '_'.join(name.split(' '))
 
         # Remove non alphanumeric characters
         return re.sub('[^\w]', '', name)

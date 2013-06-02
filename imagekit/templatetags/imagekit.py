@@ -5,8 +5,11 @@ from .compat import parse_bits
 from ..cachefiles import ImageCacheFile
 from ..registry import generator_registry
 
-
+from os import path
+from django.conf import settings
 register = template.Library()
+from modifier.models import ImageSpecModel
+from ..registry import register as reg
 
 
 ASSIGNMENT_DELIMETER = 'as'
@@ -17,6 +20,11 @@ DEFAULT_THUMBNAIL_GENERATOR = 'imagekit:thumbnail'
 def get_cachefile(context, generator_id, generator_kwargs, source=None):
     generator_id = generator_id.resolve(context)
     kwargs = dict((k, v.resolve(context)) for k, v in generator_kwargs.items())
+    #changed
+    #making file frol link
+    f=open(path.join(settings.PROJECT_PATH,kwargs['source'].url.replace('/','\\')[1:]),'rb')
+    kwargs['source']=f
+
     generator = generator_registry.get(generator_id, **kwargs)
     return ImageCacheFile(generator)
 
@@ -60,23 +68,24 @@ class GenerateImageTagNode(template.Node):
         self._html_attrs = html_attrs
 
     def render(self, context):
-        from ..utils import autodiscover
-        autodiscover()
+        #changed
+        #prevent spontaneous deregister
+        try:
+            return self.render_container(context)
+        except Exception, exc_text:
+            #TODO determine Exception; maybe do thumb tag
+            #TODO no need restart editor after error
+            try:
+                for Spec in ImageSpecModel.objects.all():
+                    try:
+                        reg.generator(Spec.name, Spec.get_image_spec_class())
+                    except:
+                        pass
 
-        file = get_cachefile(context, self._generator_id,
-                self._generator_kwargs)
-        attrs = dict((k, v.resolve(context)) for k, v in
-                self._html_attrs.items())
+                return  self.render_container(context)
 
-        # Only add width and height if neither is specified (to allow for
-        # proportional in-browser scaling).
-        if not 'width' in attrs and not 'height' in attrs:
-            attrs.update(width=file.width, height=file.height)
-
-        attrs['src'] = file.url
-        attr_str = ' '.join('%s="%s"' % (escape(k), escape(v)) for k, v in
-                attrs.items())
-        return mark_safe(u'<img %s />' % attr_str)
+            except:
+                return exc_text
 
 
 class ThumbnailAssignmentNode(template.Node):
@@ -187,7 +196,7 @@ def parse_ik_tag_bits(parser, bits):
 
 
 #@register.tag
-def generateimage(parser, token):
+def img(parser, token):
     """
     Creates an image based on the provided arguments.
 
@@ -289,5 +298,5 @@ def thumbnail(parser, token):
                 html_attrs)
 
 
-generateimage = register.tag(generateimage)
-thumbnail = register.tag(thumbnail)
+#changed
+img = register.tag(img)

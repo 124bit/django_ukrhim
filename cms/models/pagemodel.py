@@ -347,8 +347,13 @@ class Page(MPTTModel):
         if self.publication_date is None and self.published:
             self.publication_date = timezone.now() - timedelta(seconds=5)
 
+        #changed
+        #todo normal generator
         if self.reverse_id == "":
-            self.reverse_id = None
+            new_reverse_id=10000
+            while Page.objects.filter(reverse_id=new_reverse_id).count()!=0:
+                new_reverse_id+=1
+            self.reverse_id = new_reverse_id
 
         from cms.utils.permissions import _thread_locals
 
@@ -1104,6 +1109,70 @@ class Page(MPTTModel):
                 placeholder = Placeholder.objects.create(slot=placeholder_name)
                 self.placeholders.add(placeholder)
                 found[placeholder_name] = placeholder
+
+    #changed till end of class
+    def get_copy_permission(self,site_pk):
+        reverse_ids_for_check=[page.reverse_id for page in self.get_descendants(True)]
+        if Page.objects.filter(site__pk=site_pk, reverse_id__in=reverse_ids_for_check).count():
+            #todo add translation
+            #todo make reverse id seen or more information
+            return Site.objects.get(pk=site_pk).name+": can't transfer page and its descendats, because there are same reverse_ids at target site"
+        else:
+            return True
+
+
+    def check_actual_parents(self,sibling):
+        if self.parent==None:
+            return sibling.parent==None
+        elif sibling.parent!=None:
+            return sibling.parent.reverse_id==self.parent.reverse_id
+        else:
+            return False
+
+    def get_copy_args(self, site_pk):
+        from django.core.exceptions import ObjectDoesNotExist
+        site=Site.objects.get(pk=site_pk)
+        #todo translate. reports to admin
+        place_found_report=site.name+': copied to probable place'
+        place_not_found_report=site.name+': place not detected, copied to root'
+        default_return=(place_not_found_report,(None,site,'first-child'))
+
+
+        if self.parent!=None:
+            try:
+                new_parent=Page.objects.get(site=site,reverse_id=self.parent.reverse_id)
+            except ObjectDoesNotExist:
+                return default_return
+
+            if self.parent.check_actual_parents(new_parent):
+                return (place_found_report,(new_parent,site,'first-child'))
+            else:
+                return default_return
+
+        return default_return
+
+
+    def copy_to(self,target,site,position):
+    #todo make normal results
+    #todo be sitution when there is thw same or children with same id
+
+        self.copy_page(target,site,position)
+
+
+    def mirror_to(self,target,site,position):
+        from cms.api import add_plugin
+        from cms.plugins.inherit.cms_plugins import InheritPagePlaceholderPlugin
+        #todo change languages in price app choices from here
+        from cms.utils.i18n import get_language_tuple
+
+        self.copy_page(target,site,position)
+        new_page=Page.objects.get(site=site, reverse_id=self.reverse_id)
+
+        for placeholder in new_page.placeholders.all():
+            for plugin in placeholder.get_plugins():
+                plugin.delete_with_public()
+            for language in get_language_tuple():
+                add_plugin(placeholder,InheritPagePlaceholderPlugin,language[0],from_language=language[0])
 
 
 def _reversion():

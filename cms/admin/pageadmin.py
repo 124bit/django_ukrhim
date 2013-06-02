@@ -19,7 +19,7 @@ from django.core.urlresolvers import reverse
 from django.db import router, transaction, models
 from django.forms import CharField
 from django.http import (HttpResponseRedirect, HttpResponse, Http404, HttpResponseBadRequest, HttpResponseForbidden)
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template.context import RequestContext
 from django.template.defaultfilters import (title, escape, force_escape, escapejs)
 from django.utils.encoding import force_unicode
@@ -52,6 +52,8 @@ from cms.utils.plugins import current_site
 from cms.plugins.utils import has_reached_plugin_limit
 from menus.menu_pool import menu_pool
 
+#changed
+from cms.admin.forms import DialogForm
 DJANGO_1_4 = LooseVersion(django.get_version()) < LooseVersion('1.5')
 require_POST = method_decorator(require_POST)
 
@@ -210,6 +212,11 @@ class PageAdmin(ModelAdmin):
                                 pat(r'^([0-9]+)/dialog/copy/$', get_copy_dialog), # copy dialog
                                 pat(r'^([0-9]+)/preview/$', self.preview_page), # copy dialog
                                 pat(r'^([0-9]+)/descendants/$', self.descendants), # menu html for page descendants
+
+                                #changed
+                                pat(r'^([0-9]+)/transfer_dialog/$', self.transfer_dialog),
+
+
                                 pat(r'^(?P<object_id>\d+)/change_template/$', self.change_template), # copy dialog
         )
 
@@ -427,7 +434,7 @@ class PageAdmin(ModelAdmin):
                 if copy_languages and len(get_language_list()) > 1:
                     show_copy = True
                 widget = PluginEditor(attrs={
-                    'installed': installed_plugins,
+                    'installed': [plugin for plugin in installed_plugins if plugin.text_enabled==False],
                     'list': plugin_list,
                     'copy_languages': copy_languages.items(),
                     'show_copy': show_copy,
@@ -813,6 +820,42 @@ class PageAdmin(ModelAdmin):
             'permission_set': permission_set,
         }
         return render_to_response('admin/cms/page/permissions.html', context)
+
+    #changed
+
+    def transfer_page(self, page, sites,mirror):
+        results='Procedure result: \n'
+        for site in sites:
+            permission_check=page.get_copy_permission(int(site))
+            if  permission_check==True:
+                args=page.get_copy_args(int(site))
+                results+='\n'+(args[0])
+                if int(mirror):
+                    res=page.mirror_to(*args[1])
+                else:
+                    res=page.copy_to(*args[1])
+
+            else:
+                results+='\n'+(permission_check)
+            return results
+
+
+
+    @transaction.commit_on_success
+    def transfer_dialog(self, request, page_id):
+        page = Page.objects.get(pk=page_id)
+        sites_without_current=Site.objects.exclude(site_cutting=page.site.site_cutting)
+        SITE_CHOICES=[(site.pk, site.name) for site in sites_without_current]
+        DialogForm.base_fields['sites_to_mirror'].choices=SITE_CHOICES
+
+        if request.method == 'POST':
+            form = DialogForm(request.POST)
+            if form.is_valid():
+                res=self.transfer_page(page, form.cleaned_data['sites_to_mirror'], form.cleaned_data['mirror'])
+                return render_to_response('admin/cms/page/transfer_result.html', {'result':res} )
+        else:
+            form = DialogForm()
+        return render(request,'admin/cms/page/transfer_dialog.html', {'form': form})
 
     @transaction.commit_on_success
     def copy_page(self, request, page_id, extra_context=None):

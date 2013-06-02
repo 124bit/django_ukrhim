@@ -73,8 +73,13 @@ from imagekit import ImageSpec
 from imagekit.exceptions import AlreadyRegistered, NotRegistered
 
 class ImageSpecModel(models.Model):
-    name=SlugField(max_length=30, help_text=_("Image spec name"), verbose_name=_("Spec name"))
-    specs=JSONField(verbose_name=_("Specific options"), default="{}" , blank=True, help_text=_("Image field options"))
+    name=SlugField(max_length=30, help_text=_("Image specifications profiles are used for automatic image generation in templates."), verbose_name=_("Profile name"))
+    specs=JSONField(verbose_name=_("Options"), default="{}" , blank=True, help_text=_("Options of image convertation."))
+
+    class Meta:
+        verbose_name = _('image specification profile')
+        verbose_name_plural = _('Image specification profiles')
+
 
     def __init__(self, *args, **kwargs):
         super(ImageSpecModel, self).__init__(*args, **kwargs)
@@ -160,17 +165,17 @@ class ElfinderPictureHolder(CMSPlugin):
     file_field = ElfinderField(optionset='image',verbose_name=_("Choose image"))
 
     LOGIC_CHOICES=(
-        ('1', _('generate img tag with attrs')),
-        ('2', _('get img tag with original url')),
-        ('3', _('generate image url to variable')),
-        ('4', _('get original image url')),
+        ('1', _('Generate <img> tag with attrs.')),
+        ('2', _('Get <img> tag with original url.')),
+        ('3', _('Generate image url to variable.')),
+        ('4', _('Get original image url.')),
     )
 
-    logic = CharField(_("chose logic"), max_length=10, choices=LOGIC_CHOICES)
+    logic = CharField(_("Choose logic"), max_length=10, choices=LOGIC_CHOICES)
 
-    html_tags = TextField(_("image html tags"), blank=True)
+    html_tags = TextField(_("Image html tags"), blank=True)
     generator = ForeignKey(ImageSpecModel,verbose_name=_("Choose convertation options"),blank=True, null=True)
-    var_name= CharField(_("variable name"), max_length=20, blank='true')
+    var_name= CharField(_("Variable name"), max_length=20, blank=True)
 
     def __unicode__(self):
         return self.file_field.url
@@ -188,9 +193,8 @@ from eav.models import Attribute
 
 try:
     if Attribute.objects.filter(slug="exclude_at_sites").count()==0:
-        Attribute.objects.create(name=_('Show on sites'), slug='exclude_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where  product must not be shown') , options={'site_list':1})
+        Attribute.objects.create(name=_('Show on sites'), slug='exclude_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product must not be shown.') , options={'site_list':1})
     if Attribute.objects.filter(slug="include_at_sites").count()==0:
-        Attribute.objects.create(name=_('Exclude from sites'), slug='include_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product is shown') , options={'site_list':1})
+        Attribute.objects.create(name=_('Exclude from sites'), slug='include_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product is shown.') , options={'site_list':1})
 except:
     pass
-

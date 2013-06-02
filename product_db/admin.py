@@ -41,7 +41,8 @@ class ProductAdmin(BaseEntityAdmin):
         for site in Site.objects.all():
             column_name=site.name
             attr_slug=site.price_field_slug
-            currency=Attribute.objects.get(slug=attr_slug).options['price_field']['currency']
+            currency=str(Attribute.objects.get(slug=attr_slug).options['price_field']['currency'])
+            print _(currency)
             func_name='getter_'+attr_slug
             price_func_slugs.append(func_name)
             if func_name not in Product.__dict__:
