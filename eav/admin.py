@@ -27,7 +27,7 @@ from django.utils.safestring import mark_safe
 
 from .models import Attribute
 from django.utils.translation import ugettext as _
-
+from django.utils.translation import get_language
 class BaseEntityAdmin(ModelAdmin):
     
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
@@ -95,18 +95,33 @@ class BaseEntityInline(InlineModelAdmin):
         return [(None, {'fields': form.fields.keys()})]
 
 class AttributeAdmin(ModelAdmin):
-    list_display = ('name', 'slug', 'datatype', 'description', 'importance')
     list_filter = ['datatype']
-    prepopulated_fields = {'slug': ('name',)}
-    #TODO make slug python django slug (no two underscors), make slug readonly maybe
+    prepopulated_fields = {'slug': ('name_en',)}
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'datatype')
+            'fields': ('name_ru','name_en', 'slug', 'datatype')
         }),
         (_('Additional options'), {
-            'fields': ('description', 'importance', 'options')
+            'fields': ('description_ru','description_en', 'importance', 'options')
         }),
     )
+
+    def get_ordering(self, *args, **kwargs):
+        if get_language()=='ru':
+            self.ordering = ['name_ru']
+        else:
+            self.ordering = ['name_en']
+        return super(AttributeAdmin, self).get_ordering(*args, **kwargs)
+
+    def get_list_display(self, *args, **kwargs):
+        if get_language()=='ru':
+            self.list_display = ('name_ru', 'slug', 'datatype', 'description_ru', 'importance')
+        else:
+            self.list_display = ('name_en', 'slug', 'datatype', 'description_en', 'importance')
+        return super(AttributeAdmin, self).get_list_display(*args, **kwargs)
+
+
+
 
 admin.site.register(Attribute, AttributeAdmin)
 

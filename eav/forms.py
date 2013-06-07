@@ -36,7 +36,7 @@ from django.utils.translation import ugettext as _
 from os import listdir, path
 from django.conf import  settings
 from django.contrib.sites.models import Site
-
+from django.utils.translation import get_language
 class BaseDynamicEntityForm(ModelForm):
     '''
     ModelForm for entity with support for EAV attributes. Form fields are
@@ -71,8 +71,12 @@ class BaseDynamicEntityForm(ModelForm):
             if value:
                 self.initial[attribute.slug] = value
 
+            if get_language()=='ru':
+                label = attribute.name_ru
+            else:
+                label = attribute.name_en
             defaults = {
-                'label': attribute.name,
+                'label': label,
                 'required': False,
                 'help_text': attribute.help_text,
                 'validators': attribute.get_validators(),

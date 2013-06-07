@@ -191,10 +191,10 @@ class ElfinderPictureHolderForm(CMSPluginBase):
 
 from eav.models import Attribute
 
-try:
-    if Attribute.objects.filter(slug="exclude_at_sites").count()==0:
-        Attribute.objects.create(name=_('Show on sites'), slug='exclude_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product must not be shown.') , options={'site_list':1})
-    if Attribute.objects.filter(slug="include_at_sites").count()==0:
-        Attribute.objects.create(name=_('Exclude from sites'), slug='include_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product is shown.') , options={'site_list':1})
-except:
-    pass
+# try:
+#     if Attribute.objects.filter(slug="exclude_at_sites").count()==0:
+#         Attribute.objects.create(name=_('Show on sites'), slug='exclude_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product must not be shown.') , options={'site_list':1})
+#     if Attribute.objects.filter(slug="include_at_sites").count()==0:
+#         Attribute.objects.create(name=_('Exclude from sites'), slug='include_at_sites', datatype=Attribute.TYPE_LIST, description=_('Check on sites where product is shown.') , options={'site_list':1})
+# except:
+#     pass

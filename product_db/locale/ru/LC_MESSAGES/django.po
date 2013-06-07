@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-02 15:41+0300\n"
-"PO-Revision-Date: 2013-06-02 17:22+0300\n"
+"PO-Revision-Date: 2013-06-07 16:29+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,7 @@ msgstr "Типы продуктов"
 
 #: .\models.py:21 .\models.py:40 .\models.py:66
 msgid "Tagged producs"
-msgstr "Помесенные продукты"
+msgstr "Помеченные продукты"
 
 #: .\models.py:32
 msgid "Tag name"

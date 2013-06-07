@@ -13,7 +13,7 @@ from django.utils.timezone import now
 class Price(models.Model):
     prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'prices')
 
-    name=SlugField(_("Document name"), max_length=50, help_text=_("Use this name like '{% load price_file %} {% price_file site='auto'lang='auto' %}'." ),
+    name=SlugField(_("Document name"), max_length=50, help_text=_("Use this name like '{% load price_file %} {% price_file site='auto' lang='auto' %}'." ),
                    unique=True)
     last_update= DateTimeField(_("Last document update"), default=datetime(1980,2,2), editable=False)
 

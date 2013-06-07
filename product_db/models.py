@@ -9,7 +9,8 @@ from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
 
 class ProductType(models.Model):
-    name=models.CharField(max_length=30,verbose_name=_("Type name"), unique=True)
+    name_ru=models.CharField(max_length=30,verbose_name=_("Type name (ru)"), unique=True)
+    name_en=models.CharField(max_length=30,verbose_name=_("Type name (en)"), unique=True)
     slug=EavSlugField(max_length=30,verbose_name=_("Type slug"),help_text=_("Short unique type label."), unique=True)
     fields=models.ManyToManyField(Attribute, verbose_name=_("Fields of type"), help_text=_("Data fields always assigned to products of this type."), blank=True)
     class Meta:
@@ -21,7 +22,11 @@ class ProductType(models.Model):
     count_products_of_type.short_description = _("Tagged producs")
 
     def __unicode__(self):
-        return self.name
+        current_lang=get_language()
+        if current_lang=='ru':
+            return self.name_ru
+        else:
+            return  self.name_en
 
 
 
@@ -29,7 +34,8 @@ class ProductType(models.Model):
 
 
 class ProductTag(models.Model):
-    name=models.CharField(max_length=30,verbose_name=_("Tag name"), unique=True)
+    name_ru=models.CharField(max_length=30,verbose_name=_("Tag name (ru)"), unique=True)
+    name_en=models.CharField(max_length=30,verbose_name=_("Tag name (en)"), unique=True)
     slug=EavSlugField(max_length=30,verbose_name=_("Tag slug"),help_text=_("Short unique tag label."), unique=True)
     class Meta:
         verbose_name = _('product tag')
@@ -40,7 +46,11 @@ class ProductTag(models.Model):
     count_tagged_products.short_description = _("Tagged producs")
 
     def __unicode__(self):
-        return self.name
+        current_lang=get_language()
+        if current_lang=='ru':
+            return self.name_ru
+        else:
+            return  self.name_en
 
 
 
@@ -48,7 +58,8 @@ class ProductTag(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_('Name'),unique=True)
+    name_ru = models.CharField(max_length=50, verbose_name=_('Name (ru)'),unique=True)
+    name_en = models.CharField(max_length=50, verbose_name=_('Name (en)'),unique=True)
     slug = EavSlugField(max_length=60, verbose_name=_('Slug'),help_text=_("Short unique product label."), unique=True)
     product_type=models.ForeignKey(ProductType, verbose_name=_("Product type"),help_text=_("Product type assigns some data fields to products."), blank=True, null=True)
     additional_fields=models.ManyToManyField(Attribute, verbose_name=_("Additional fields"), blank=True)
@@ -74,7 +85,11 @@ class Product(models.Model):
         verbose_name_plural = _('Products')
 
     def __unicode__(self):
-        return self.name
+        current_lang=get_language()
+        if current_lang=='ru':
+            return self.name_ru
+        else:
+            return  self.name_en
 
     def get_secondary_attributes(self):
         '''get activated product EAV attributes'''
@@ -142,6 +157,9 @@ class Product(models.Model):
 
         except:
             self.__dict__[attr]=value
+
+
+
 
 
 

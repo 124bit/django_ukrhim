@@ -2,47 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2844b6eb-8820-412e-b244-0c3a13683651" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\temp\work\ukrhimplast_site\django-ukrhim\django_ukrhim\media\cms_page_media\1\Chrysanthemum.jpg" afterPath="" />
-      <change type="DELETED" beforePath="D:\temp\work\ukrhimplast_site\django-ukrhim\django_ukrhim\media\cms_page_media\2\Desert.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imagekit/specs/__init__.py" afterPath="$PROJECT_DIR$/imagekit/specs/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/import_export/admin.py" afterPath="$PROJECT_DIR$/import_export/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pdf_gen/admin.py" afterPath="$PROJECT_DIR$/pdf_gen/admin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pdf_gen/locale/ru/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/pdf_gen/locale/ru/LC_MESSAGES/django.mo" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/product_db/locale/ru/LC_MESSAGES/django.mo" afterPath="$PROJECT_DIR$/product_db/locale/ru/LC_MESSAGES/django.mo" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eav/admin.py" afterPath="$PROJECT_DIR$/eav/admin.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/product_db/admin.py" afterPath="$PROJECT_DIR$/product_db/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cms/templates/admin/cms/page/change_form.html" afterPath="$PROJECT_DIR$/cms/templates/admin/cms/page/change_form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eav/fields.py" afterPath="$PROJECT_DIR$/eav/fields.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/import_export/fields.py" afterPath="$PROJECT_DIR$/import_export/fields.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/elfinder/volumes/filesystem.py" afterPath="$PROJECT_DIR$/elfinder/volumes/filesystem.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cms/admin/forms.py" afterPath="$PROJECT_DIR$/cms/admin/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pdf_gen/locale/ru/LC_MESSAGES/django.po" afterPath="$PROJECT_DIR$/pdf_gen/locale/ru/LC_MESSAGES/django.po" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/product_db/locale/ru/LC_MESSAGES/django.po" afterPath="$PROJECT_DIR$/product_db/locale/ru/LC_MESSAGES/django.po" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eav/forms.py" afterPath="$PROJECT_DIR$/eav/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imagekit/templatetags/imagekit.py" afterPath="$PROJECT_DIR$/imagekit/templatetags/imagekit.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eav/models.py" afterPath="$PROJECT_DIR$/eav/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modifier/models.py" afterPath="$PROJECT_DIR$/modifier/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pdf_gen/models.py" afterPath="$PROJECT_DIR$/pdf_gen/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/product_db/models.py" afterPath="$PROJECT_DIR$/product_db/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cms/admin/pageadmin.py" afterPath="$PROJECT_DIR$/cms/admin/pageadmin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cms/models/pagemodel.py" afterPath="$PROJECT_DIR$/cms/models/pagemodel.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modifier/patches.py" afterPath="$PROJECT_DIR$/modifier/patches.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pdf_gen/templatetags/price_file.py" afterPath="$PROJECT_DIR$/pdf_gen/templatetags/price_file.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/import_export/resources.py" afterPath="$PROJECT_DIR$/import_export/resources.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cms/plugins/text/settings.py" afterPath="$PROJECT_DIR$/cms/plugins/text/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django_ukrhim/settings.py" afterPath="$PROJECT_DIR$/django_ukrhim/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/elfinder/volumes/storage.py" afterPath="$PROJECT_DIR$/elfinder/volumes/storage.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django_ukrhim/urls.py" afterPath="$PROJECT_DIR$/django_ukrhim/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="django_ukrhim.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/settings.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370165832054" ignored="false" />
-    <file path="/urls.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1366132535101" ignored="false" />
-    <file path="/Django Console" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1363429593956" ignored="false" />
+    <file path="/settings.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370638973936" ignored="false" />
+    <file path="/urls.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370638930267" ignored="false" />
+    <file path="/Django Console" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370638037188" ignored="false" />
     <file path="/pagemodel.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370123369573" ignored="false" />
     <file path="$PROJECT_DIR$/../django_ukrhim2/django_ukrhim2/urls.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1363441496983" ignored="false" />
     <file path="$PROJECT_DIR$/../django_ukrhim2/django_ukrhim2/settings.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1363441526294" ignored="false" />
-    <file path="/models.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370183566269" ignored="false" />
-    <file path="/admin.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370182088823" ignored="false" />
+    <file path="/models.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370640473086" ignored="false" />
+    <file path="/admin.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370641675354" ignored="false" />
     <file path="/category.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1363560710355" ignored="false" />
     <file path="/__init__.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370122804563" ignored="false" />
-    <file path="/a.dummy" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370167035348" ignored="false" />
+    <file path="/a.dummy" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370639715817" ignored="false" />
     <file path="/1111.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1363820101826" ignored="false" />
     <file path="/base.html" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1365415405306" ignored="false" />
     <file path="/11.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1363905968144" ignored="false" />
@@ -50,10 +37,10 @@
     <file path="/cms_plugin_processors.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1366108914607" ignored="false" />
     <file path="/patches.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370181912218" ignored="false" />
     <file path="/reset_db.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364563596870" ignored="false" />
-    <file path="/forms.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370167072760" ignored="false" />
+    <file path="/forms.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370641138681" ignored="false" />
     <file path="/registry.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1365784330250" ignored="false" />
     <file path="/fields.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370163874601" ignored="false" />
-    <file path="/Dummy.txt" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370174390898" ignored="false" />
+    <file path="/Dummy.txt" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370610679034" ignored="false" />
     <file path="/test.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1366135968669" ignored="false" />
     <file path="/instance_loaders.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364811533181" ignored="false" />
     <file path="D:/Progs/python/python27/Lib/site-packages/media_tree/contrib/cms_plugins/media_tree_gallery/cms_plugins.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364842801867" ignored="false" />
@@ -76,7 +63,7 @@
     <file path="D:/Progs/python/python27/Lib/site-packages/media_tree/extension/base_extenders/__init__.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364842801870" ignored="false" />
     <file path="/conf.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364845660923" ignored="false" />
     <file path="/magic.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364931370556" ignored="false" />
-    <file path="/Python Console" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1364931427603" ignored="false" />
+    <file path="/Python Console" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370634252749" ignored="false" />
     <file path="/base.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1365209275608" ignored="false" />
     <file path="/filesystem.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370119652116" ignored="false" />
     <file path="/storage.py" changelist="2844b6eb-8820-412e-b244-0c3a13683651" time="1370119704316" ignored="false" />
@@ -143,56 +130,46 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modifier/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="63" selection-start="2514" selection-end="2645" vertical-scroll-proportion="-10.12">
+            <state line="195" column="130" selection-start="6191" selection-end="6191" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="patches.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modifier/patches.py">
+      <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/django_ukrhim/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="12" selection-start="1179" selection-end="1179" vertical-scroll-proportion="0.0">
+            <state line="12" column="62" selection-start="442" selection-end="442" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#0#49#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="admin.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pdf_gen/admin.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="25" selection-start="667" selection-end="667" vertical-scroll-proportion="2.92">
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
+                <element signature="e#0#51#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pdf_gen/models.py">
+        <entry file="file://$PROJECT_DIR$/eav/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="0" selection-start="3243" selection-end="3243" vertical-scroll-proportion="0.75510204">
+            <state line="271" column="12" selection-start="9613" selection-end="9613" vertical-scroll-proportion="1.4203125">
               <folding>
-                <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#1123#1152#0" expanded="true" />
+                <marker date="1370640440479" expanded="false" signature="10022:10084" placeholder="import ..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="price_file.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pdf_gen/templatetags/price_file.py">
+      <file leaf-file-name="0001_initial.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cms/migrations/0001_initial.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="9" selection-start="581" selection-end="581" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modifier/views.py">
+      <file leaf-file-name="0007_apphook_longer.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cms/migrations/0007_apphook_longer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -201,27 +178,9 @@
         </entry>
       </file>
       <file leaf-file-name="admin.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modifier/admin.py">
+        <entry file="file://$PROJECT_DIR$/eav/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="custom_menu.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modifier/custom_menu.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1178" selection-end="1178" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="custom_dashbord.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modifier/custom_dashbord.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="112" column="39" selection-start="4260" selection-end="4378" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -230,10 +189,28 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/product_db/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="103" selection-start="486" selection-end="525" vertical-scroll-proportion="-8.64">
+            <state line="5" column="0" selection-start="160" selection-end="209" vertical-scroll-proportion="58.56">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/product_db/admin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="4" selection-start="776" selection-end="776" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#22#54#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/eav/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="78" column="30" selection-start="2883" selection-end="2883" vertical-scroll-proportion="-8.64">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -257,22 +234,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/eav/fields.py" />
         <option value="$PROJECT_DIR$/templates/admin_tools/dashboard/modules/app_list.html" />
-        <option value="$PROJECT_DIR$/django_ukrhim/urls.py" />
-        <option value="$PROJECT_DIR$/django_ukrhim/settings.py" />
-        <option value="$PROJECT_DIR$/eav/forms.py" />
         <option value="$PROJECT_DIR$/eav/locale/ru/LC_MESSAGES/django.po" />
-        <option value="$PROJECT_DIR$/eav/models.py" />
-        <option value="$PROJECT_DIR$/product_db/models.py" />
-        <option value="$PROJECT_DIR$/product_db/admin.py" />
         <option value="$PROJECT_DIR$/pdf_gen/locale/ru/LC_MESSAGES/django.po" />
         <option value="$PROJECT_DIR$/locale/ru/LC_MESSAGES/django.po" />
-        <option value="$PROJECT_DIR$/modifier/models.py" />
         <option value="$PROJECT_DIR$/modifier/patches.py" />
         <option value="$PROJECT_DIR$/pdf_gen/templatetags/price_file.py" />
         <option value="$PROJECT_DIR$/pdf_gen/admin.py" />
         <option value="$PROJECT_DIR$/pdf_gen/models.py" />
+        <option value="$PROJECT_DIR$/modifier/models.py" />
+        <option value="$PROJECT_DIR$/django_ukrhim/urls.py" />
+        <option value="$PROJECT_DIR$/django_ukrhim/settings.py" />
+        <option value="$PROJECT_DIR$/eav/admin.py" />
+        <option value="$PROJECT_DIR$/eav/models.py" />
+        <option value="$PROJECT_DIR$/product_db/models.py" />
+        <option value="$PROJECT_DIR$/eav/forms.py" />
+        <option value="$PROJECT_DIR$/product_db/admin.py" />
       </list>
     </option>
   </component>
@@ -599,6 +576,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="product_db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pdf_gen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pdf_gen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="locale" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -608,6 +617,124 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="LC_MESSAGES" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="management" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="management" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="commands" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="locale" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ru" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LC_MESSAGES" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="imagekit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="elfinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django-ukrhim" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eav" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -633,14 +760,14 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="178" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="216" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="179" />
-    <property name="recentsLimit" value="5" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="recentsLimit" value="5" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="179" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="D:/Dropbox/uni/sym_crypto/lab4_julik" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="215" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1229" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1228" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1229" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="215" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="216" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
@@ -655,8 +782,8 @@
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -797,29 +924,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="django_ukrhim" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -841,6 +945,29 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="django_ukrhim" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -1024,18 +1151,18 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11686992" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32825205" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28658536" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32976446" sideWeight="0.72046787" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13660619" sideWeight="0.7113821" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1696905" sideWeight="0.7113821" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13660619" sideWeight="0.7134146" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17129135" sideWeight="0.7134146" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993644" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3262195" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28861788" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28861788" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32825205" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28658536" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1117,32 +1244,32 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/product_db/admin.py">
+    <entry file="file://$PROJECT_DIR$/modifier/patches.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="18" selection-start="1340" selection-end="1340" vertical-scroll-proportion="0.0">
+        <state line="35" column="12" selection-start="1179" selection-end="1179" vertical-scroll-proportion="0.76886034">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pdf_gen/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="13" selection-start="1038" selection-end="1038" vertical-scroll-proportion="-1.0513595">
           <folding>
-            <element signature="e#22#54#0" expanded="true" />
+            <element signature="e#0#28#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pdf_gen/locale/ru/LC_MESSAGES/django.po">
+    <entry file="file://D:/Progs/python/python27/Lib/site-packages/django/contrib/admin/options.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="6" selection-start="712" selection-end="712" vertical-scroll-proportion="0.0">
+        <state line="200" column="34" selection-start="8920" selection-end="8946" vertical-scroll-proportion="-12.32">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/locale/ru/LC_MESSAGES/django.po">
+    <entry file="file://$PROJECT_DIR$/cms/appresolver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="12" selection-start="24" selection-end="24" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="51" column="38" selection-start="1943" selection-end="1964" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1154,87 +1281,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/cms_plugins.py">
+    <entry file="file://$PROJECT_DIR$/modifier/management/commands/reset_and_sync.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="47" selection-start="593" selection-end="593" vertical-scroll-proportion="0.0">
+        <state line="12" column="46" selection-start="368" selection-end="368" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/custom_dashbord.py">
+    <entry file="file://$PROJECT_DIR$/cms/migrations/0001_initial.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/custom_menu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1178" selection-end="1178" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/admin.py">
+    <entry file="file://$PROJECT_DIR$/cms/migrations/0007_apphook_longer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/product_db/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="103" selection-start="486" selection-end="525" vertical-scroll-proportion="-8.64">
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modifier/patches.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="12" selection-start="1179" selection-end="1179" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modifier/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="63" selection-start="2514" selection-end="2645" vertical-scroll-proportion="-10.12">
+        <state line="195" column="130" selection-start="6191" selection-end="6191" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pdf_gen/templatetags/price_file.py">
+    <entry file="file://$PROJECT_DIR$/django_ukrhim/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="9" selection-start="581" selection-end="581" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pdf_gen/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="25" selection-start="667" selection-end="667" vertical-scroll-proportion="2.92">
+        <state line="12" column="62" selection-start="442" selection-end="442" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pdf_gen/models.py">
+    <entry file="file://$PROJECT_DIR$/django_ukrhim/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="0" selection-start="3243" selection-end="3243" vertical-scroll-proportion="0.75510204">
+        <state line="29" column="24" selection-start="895" selection-end="895" vertical-scroll-proportion="-16.68">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/eav/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="30" selection-start="2883" selection-end="2883" vertical-scroll-proportion="-8.64">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/product_db/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="4" selection-start="776" selection-end="776" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#22#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/product_db/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="160" selection-end="209" vertical-scroll-proportion="58.56">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/eav/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="39" selection-start="4260" selection-end="4378" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/eav/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="271" column="12" selection-start="9613" selection-end="9613" vertical-scroll-proportion="1.4203125">
+          <folding>
+            <element signature="e#1123#1152#0" expanded="true" />
+            <marker date="1370640440479" expanded="false" signature="10022:10084" placeholder="import ..." />
           </folding>
         </state>
       </provider>

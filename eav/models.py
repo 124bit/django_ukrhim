@@ -45,6 +45,7 @@ from .fields import EavSlugField, EavDatatypeField, MultiSelectField, MultiSelec
 from elfinder.fields import ElfinderField
 from django.forms import BooleanField, CharField, DateTimeField, FloatField, \
     IntegerField, ChoiceField
+from django.utils.translation import get_language
 
 from elfinder.fields import ElfinderFormField
 from jsonfield import JSONField
@@ -100,7 +101,6 @@ class Attribute(models.Model):
     '''
 
     class Meta:
-        ordering = ['name']
         verbose_name = _('attribute')
         verbose_name_plural = _('Attributes')
 
@@ -152,8 +152,11 @@ class Attribute(models.Model):
         TYPE_LIST: MultiSelectFormField
     }
 
-    name = models.CharField(_("Name"), max_length=100,
-                            help_text=_("User-friendly data field name."),
+    name_ru = models.CharField(_("Name (ru)"), max_length=100,
+                            help_text=_("User-friendly data field name. For russian users."),
+                            unique=True)
+    name_en = models.CharField(_("Name (en)"), max_length=100,
+                            help_text=_("User-friendly data field name. For english users."),
                             unique=True)
 
     slug = EavSlugField(_("Attribute slug"), max_length=50, db_index=True,
@@ -164,9 +167,15 @@ class Attribute(models.Model):
                                 help_text=_("Select type of data."),
                                 choices=DATATYPE_CHOICES)
 
-    description = models.CharField(_("Description"), max_length=256,
+    description_ru = models.CharField(_("Description (ru)"), max_length=256,
                                         blank=True, null=True,
-                                     help_text=_("Short description."))
+                                     help_text=_("Short description for russian users."))
+
+    description_en = models.CharField(_("Description (en)"), max_length=256,
+                                        blank=True, null=True,
+                                     help_text=_("Short description for english users."))
+
+
 
     importance = models.IntegerField(_("Importance"),
                                   blank=True, null=True,
@@ -176,7 +185,11 @@ class Attribute(models.Model):
 
     @property
     def help_text(self):
-        return self.description
+        current_lang=get_language()
+        if current_lang=='ru':
+            name=self.description_ru
+        elif current_lang=='en':
+            name=self.description_en
 
 
     created = models.DateTimeField(_("Сreated"), default=datetime.now, editable=False)
@@ -253,7 +266,12 @@ class Attribute(models.Model):
             value_obj.save()
 
     def __unicode__(self):
-        return u"%s (%s)" % (self.name, self.get_datatype_display())
+        current_lang=get_language()
+        if current_lang=='ru':
+            name=self.name_ru
+        else:
+            name=self.name_en
+        return u"%s (%s)" % (name, self.get_datatype_display())
 
 
 
