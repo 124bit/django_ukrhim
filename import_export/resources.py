@@ -211,6 +211,10 @@ class Resource(object):
         for field in self.get_fields():
             v1 = self.export_field(field, original) if original else ""
             v2 = self.export_field(field, current) if current else ""
+            try:
+                v2=float(v2)
+            except ValueError:
+                pass
             diff = dmp.diff_main(unicode(v1), unicode(v2))
             dmp.diff_cleanupSemantic(diff)
             html = dmp.diff_prettyHtml(diff)
@@ -252,8 +256,11 @@ class Resource(object):
 
         for row in dataset.dict:
             try:
+
                 row_result = RowResult()
                 instance, new = self.get_or_init_instance(instance_loader, row)
+                if new:
+                    continue
                 if new:
                     row_result.import_type = RowResult.IMPORT_TYPE_NEW
                 else:

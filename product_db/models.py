@@ -70,7 +70,6 @@ class Product(models.Model):
     last_modified = models.DateTimeField(auto_now=True,
                                          verbose_name=_('Last modified'))
 
-
     def get_prices_for_list(self):
 
         return self.product_set.count()

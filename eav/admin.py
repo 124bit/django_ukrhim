@@ -93,7 +93,7 @@ class BaseEntityInline(InlineModelAdmin):
         form = formset.form(request.POST, instance=instance)
 
         return [(None, {'fields': form.fields.keys()})]
-
+from django.contrib.admin.util import unquote
 class AttributeAdmin(ModelAdmin):
     list_filter = ['datatype']
     prepopulated_fields = {'slug': ('name_en',)}

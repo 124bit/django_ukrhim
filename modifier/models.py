@@ -189,7 +189,7 @@ class ElfinderPictureHolderForm(CMSPluginBase):
 
 #------fixture for significant attributs
 
-from eav.models import Attribute
+#from eav.models import Attribute
 
 # try:
 #     if Attribute.objects.filter(slug="exclude_at_sites").count()==0:

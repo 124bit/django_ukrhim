@@ -9,6 +9,7 @@ from import_export.resources import ModelResource
 from django.utils.translation import ugettext as _
 from django.contrib.sites.models import Site
 from django.utils.translation import get_language
+from import_export.admin import ImportExportModelAdmin
 
 class ProductAdminForm(BaseDynamicEntityForm):
     model = Product
@@ -19,14 +20,14 @@ class ProductResource(ModelResource):
 
     class Meta:
         model = Product
-        fields = ('name',)
-        import_id_fields=['name']
-        export_order=('name',)
+        fields = ('name_en',)
+        import_id_fields=['name_en']
+        export_order=('name_en',)
 
 
 
 
-class ProductAdmin(BaseEntityAdmin):
+class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
     list_display = ('name_en', 'product_type', 'active')
     list_filter= ('product_type', 'product_tags')
     list_editable = ('active',)
@@ -52,7 +53,10 @@ class ProductAdmin(BaseEntityAdmin):
             price_func_slugs.append(func_name)
             if func_name not in Product.__dict__:
                 def get_price(self):
-                    return getattr(self,attr_slug)
+                    try:
+                        return getattr(self,attr_slug)
+                    except AttributeError:
+                        return ''
                 get_price.short_description = _(column_name)+', '+_(currency)
                 setattr(Product,func_name,get_price)
         return  list(self.list_display)+price_func_slugs

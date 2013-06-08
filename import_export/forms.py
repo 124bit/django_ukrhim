@@ -3,23 +3,16 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class ImportForm(forms.Form):
+    #changed
     import_file = forms.FileField(
             label=_('File to import')
             )
-    input_format = forms.ChoiceField(
-            label=_('Format'),
-            choices=(),
-            )
+
 
     def __init__(self, import_formats, *args, **kwargs):
         super(ImportForm, self).__init__(*args, **kwargs)
-        choices = []
-        for i, f in enumerate(import_formats):
-            choices.append((str(i), f().get_title(),))
-        if len(import_formats) > 1:
-            choices.insert(0, ('', '---'))
 
-        self.fields['input_format'].choices = choices
+
 
 
 class ConfirmImportForm(forms.Form):

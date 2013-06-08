@@ -347,7 +347,12 @@ class Value(models.Model):
 
 
     def __unicode__(self):
-        return u"%s - %s: \"%s\"" % (self.entity, self.attribute.name,
+        current_lang=get_language()
+        if current_lang=='ru':
+            name=self.attribute.name_ru
+        elif current_lang=='en':
+            name=self.attribute.name_en
+        return u"%s - %s: \"%s\"" % (self.entity, name,
                                      self.value)
 
 class Entity(object):

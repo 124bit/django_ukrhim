@@ -61,7 +61,7 @@ class Field(object):
         for attr in attrs:
             try:
                 value = getattr(value, attr)
-            except (ValueError, ObjectDoesNotExist):
+            except (ValueError, ObjectDoesNotExist, AttributeError):
                 # needs to have a primary key value before a many-to-many
                 # relationship can be used.
                 return None

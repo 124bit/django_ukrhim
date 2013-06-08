@@ -12,7 +12,7 @@ from django.template.response import TemplateResponse
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-
+from import_export import fields
 from .forms import (
         ImportForm,
         ConfirmImportForm,
@@ -81,7 +81,10 @@ class ImportMixin(object):
                 field.attribute=slug
                 setattr(resource, slug, field)
                 def dehidr(obj):
-                    return getattr(obj,slug)
+                    try:
+                        return getattr(obj,slug)
+                    except AttributeError:
+                        return ''
                 setattr(resource, 'dehydrate_'+attr.slug, dehidr)
                 resource.fields[slug]=getattr(resource,slug)
 
@@ -128,7 +131,6 @@ class ImportMixin(object):
         '''
         resource = self.get_resource_class()()
         resource= self.update_resource_class(resource)
-
         context = {}
 
         import_formats = self.get_import_formats()
@@ -137,46 +139,37 @@ class ImportMixin(object):
                 request.FILES or None)
 
         if request.POST and form.is_valid():
-            input_format = import_formats[
-                    int(form.cleaned_data['input_format'])
-                    ]()
+            #changed
+            input_format = import_formats[0]()
             import_file = form.cleaned_data['import_file']
-            # first always write the uploaded file to disk as it may be a 
-            # memory file or else based on settings upload handlers
-            with tempfile.NamedTemporaryFile(delete=False) as uploaded_file:
-                 for chunk in import_file.chunks():
-                     uploaded_file.write(chunk)
+            import_file.open(input_format.get_read_mode())
+            data = import_file.read()
+            if not input_format.is_binary() and self.from_encoding:
+                data = unicode(data, self.from_encoding).encode('utf-8')
+            #changed
+            #if  import_formats[int(form.cleaned_data['input_format'])]==base_formats.CSV:
+            #    data=data.replace(';',',')
+            dataset = input_format.create_dataset(data)
+            result = resource.import_data(dataset, dry_run=True,
+                    raise_errors=False)
 
-            # then read the file, using the proper format-specific mode
-            with open(uploaded_file.name, input_format.get_read_mode()) as uploaded_import_file:
-                # warning, big files may exceed memory
-                data = uploaded_import_file.read()
-                if not input_format.is_binary() and self.from_encoding:
-                    data = unicode(data, self.from_encoding).encode('utf-8')
-                #changed
-                if  import_formats[int(form.cleaned_data['input_format'])]==base_formats.CSV:
-                    data=data.replace(';',',')
-                dataset = input_format.create_dataset(data)
-                result = resource.import_data(dataset, dry_run=True,
-                        raise_errors=False)
+            context['result'] = result
 
-                context['result'] = result
+            if not result.has_errors():
+                tmp_file = tempfile.NamedTemporaryFile(delete=False)
+                tmp_file.write(data)
+                tmp_file.close()
+                context['confirm_form'] = ConfirmImportForm(initial={
+                    'import_file_name': tmp_file.name,
+                    'input_format': 0,
+                    })
 
-                if not result.has_errors():
-                    tmp_file = tempfile.NamedTemporaryFile(delete=False)
-                    tmp_file.write(data)
-                    tmp_file.close()
-                    context['confirm_form'] = ConfirmImportForm(initial={
-                        'import_file_name': tmp_file.name,
-                        'input_format': form.cleaned_data['input_format'],
-                        })
+        context['form'] = form
+        context['opts'] = self.model._meta
+        context['fields'] = [f.column_name for f in resource.get_fields()]
 
-            context['form'] = form
-            context['opts'] = self.model._meta
-            context['fields'] = [f.column_name for f in resource.get_fields()]
-
-            return TemplateResponse(request, [self.import_template_name],
-                    context, current_app=self.admin_site.name)
+        return TemplateResponse(request, [self.import_template_name],
+                context, current_app=self.admin_site.name)
 
 
 class ExportMixin(object):
@@ -237,12 +230,12 @@ class ExportMixin(object):
 
         return cl.query_set
 
+    #changed
     def export_action(self, request, *args, **kwargs):
         formats = self.get_export_formats()
         form = ExportForm(formats, request.POST or None)
-        if form.is_valid():
-            file_format = formats[
-                    int(form.cleaned_data['file_format'])
+        if 1:
+            file_format = formats[0
                     ]()
 
             resource_class = self.get_resource_class()
@@ -250,13 +243,11 @@ class ExportMixin(object):
             queryset = self.get_export_queryset(request)
             data = resource_class().export(queryset)
             #changed
-            if formats[int(form.cleaned_data['file_format'])]==base_formats.CSV:
-                data_string=file_format.export_data(data)
-                datastring=data_string.replace(',',';')
+
             response = HttpResponse(
-                    datastring,
-                    mimetype='application/octet-stream',
-                    )
+                file_format.export_data(data),
+                mimetype='application/octet-stream',
+                )
             response['Content-Disposition'] = 'attachment; filename=%s' % (
                    self.get_export_filename(file_format),
                    )
