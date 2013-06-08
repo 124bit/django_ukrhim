@@ -136,9 +136,9 @@ ELFINDER_CONNECTOR_OPTION_SETS = {
             {
                 'id' : 'lffim',
                 'driver' : ElfinderVolumeLocalFileSystem,
-                'path' : join(settings.MEDIA_ROOT, u'images'),
+                'path' : join(settings.MEDIA_ROOT, u'files'),
                 'alias' : 'Elfinder images',
-                'URL' : '%simages/' % settings.MEDIA_URL,
+                'URL' : '%sfiles/' % settings.MEDIA_URL,
                 'onlyMimes' : ['image',],
                 'uploadAllow' : ['image',],
                 'uploadDeny' : ['all',],

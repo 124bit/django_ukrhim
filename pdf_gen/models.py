@@ -11,7 +11,7 @@ from datetime import datetime
 from django.utils.timezone import now
 
 class Price(models.Model):
-    prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'prices')
+    prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'files','generated_prices')
 
     name=SlugField(_("Document name"), max_length=50, help_text=_("Use this name like '{% load price_file %} {% price_file site='auto' lang='auto' %}'." ),
                    unique=True)
@@ -48,7 +48,8 @@ class PriceTemplate(models.Model):
     #todo only odt
     #todo label of set template and modular inline
     #todo normal save
-    template_file = ElfinderField(optionset='odt',blank=True, null=True)
+    template_file = ElfinderField(blank=True, null=True)
+    special_slug =  CharField(_("Special slug"),max_length=50, blank=True, help_text=_("Fill with price field attribute if you don't want to use default sites price field.") )
 
     class Meta:
         verbose_name = _('price template')
@@ -69,8 +70,11 @@ class PriceTemplate(models.Model):
 
         for product in all_products:
             #to site cutting
-            template_context[product.slug]=product.price(Site.objects.get(pk=self.site).site_cutting)
-
+            if self.special_slug!='':
+                price_string=product.price(price_slug=self.special_slug)
+            else:
+                price_string=product.price(Site.objects.get(pk=self.site).site_cutting)
+            template_context[product.slug]=format(price_string, ".2f")
         return template_context
 
 
