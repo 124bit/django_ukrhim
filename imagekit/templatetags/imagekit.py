@@ -4,12 +4,11 @@ from django.utils.safestring import mark_safe
 from .compat import parse_bits
 from ..cachefiles import ImageCacheFile
 from ..registry import generator_registry
-
-from os import path
-from django.conf import settings
-register = template.Library()
 from modifier.models import ImageSpecModel
-from ..registry import register as reg
+from django.core.files.images import ImageFile
+from django.conf import settings
+from django.utils.safestring import SafeText
+register = template.Library()
 
 
 ASSIGNMENT_DELIMETER = 'as'
@@ -20,10 +19,11 @@ DEFAULT_THUMBNAIL_GENERATOR = 'imagekit:thumbnail'
 def get_cachefile(context, generator_id, generator_kwargs, source=None):
     generator_id = generator_id.resolve(context)
     kwargs = dict((k, v.resolve(context)) for k, v in generator_kwargs.items())
-    #changed
-    #making file frol link
-    f=open(path.join(settings.PROJECT_PATH,kwargs['source'].url.replace('/','\\')[1:]),'rb')
-    kwargs['source']=f
+
+    if type(kwargs['source'])==SafeText:
+        with open(settings.PROJECT_PATH+ kwargs['source'].replace('/','\\'),'rb') as f:
+            source=ImageFile(f)
+        kwargs['source']=source
 
     generator = generator_registry.get(generator_id, **kwargs)
     return ImageCacheFile(generator)
@@ -68,24 +68,23 @@ class GenerateImageTagNode(template.Node):
         self._html_attrs = html_attrs
 
     def render(self, context):
-        #changed
-        #prevent spontaneous deregister
-        try:
-            return self.render_container(context)
-        except Exception, exc_text:
-            #TODO determine Exception; maybe do thumb tag
-            #TODO no need restart editor after error
-            try:
-                for Spec in ImageSpecModel.objects.all():
-                    try:
-                        reg.generator(Spec.name, Spec.get_image_spec_class())
-                    except:
-                        pass
+        from ..utils import autodiscover
+        autodiscover()
 
-                return  self.render_container(context)
+        file = get_cachefile(context, self._generator_id,
+                self._generator_kwargs)
+        attrs = dict((k, v.resolve(context)) for k, v in
+                self._html_attrs.items())
 
-            except:
-                return exc_text
+        # Only add width and height if neither is specified (to allow for
+        # proportional in-browser scaling).
+        if not 'width' in attrs and not 'height' in attrs:
+            attrs.update(width=file.width, height=file.height)
+
+        attrs['src'] = file.url
+        attr_str = ' '.join('%s="%s"' % (escape(k), escape(v)) for k, v in
+                attrs.items())
+        return mark_safe(u'<img %s />' % attr_str)
 
 
 class ThumbnailAssignmentNode(template.Node):
@@ -109,7 +108,7 @@ class ThumbnailAssignmentNode(template.Node):
         generator_id = self._generator_id.resolve(context) if self._generator_id else DEFAULT_THUMBNAIL_GENERATOR
         kwargs = dict((k, v.resolve(context)) for k, v in
                 self._generator_kwargs.items())
-        kwargs['source'] = self._source.resolve(context)
+        kwargs['source'] = self._source
         kwargs.update(parse_dimensions(self._dimensions.resolve(context)))
         generator = generator_registry.get(generator_id, **kwargs)
 
@@ -135,7 +134,7 @@ class ThumbnailImageTagNode(template.Node):
         dimensions = parse_dimensions(self._dimensions.resolve(context))
         kwargs = dict((k, v.resolve(context)) for k, v in
                 self._generator_kwargs.items())
-        kwargs['source'] = self._source.resolve(context)
+        kwargs['source'] = self._source
         kwargs.update(dimensions)
         generator = generator_registry.get(generator_id, **kwargs)
 
@@ -196,7 +195,7 @@ def parse_ik_tag_bits(parser, bits):
 
 
 #@register.tag
-def img(parser, token):
+def generateimage(parser, token):
     """
     Creates an image based on the provided arguments.
 
@@ -234,7 +233,12 @@ def img(parser, token):
         raise template.TemplateSyntaxError('The "%s" tag requires exactly one'
                 ' unnamed argument (the generator id).' % tag_name)
 
+    #changed
     generator_id = args[0]
+    #changed
+    generator_id_str=generator_id.resolve([])
+    if generator_id_str not in generator_registry._generators:
+        generator_registry.register(generator_id_str, ImageSpecModel.objects.get(name=generator_id_str).get_image_spec_class())
 
     if varname:
         return GenerateImageAssignmentNode(varname, generator_id, kwargs)
@@ -298,5 +302,5 @@ def thumbnail(parser, token):
                 html_attrs)
 
 
-#changed
-img = register.tag(img)
+generateimage = register.tag(generateimage)
+thumbnail = register.tag(thumbnail)

@@ -266,13 +266,22 @@ class Attribute(models.Model):
             value_obj.save()
 
     def __unicode__(self):
+
         current_lang=get_language()
-        if current_lang=='ru':
+        if current_lang[:2]=='ru':
             name=self.name_ru
         else:
             name=self.name_en
         return u"%s (%s)" % (name, self.get_datatype_display())
 
+    def str_without_type(self):
+
+        current_lang=get_language()
+        if current_lang[:2]=='ru':
+            name=self.name_ru
+        else:
+            name=self.name_en
+        return name
 
 
 class Value(models.Model):

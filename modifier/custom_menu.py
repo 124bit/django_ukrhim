@@ -19,16 +19,18 @@ class CustomMenu(Menu):
     def __init__(self, **kwargs):
         Menu.__init__(self, **kwargs)
         self.children += [
-            items.MenuItem(_('Dashboard'), reverse('admin:index')),
-            items.Bookmarks(),
-            items.AppList(
-                _('Applications'),
-                exclude=('django.contrib.*',)
+            items.MenuItem(_('Main'), reverse('admin:index')),
+            items.ModelList(
+                _('Settings'),
+                models=(
+                        'product_db.models.ProductType',
+                        'product_db.models.ProductTag',
+                        'eav.models.Attribute',
+                        'modifier.models.ImageSpecModel',
+                        'django.contrib.*',
+                        )
             ),
-            items.AppList(
-                _('Administration'),
-                models=('django.contrib.*',)
-            )
+            items.MenuItem(_("On site"),'/')
         ]
 
     def init_with_context(self, context):

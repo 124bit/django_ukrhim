@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-02 17:05+0300\n"
-"PO-Revision-Date: 2013-06-02 17:06+0300\n"
+"POT-Creation-Date: 2013-06-10 20:00+0300\n"
+"PO-Revision-Date: 2013-06-10 20:21+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,137 +26,88 @@ msgstr "Вставка файла"
 msgid "Picture plugin"
 msgstr "Вставка картинки"
 
-#: .\custom_dashbord.py:28
-msgid "Quick links"
-msgstr "Быстрые ссылки"
+#: .\custom_dashbord.py:56
+msgid "Content managing"
+msgstr "Управление контентом сайта"
 
-#: .\custom_dashbord.py:34
-msgid "Return to site"
-msgstr "На сайт"
-
-#: .\custom_dashbord.py:35
-msgid "Change password"
-msgstr "Сменить пароль"
-
-#: .\custom_dashbord.py:37
-msgid "Log out"
-msgstr "Выйти"
-
-#: .\custom_dashbord.py:43 .\custom_menu.py:25
-msgid "Applications"
-msgstr "Приложения"
-
-#: .\custom_dashbord.py:49 .\custom_menu.py:29
-msgid "Administration"
-msgstr "Администрирование"
-
-#: .\custom_dashbord.py:54 .\custom_dashbord.py:101
+#: .\custom_dashbord.py:63 .\custom_dashbord.py:113
 msgid "Recent Actions"
 msgstr "Недавние действия"
 
-#: .\custom_dashbord.py:58
-msgid "Latest Django News"
-msgstr "Последние новости"
-
-#: .\custom_dashbord.py:65
-msgid "Support"
-msgstr "Поддержка"
-
-#: .\custom_dashbord.py:68
-msgid "Django documentation"
-msgstr "Документация"
-
-#: .\custom_dashbord.py:73
-msgid "Django \"django-users\" mailing list"
-msgstr ""
-
-#: .\custom_dashbord.py:78
-msgid "Django irc channel"
-msgstr ""
-
 #: .\custom_menu.py:22
-msgid "Dashboard"
-msgstr "Административная панель"
+msgid "Main"
+msgstr "Главная"
 
-#: .\models.py:76
+#: .\custom_menu.py:24
+msgid "Settings"
+msgstr "Настройки"
+
+#: .\custom_menu.py:33
+msgid "On site"
+msgstr "На сайт"
+
+#: .\models.py:93
 msgid ""
 "Image specifications profiles are used for automatic image generation in "
 "templates."
 msgstr ""
 "Параметры используемые при автоматической генериции картинок в шаблонах."
 
-#: .\models.py:76
+#: .\models.py:93
 msgid "Profile name"
 msgstr "Имя профиля"
 
-#: .\models.py:77
+#: .\models.py:94
 msgid "Options"
 msgstr "Настройки"
 
-#: .\models.py:77
+#: .\models.py:94
 msgid "Options of image convertation."
 msgstr "Настройки преобразования изображения."
 
-#: .\models.py:80
+#: .\models.py:97
 msgid "image specification profile"
 msgstr "профиль конвертации картинок"
 
-#: .\models.py:81
+#: .\models.py:98
 msgid "Image specification profiles"
 msgstr "Профили конвертации картинок"
 
-#: .\models.py:165
+#: .\models.py:171
 msgid "Choose image"
 msgstr "Выберите файл с изображением."
 
-#: .\models.py:168
+#: .\models.py:174
 msgid "Generate <img> tag with attrs."
 msgstr "Вставить тег с url  переконвертированного изображения."
 
-#: .\models.py:169
+#: .\models.py:175
 msgid "Get <img> tag with original url."
 msgstr "Вставить тег с url изображения не конвертируя."
 
-#: .\models.py:170
+#: .\models.py:176
 msgid "Generate image url to variable."
 msgstr "Конвертировать и сделать url переменной."
 
-#: .\models.py:171
+#: .\models.py:177
 msgid "Get original image url."
 msgstr "Вставить url изображения не конвертирую."
 
-#: .\models.py:174
+#: .\models.py:180
 msgid "Choose logic"
 msgstr "Выберите логику работы"
 
-#: .\models.py:176
+#: .\models.py:182
 msgid "Image html tags"
 msgstr "Html тэги изображения"
 
-#: .\models.py:177
+#: .\models.py:183
 msgid "Choose convertation options"
 msgstr "Выберите параметры конвертации"
 
-#: .\models.py:178
+#: .\models.py:184
 msgid "Variable name"
 msgstr "Имя переменной"
-
-#: .\models.py:196
-msgid "Show on sites"
-msgstr "Показывать на сайтах"
-
-#: .\models.py:196
-msgid "Check on sites where product must not be shown."
-msgstr ""
-"Поставьте галку возле сайтов, на которых продукт не должен быть показан."
-
-#: .\models.py:198
-msgid "Exclude from sites"
-msgstr "Не показывать на сайтах"
-
-#: .\models.py:198
-msgid "Check on sites where product is shown."
-msgstr "Поставьте галку возле сайтов, на которых продукт должен быть показан."
 
 #: .\patches.py:29
 msgid "Site cutting"
@@ -167,13 +118,52 @@ msgid "Short unique site identifier."
 msgstr "Короткий уникальный идентификатор сайта."
 
 #: .\patches.py:30
-#, fuzzy
-msgid "Price field attr"
+msgid "Price field attrs"
 msgstr "Аттрибут поля цены"
 
 #: .\patches.py:30
-msgid "Attribute of price field for this site."
+msgid "Attributes of price fields for this site, separated with comma-space."
 msgstr "Аттрибут поля цены товаров для этого сайта"
+
+#~ msgid "Quick links"
+#~ msgstr "Быстрые ссылки"
+
+#~ msgid "Return to site"
+#~ msgstr "На сайт"
+
+#~ msgid "Change password"
+#~ msgstr "Сменить пароль"
+
+#~ msgid "Log out"
+#~ msgstr "Выйти"
+
+#~ msgid "Applications"
+#~ msgstr "Приложения"
+
+#~ msgid "Administration"
+#~ msgstr "Администрирование"
+
+#~ msgid "Latest Django News"
+#~ msgstr "Последние новости"
+
+#~ msgid "Support"
+#~ msgstr "Поддержка"
+
+#~ msgid "Django documentation"
+#~ msgstr "Документация"
+
+#~ msgid "Dashboard"
+#~ msgstr "Административная панель"
+
+#~ msgid "Check on sites where product must not be shown."
+#~ msgstr ""
+#~ "Поставьте галку возле сайтов, на которых продукт не должен быть показан."
+
+#~ msgid "Exclude from sites"
+#~ msgstr "Не показывать на сайтах"
+
+#~ msgid "Check on sites where product is shown."
+#~ msgstr "Поставьте галку возле сайтов, на которых продукт должен быть показан."
 
 #~ msgid "Name"
 #~ msgstr "Имя"

@@ -9,26 +9,21 @@ from urlparse import urljoin
 
 register = template.Library()
 @register.simple_tag
-def price_file(name, site='auto',lang='auto'):
-    if site=='auto':
+def price_file(name, site=None,lang=None):
+    if not site:
         site='_'+Site.objects.get_current().site_cutting
     else:
         site='_'+site
-    if lang=='auto':
+    if not lang:
         lang='_'+get_language()
-    elif lang=='universal' or lang=='':
+    elif lang=='default':
         lang=''
     else:
         lang='_'+lang
 
     name_with_lang=name+site+lang+'.pdf'
-    name_without_lang=name+site+'.pdf'
-    prices_folder=urljoin(settings.MEDIA_URL,'prices')
-
-
+    prices_folder=urljoin(settings.MEDIA_URL, "files/generated_prices/")
     if path.isfile(path.join(Price.prices_path,name_with_lang)):
-        return urljoin(prices_folder,name_with_lang)
-    elif path.isfile(path.join(Price.prices_path,name_without_lang)):
         return urljoin(prices_folder,name_with_lang)
     else:
         #todo all returns of no files links - normal 404

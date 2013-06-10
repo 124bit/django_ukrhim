@@ -4,7 +4,7 @@ from ..cachefiles.backends import get_default_cachefile_backend
 from ..cachefiles.strategies import StrategyWrapper
 from .. import hashers
 from ..exceptions import AlreadyRegistered, MissingSource
-from ..utils import open_image, get_by_qname#, process_image
+from ..utils import open_image, get_by_qname, process_image
 from ..registry import generator_registry, register
 
 
@@ -136,9 +136,9 @@ class ImageSpec(BaseImageSpec):
             self.source.open()
             img = open_image(self.source)
 
-        #return process_image(img, processors=self.processors,
-        #                     format=self.format, autoconvert=self.autoconvert,
-        #                     options=self.options)
+        return process_image(img, processors=self.processors,
+                             format=self.format, autoconvert=self.autoconvert,
+                             options=self.options)
 
 
 def create_spec_class(class_attrs):

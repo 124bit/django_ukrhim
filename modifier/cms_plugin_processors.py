@@ -14,13 +14,14 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
 
 
     #if error show it only in admin
-    try:
-        plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
-    except Exception, exc_text:
-        if original_context['request'].path.startswith('/admin'):
-            return  exc_text
-        else:
-            return ''
+    #try:
+    #TODO DO SOMETHING WITH ERRORS no seen!!!!
+    plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
+    #except Exception, exc_text:
+    #    if original_context['request'].path.startswith('/admin'):
+    #        return  exc_text
+    #    else:
+    #        return ''
 
     #todo brake to functions
     current_site=Site.objects.get_current()
@@ -53,14 +54,14 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
         plugin_context_dict[product.slug]=product
 
     for product_tag in ProductTag.objects.all():
-        plugin_context_dict['all_'+product_tag.slug]=all_products.filter(product_tags__in=product_tag)
+        plugin_context_dict['all_'+product_tag.slug]=all_products.filter(product_tags__in=[product_tag])
 
     for product_type in ProductType.objects.all():
         plugin_context_dict['all_'+product_type.slug]=all_products.filter(product_type=product_type)
 
 
     for product_tag in ProductTag.objects.all():
-        plugin_context_dict[product_tag.slug]=site_products.filter(product_tags_in=product_tag)
+        plugin_context_dict[product_tag.slug]=site_products.filter(product_tags__in=[product_tag])
 
     for product_type in ProductType.objects.all():
         plugin_context_dict[product_type.slug]=site_products.filter(product_type=product_type)

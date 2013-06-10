@@ -104,14 +104,20 @@ class Product(models.Model):
         return attrs
 
 
-
-    def price(self, site=None, price_slug=None):
+    # if site - sites prices, no site - auto, if indexes - index price, if no - index 0, if price slug - then price slug
+    def price(self, site=None, price_index=None, price_slug=None):
         ''' get price field depending on site options and lang'''
         if not price_slug:
             if site:
-                price_slug=Site.objects.get(site_cutting=site).price_field_slug
+                if price_index:
+                    price_slug=Site.objects.get(site_cutting=site).price_field_slugs.split(', ')[price_index]
+                else:
+                    price_slug=Site.objects.get(site_cutting=site).price_field_slugs.split(', ')[0]
             else:
-                price_slug=Site.objects.get_current().price_field_slug
+                if price_index:
+                    price_slug=Site.objects.get_current().price_field_slugs.split(', ')[price_index]
+                else:
+                    price_slug=Site.objects.get_current().price_field_slugs.split(', ')[0]
         try:
             return getattr(self, price_slug)
         except AttributeError:

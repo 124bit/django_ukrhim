@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-02 15:23+0300\n"
-"PO-Revision-Date: 2013-06-02 15:34+0300\n"
+"POT-Creation-Date: 2013-06-10 20:17+0300\n"
+"PO-Revision-Date: 2013-06-10 20:20+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Translated-Using: django-rosetta 0.7.2\n"
 
-#: .\admin.py:106
+#: .\admin.py:104
 msgid "Additional options"
 msgstr "Дополнительно"
 
@@ -27,12 +27,14 @@ msgid ""
 "Must be all lower case, start with a letter, and contain only letters, "
 "numbers, or underscores. Must not contain '__'"
 msgstr ""
+"Данные должны быть введены латински буквами, начианться с маленькой буквы и "
+"не содержать тире и пробелы."
 
-#: .\forms.py:146
+#: .\forms.py:150
 msgid "<br>Error in field options!"
 msgstr "<br>Ошибка в дополнительных опциях поля"
 
-#: .\forms.py:160
+#: .\forms.py:164
 #, python-format
 msgid "The %s could not be saved because the datadidn't validate."
 msgstr ""
@@ -82,83 +84,101 @@ msgid "List"
 msgstr "Список"
 
 #: .\models.py:155
-msgid "Name"
-msgstr "Название"
+msgid "Name (ru)"
+msgstr "Название (русское)"
 
 #: .\models.py:156
-msgid "User-friendly data field name."
+msgid "User-friendly data field name. For russian users."
 msgstr ""
 "Название поля данных. Поля данных создаются для того, чтобы вводить данные "
 "об изделиях."
 
+#: .\models.py:158
+msgid "Name (en)"
+msgstr "Название (английское)"
+
 #: .\models.py:159
+msgid "User-friendly data field name. For english users."
+msgstr ""
+"Название поля данных. Поля данных создаются для того, чтобы вводить данные "
+"об изделиях."
+
+#: .\models.py:162
 msgid "Attribute slug"
 msgstr "Аттрибут"
 
-#: .\models.py:160
+#: .\models.py:163
 msgid "Short unique data field label."
 msgstr ""
 "Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
 
-#: .\models.py:163
+#: .\models.py:166
 msgid "Data type"
 msgstr "Тип данных"
 
-#: .\models.py:164
+#: .\models.py:167
 msgid "Select type of data."
 msgstr "Выберите тип данных поля."
 
-#: .\models.py:167
-msgid "Description"
-msgstr "Описание"
+#: .\models.py:170
+msgid "Description (ru)"
+msgstr "Описание (русское)"
 
-#: .\models.py:169
-msgid "Short description."
+#: .\models.py:172
+msgid "Short description for russian users."
 msgstr "Короткое описание предназначения поля."
 
-#: .\models.py:171
+#: .\models.py:174
+msgid "Description (en)"
+msgstr "Описание (английское)"
+
+#: .\models.py:176
+msgid "Short description for english users."
+msgstr "Короткое описание предназначения поля."
+
+#: .\models.py:180
 msgid "Importance"
 msgstr "Важность"
 
-#: .\models.py:173
+#: .\models.py:182
 msgid "Affect on attribute position when edit."
 msgstr "Влияет на позицию поля данных в списке полей при вводе."
 
-#: .\models.py:182
+#: .\models.py:195
 msgid "Сreated"
 msgstr "Дата создания"
 
-#: .\models.py:183 .\models.py:298
+#: .\models.py:196 .\models.py:325
 msgid "Modified"
 msgstr "Дата изменения"
 
-#: .\models.py:185
+#: .\models.py:198
 msgid "Specific options"
 msgstr "Дополнительные опции"
 
-#: .\models.py:185
+#: .\models.py:198
 msgid "Additional options for field in JSON format."
 msgstr "Дополнительные настройки поля (формат JSON)."
 
-#: .\models.py:297
+#: .\models.py:324
 msgid "Created"
 msgstr "Дата создания"
 
-#: .\models.py:301
+#: .\models.py:328
 msgid "Attribute"
 msgstr "Поле данных"
 
-#: .\models.py:365
+#: .\models.py:397
 #, python-format
 msgid " EAV attribute doesen't exist '%(attr)s'"
 msgstr ""
 
-#: .\models.py:372
+#: .\models.py:404
 #, python-format
 msgid "%(obj)s hasn't no EAV attribute named '%(attr)s'"
 msgstr ""
 
-#: .\models.py:431
+#: .\models.py:463
 #, python-format
 msgid "%(attr)s EAV field %(err)s"
 msgstr ""
@@ -197,4 +217,4 @@ msgstr ""
 
 #: .\validators.py:108
 msgid "Must be maximum 30 symbols"
-msgstr ""
+msgstr "Длина должна быть меньше 30 символов."

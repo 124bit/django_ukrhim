@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-06-02 15:41+0300\n"
-"PO-Revision-Date: 2013-06-07 16:29+0300\n"
+"PO-Revision-Date: 2013-06-10 20:04+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -70,7 +70,7 @@ msgstr "тег продукта"
 
 #: .\models.py:36 .\models.py:55
 msgid "Product tags"
-msgstr "Теги"
+msgstr "Теги продуктов"
 
 #: .\models.py:51
 msgid "Name"
@@ -126,3 +126,12 @@ msgstr "продукт"
 #: .\models.py:74
 msgid "Products"
 msgstr "Продукты"
+
+msgid "UAH"
+msgstr "Грн"
+
+msgid "USD"
+msgstr "$"
+
+msgid "EUR"
+msgstr "EUR"

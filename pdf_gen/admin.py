@@ -5,10 +5,18 @@ from django.forms import ChoiceField
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.contrib.sites.models import Site
+from eav.models import Attribute
 
 class PriceTemplateForm(ModelForm):
+
+    PRICE_FIELD_CHOICES=[]
+    for attr in Attribute.objects.all():
+            if 'price_field' in attr.options:
+                PRICE_FIELD_CHOICES.append((attr.slug, attr.name_en))
+
     SITE_CHOICES = [(site.pk, site.name) for site in Site.objects.all()]
-    site = ChoiceField(label=_('Site'),choices=SITE_CHOICES,  initial='default', help_text=_("Choose site of document.") )
+    site = ChoiceField(label=_('Site'),choices=SITE_CHOICES,  initial='default', help_text=_("Select price field. Template would be filled by prices from this field.") )
+    price_field= ChoiceField(label=_('Site'),choices=PRICE_FIELD_CHOICES,  initial='default', help_text=_("Choose site of document."))
 
     class Meta:
             model = PriceTemplate

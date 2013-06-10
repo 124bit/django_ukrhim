@@ -64,32 +64,41 @@ signals.post_syncdb.connect(create_testuser,
 #----image_kit picture settings model
 from jsonfield import JSONField
 from django.db import models
-from django.db.models import SlugField
-from django.forms import ValidationError
 from django.utils.translation import ugettext as _
 from copy import deepcopy
-from imagekit import register, unregister
+from imagekit.registry import generator_registry
 from imagekit import ImageSpec
-from imagekit.exceptions import AlreadyRegistered, NotRegistered
+from pilkit.processors import *
+from eav.fields import EavSlugField
+from PIL import ImageMath
+
+#threshold - color distance from 0 to 1000
+class TransparentBg(object):
+    def __init__(self,color, threshold=0.3):
+        self.thresh2=threshold * 195075/1000
+        self.color=color
+
+    @staticmethod
+    def distance2(a, b):
+        return (a[0] - b[0])**2 + (a[1] - b[1])**2 + (a[2] - b[2])**2
+
+    def process(self, image):
+        image = image.convert("RGBA")
+        red, green, blue, alpha = image.split()
+        image.putalpha(ImageMath.eval("""convert(((((t - d(c, (r, g, b))) >> 31) + 1) ^ 1) * a, 'L')""",
+            t=self.thresh2, d=self.distance2, c=self.color, r=red, g=green, b=blue, a=alpha))
+        return image
 
 class ImageSpecModel(models.Model):
-    name=SlugField(max_length=30, help_text=_("Image specifications profiles are used for automatic image generation in templates."), verbose_name=_("Profile name"))
+    name=EavSlugField(max_length=30, help_text=_("Image specifications profiles are used for automatic image generation in templates."), verbose_name=_("Profile name"))
     specs=JSONField(verbose_name=_("Options"), default="{}" , blank=True, help_text=_("Options of image convertation."))
 
     class Meta:
         verbose_name = _('image specification profile')
         verbose_name_plural = _('Image specification profiles')
 
-
     def __init__(self, *args, **kwargs):
         super(ImageSpecModel, self).__init__(*args, **kwargs)
-
-        try:
-            #registering specs to use in temlate by name
-            #after this, use it as {% generateimage 'Spec_name' source=source_image %}
-            register.generator(self.name, self.get_image_spec_class())
-        except AlreadyRegistered:
-            pass
         self.name_before_save=self.name
 
     def get_spec_dict(self):
@@ -104,7 +113,7 @@ class ImageSpecModel(models.Model):
         image_specs=deepcopy(self.specs)
 
         if 'processors' in image_specs:
-            eval("image_specs['processors']="+image_specs['processors'])
+            image_specs['processors']=eval(image_specs['processors'])
         else:
             image_specs['processors']=[]
 
@@ -118,26 +127,23 @@ class ImageSpecModel(models.Model):
 
     def get_image_spec_class(self):
         spec_dict=self.get_spec_dict()
-        class Specs(ImageSpec):
-            processors = spec_dict['processors']
-            format = spec_dict['format']
-            options = spec_dict['options']
-        return Specs
+        def spec_creater(specs):
+            class Specs(ImageSpec):
+                processors = specs['processors']
+                format = specs['format']
+                options = specs['options']
+            return Specs
+        return spec_creater(spec_dict)
+
 
     def save(self, *args, **kwargs):
-        try:
-            unregister.generator(self.name_before_save)
-        except NotRegistered:
-            pass
+        if self.name_before_save in generator_registry._generators:
+            generator_registry.unregister(self.name_before_save)
 
-        try:
-            specs_class=self.get_image_spec_class()
-            register.generator(self.name, specs_class)
-            self.name_before_save=self.name
-        except Exception, e:
-            raise  ValidationError(e)
 
         super(ImageSpecModel, self).save(*args, **kwargs)
+        generator_registry.register(self.name,self.get_image_spec_class())
+        self.name_before_save=self.name
 
     def __unicode__(self):
         return self.name

@@ -26,11 +26,12 @@ class ElfinderImagePlugin(CMSPluginBase):
     text_enabled = True
 
     def render(self, context, instance, placeholder):
+
         tags=' '.join(instance.html_tags.split('\n'))
         url='"'+instance.file_field.url+'"'
         if instance.logic=='1':
             if instance.generator:
-                res='{% img '+instance.generator.slug+' source='+ url  +' -- '+ tags+ ' %}'
+                res='{% img '+instance.generator.name+' source='+ url  +' -- '+ tags+ ' %}'
             else:
                 res='select generator'
 
@@ -38,12 +39,11 @@ class ElfinderImagePlugin(CMSPluginBase):
             res='<img '+'src='+ url +' '+tags+ '>'
         elif instance.logic=='3':
             if instance.generator and instance.var_name:
-                res='{% img '+instance.generator.slug+' source='+ url +' as  ' +instance.var_name+' %}'
+                res='{% img '+instance.generator.name+' source='+ url +' as  ' +instance.var_name+' %}'
             else:
                 res='select generator and instance name'
         elif instance.logic=='4':
                 res=url
-
         context['result'] = res
         return context
 

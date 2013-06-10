@@ -6,7 +6,7 @@ from eav.models import Attribute
 from datetime import datetime
 
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.conf.urls import patterns, url
 from django.template.response import TemplateResponse
 from django.contrib import messages
@@ -23,7 +23,7 @@ from .resources import (
         )
 from .formats import base_formats
 
-
+from copy import deepcopy
 DEFAULT_FORMATS = (
             base_formats.CSV,
             base_formats.XLS,
@@ -80,12 +80,14 @@ class ImportMixin(object):
                 field.column_name=slug
                 field.attribute=slug
                 setattr(resource, slug, field)
-                def dehidr(obj):
-                    try:
-                        return getattr(obj,slug)
-                    except AttributeError:
-                        return ''
-                setattr(resource, 'dehydrate_'+attr.slug, dehidr)
+                def dehidrator(attr_slug):
+                    def dehidr(obj):
+                        try:
+                            return getattr(obj,attr_slug)
+                        except AttributeError:
+                            return _('no field')
+                    return dehidr
+                setattr(resource, 'dehydrate_'+attr.slug, deepcopy(dehidrator(slug)))
                 resource.fields[slug]=getattr(resource,slug)
 
         return resource

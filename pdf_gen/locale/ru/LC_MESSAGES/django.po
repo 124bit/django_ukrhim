@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-02 17:33+0300\n"
-"PO-Revision-Date: 2013-06-07 21:08+0300\n"
+"POT-Creation-Date: 2013-06-10 20:14+0300\n"
+"PO-Revision-Date: 2013-06-10 20:16+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,63 +18,69 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Translated-Using: django-rosetta 0.7.2\n"
 
-#: .\admin.py:11
+#: .\admin.py:18 .\admin.py:19
 msgid "Site"
 msgstr "Сайт"
 
-#: .\admin.py:11
+#: .\admin.py:18
+msgid ""
+"Select price field. Template would be filled by prices from this field."
+msgstr ""
+"Выберите поля цены. Шаблон будет заполнен данными из этого поля продукта."
+
+#: .\admin.py:19
 msgid "Choose site of document."
 msgstr "Выберите сайт документа."
 
-#: .\admin.py:19
+#: .\admin.py:27
 msgid "Template"
 msgstr "Шаблон"
 
-#: .\admin.py:20
+#: .\admin.py:28
 msgid "Price odt templates"
 msgstr "Odt шаблоны прайсов"
 
-#: .\admin.py:28
+#: .\admin.py:36
 msgid "Update prices info"
 msgstr "Обновить прайсы"
 
-#: .\models.py:16
+#: .\models.py:18
 msgid "Document name"
 msgstr "Название документа"
 
-#: .\models.py:16
+#: .\models.py:18
 msgid ""
-"Use this name like '{% load price_file %} {% price_file "
-"site='auto'lang='auto' %}'."
+"Use this name like '{% load price_file %} {% price_file site='auto' "
+"lang='auto' %}'."
 msgstr ""
 "Используйте это название в шаблонах {% load price_file %} {% price_file "
 "site='auto' lang='auto' %}."
 
-#: .\models.py:18
+#: .\models.py:20
 msgid "Last document update"
 msgstr "Последнее обновление прайсов"
 
-#: .\models.py:24
-msgid "Price never generated"
-msgstr "Прайс никогда не генерировался"
+#: .\models.py:26
+msgid "price list never generated"
+msgstr "Прайс еще не сгенерирован. Обновите его."
 
-#: .\models.py:27
+#: .\models.py:29
 msgid "Update time"
-msgstr "Время обновлений"
+msgstr "Время последнего обновления"
 
-#: .\models.py:37
-msgid "price"
+#: .\models.py:39
+msgid "price list"
 msgstr "прайс"
 
-#: .\models.py:38
-msgid "Prices"
+#: .\models.py:40
+msgid "Price lists"
 msgstr "Прайсы"
 
-#: .\models.py:46
+#: .\models.py:54
 msgid "Template language"
 msgstr "Язык шаблона"
 
-#: .\models.py:46
+#: .\models.py:54
 msgid ""
 "Choose language of document. If it is on default or universal language - "
 "choose default."
@@ -82,13 +88,20 @@ msgstr ""
 "Выберите язык документа. Если документ универсальный - выберите \"по-"
 "умолчанию\"."
 
-#: .\models.py:54
+#: .\models.py:59
+msgid "Choose ODT price list template."
+msgstr "Выберите файл ODT шаблона прайса."
+
+#: .\models.py:62
 msgid "price template"
 msgstr "Odt шаблоны прайсов"
 
-#: .\models.py:55
+#: .\models.py:63
 msgid "Price templates"
 msgstr "Odt шаблоны прайсов"
+
+#~ msgid "Price"
+#~ msgstr "Прайсы"
 
 #~ msgid ""
 #~ "Choose site of document. If it is default or universal document - choose "

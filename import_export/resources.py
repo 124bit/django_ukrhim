@@ -18,7 +18,7 @@ from import_export import widgets
 from .instance_loaders import (
         ModelInstanceLoader,
         )
-
+from django.utils.translation import ugettext as _
 
 USE_TRANSACTIONS = getattr(settings, 'IMPORT_EXPORT_USE_TRANSACTIONS', False)
 
@@ -215,6 +215,9 @@ class Resource(object):
                 v2=float(v2)
             except ValueError:
                 pass
+            print v1
+            if v1==_("no field"):
+                v2=_("no field")
             diff = dmp.diff_main(unicode(v1), unicode(v2))
             dmp.diff_cleanupSemantic(diff)
             html = dmp.diff_prettyHtml(diff)
