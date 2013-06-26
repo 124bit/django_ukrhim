@@ -160,7 +160,12 @@ from django import forms
 class ElfinderFileHolder(CMSPlugin):
     file_field = ElfinderField()
     def __unicode__(self):
-        return self.file_field.url
+        url_splitted=self.file_field.url.split('/')
+        if url_splitted[-1]=='/':
+            res='/'+url_splitted[-3]+'/'+url_splitted[-2]
+        else:
+            res='/'+url_splitted[-2]+'/'+url_splitted[-1]
+        return res
 
 
 
@@ -171,27 +176,31 @@ class ElfinderPictureHolder(CMSPlugin):
     file_field = ElfinderField(optionset='image',verbose_name=_("Choose image"))
 
     LOGIC_CHOICES=(
-        ('1', _('Generate <img> tag with attrs.')),
-        ('2', _('Get <img> tag with original url.')),
-        ('3', _('Generate image url to variable.')),
-        ('4', _('Get original image url.')),
+        ('1', _('Converted image in <img> tag.')),
+        ('2', _('Converted image in url.')),
+        ('3', _('Original image in <img> tag.')),
+        ('4', _('Original image url.')),
     )
 
     logic = CharField(_("Choose logic"), max_length=10, choices=LOGIC_CHOICES)
 
     html_tags = TextField(_("Image html tags"), blank=True)
     generator = ForeignKey(ImageSpecModel,verbose_name=_("Choose convertation options"),blank=True, null=True)
-    var_name= CharField(_("Variable name"), max_length=20, blank=True)
+    var_name= CharField(_("Variable name"), max_length=20, blank=True, editable=False )
 
     def __unicode__(self):
-        return self.file_field.url
+        url_splitted=self.file_field.url.split('/')
+        if url_splitted[-1]=='/':
+            res='/'+url_splitted[-3]+'/'+url_splitted[-2]
+        else:
+            res='/'+url_splitted[-2]+'/'+url_splitted[-1]
+        return res
 
 
 
 class ElfinderPictureHolderForm(CMSPluginBase):
     class Meta:
         model = ElfinderPictureHolder
-        widgets = {'gender': forms.RadioSelect()}
 
 #------fixture for significant attributs
 

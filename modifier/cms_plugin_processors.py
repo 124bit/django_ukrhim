@@ -2,7 +2,7 @@ __author__ = 'Agafon'
 from django.template import Context, Template
 from django.contrib.sites.models import Site
 from product_db.models import Product, ProductType, ProductTag
-
+from django.conf import settings
 
 def render_with_tags(instance, placeholder, rendered_content, original_context):
     '''
@@ -16,7 +16,11 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     #if error show it only in admin
     #try:
     #TODO DO SOMETHING WITH ERRORS no seen!!!!
-    plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
+
+    try:
+        plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
+    except Exception as ex:
+        return ex
     #except Exception, exc_text:
     #    if original_context['request'].path.startswith('/admin'):
     #        return  exc_text
@@ -72,4 +76,10 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     plugin_context = Context(plugin_context_dict)
 
     #todo try render
-    return  plugin_text.render(plugin_context)
+    if settings.DEBUG==False:
+        try:
+            return  plugin_text.render(plugin_context)
+        except Exception as ex:
+            return ex
+    elif settings.DEBUG==True:
+        return  plugin_text.render(plugin_context)

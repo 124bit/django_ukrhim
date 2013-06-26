@@ -4,7 +4,7 @@ import os
 import tempfile
 from eav.models import Attribute
 from datetime import datetime
-
+from django.contrib.admin.models import LogEntry, CHANGE
 from django.contrib import admin
 from django.utils.translation import ugettext as _
 from django.conf.urls import patterns, url
@@ -158,6 +158,13 @@ class ImportMixin(object):
             context['result'] = result
 
             if not result.has_errors():
+                LogEntry.objects.log_action(
+                    user_id         = 1,
+                    content_type_id = None,
+                    object_id       = None,
+                    object_repr     = 'prices imported',
+                    action_flag     = CHANGE
+                )
                 tmp_file = tempfile.NamedTemporaryFile(delete=False)
                 tmp_file.write(data)
                 tmp_file.close()
@@ -169,6 +176,8 @@ class ImportMixin(object):
         context['form'] = form
         context['opts'] = self.model._meta
         context['fields'] = [f.column_name for f in resource.get_fields()]
+
+
 
         return TemplateResponse(request, [self.import_template_name],
                 context, current_app=self.admin_site.name)

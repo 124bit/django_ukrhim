@@ -20,10 +20,12 @@ def get_cachefile(context, generator_id, generator_kwargs, source=None):
     generator_id = generator_id.resolve(context)
     kwargs = dict((k, v.resolve(context)) for k, v in generator_kwargs.items())
 
+    #changed
     if type(kwargs['source'])==SafeText:
         with open(settings.PROJECT_PATH+ kwargs['source'].replace('/','\\'),'rb') as f:
             source=ImageFile(f)
         kwargs['source']=source
+    ##
 
     generator = generator_registry.get(generator_id, **kwargs)
     return ImageCacheFile(generator)
@@ -84,6 +86,8 @@ class GenerateImageTagNode(template.Node):
         attrs['src'] = file.url
         attr_str = ' '.join('%s="%s"' % (escape(k), escape(v)) for k, v in
                 attrs.items())
+        if 'no_tag' in attrs:
+            return mark_safe(attrs['src'])
         return mark_safe(u'<img %s />' % attr_str)
 
 
@@ -235,10 +239,10 @@ def generateimage(parser, token):
 
     #changed
     generator_id = args[0]
-    #changed
     generator_id_str=generator_id.resolve([])
     if generator_id_str not in generator_registry._generators:
         generator_registry.register(generator_id_str, ImageSpecModel.objects.get(name=generator_id_str).get_image_spec_class())
+    ###
 
     if varname:
         return GenerateImageAssignmentNode(varname, generator_id, kwargs)

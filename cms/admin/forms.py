@@ -148,9 +148,8 @@ class PageAddForm(forms.ModelForm):
 
 #changed
 class DialogForm(forms.Form):
-    #todo helptext
-    sites_to_mirror =  forms.MultipleChoiceField(label=_('sites transfere to'), widget=forms.CheckboxSelectMultiple)
-    mirror = forms.ChoiceField(choices=((1,_("mirror")),(0,_('copy'))), widget=forms.RadioSelect, initial=1)
+    sites_to_mirror =  forms.MultipleChoiceField(label=_('Sites to transfere to:'), help_text=_('Check sites at what you want to transfer page.') , widget=forms.CheckboxSelectMultiple)
+    mirror = forms.ChoiceField(choices=((1,_("mirror")),(0,_('copy'))),help_text=_('If you select mirror - all changes on mother page would be apllied for daughter pages. If you select copy - page content will be copied.'), widget=forms.RadioSelect, initial=1)
 
     
 class PageForm(PageAddForm):

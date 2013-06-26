@@ -1113,10 +1113,10 @@ class Page(MPTTModel):
     #changed till end of class
     def get_copy_permission(self,site_pk):
         reverse_ids_for_check=[page.reverse_id for page in self.get_descendants(True)]
-        if Page.objects.filter(site__pk=site_pk, reverse_id__in=reverse_ids_for_check).count():
-            #todo add translation
+        same_reverse_id_pages=Page.objects.filter(site__pk=site_pk, reverse_id__in=reverse_ids_for_check)
+        if same_reverse_id_pages.count():
             #todo make reverse id seen or more information
-            return Site.objects.get(pk=site_pk).name+": can't transfer page and its descendats, because there are same reverse_ids at target site"
+            return "Can't transfer page and its descendats to "+Site.objects.get(pk=site_pk).name+ ", because there is the same reverse_id on target site at page " + same_reverse_id_pages[0].get_title()
         else:
             return True
 

@@ -15,7 +15,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 #--------- DJANGO SETTINGS for django_ukrhim project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -39,7 +39,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -99,7 +99,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+ #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -109,11 +110,12 @@ SECRET_KEY = '(^b_707imhz9f&amp;v)wt19l5c&amp;djxv9t+7*bu$w(x!yyf1*l^1c&amp;'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-
+    'django.middleware.gzip.GZipMiddleware',
+   # 'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -126,6 +128,8 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.language.LanguageCookieMiddleware',
     'reversion.middleware.RevisionMiddleware',
+
+
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -165,6 +169,8 @@ INSTALLED_APPS = (
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
      'smuggler',
     'rosetta',
+    #'htmlmin',
+    'compressor',
     #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -262,7 +268,54 @@ CMS_MENU_TITLE_OVERWRITE=True
 CMS_REDIRECTS=True
 #CMS_SOFTROOT=True
 CMS_SEO_FIELDS=True
+CMS_LANGUAGES = {
+    1: [
+        {
+            'code': 'en',
+            'name': gettext('English'),
+            'fallbacks': ['ru'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':False,
+        },
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }
+    ],
+    2: [
+        {
+            'code': 'en',
+            'name': gettext('English'),
+            'fallbacks': ['ru'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':False,
+        },
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }
+    ],
+    'default':
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }
 
+}
 #-----import_export SETTINGS
 SERIALIZATION_MODULES = {
  #   'csv': 'snippetscream.csv_serializer',
@@ -276,3 +329,8 @@ ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashbo
 
 ADMIN_TOOLS_THEMING_CSS = 'admintools/css/admintools_theming.css'
 #A good start is to copy the admin_tools/media/admin_tools/css/theming.css to your custom file and to modify it to suits your needs.
+
+
+#--------------------compressors and minifiers settings
+HTML_MINIFY = True
+#COMPRESS_OFFLINE= True

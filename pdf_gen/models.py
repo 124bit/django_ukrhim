@@ -12,6 +12,7 @@ from django.utils.timezone import now
 from django import forms
 from eav.models import Attribute
 from eav.fields import EavSlugField
+from django.contrib.admin.models import LogEntry, CHANGE
 class Price(models.Model):
     prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'files','generated_prices')
 
@@ -29,10 +30,22 @@ class Price(models.Model):
     get_update_time.short_description = _("Update time")
 
     def generate_new_prices(self):
+        log='pdf prices update: '
         for template in self.pricetemplate_set.all():
             if template.template_file and template.template_file.hash:
-                template.generate_price(self.prices_path)
+               template.generate_price(self.prices_path)
+               log+=template.get_price_name()+' '
         self.last_update=now() #todo test this piece of code and its repr
+
+
+        LogEntry.objects.log_action(
+            user_id         = 1,
+            content_type_id = None,
+            object_id       = None,
+            object_repr     = log,
+            action_flag     = CHANGE
+        )
+
         self.save()
 
     class Meta:
