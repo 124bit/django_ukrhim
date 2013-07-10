@@ -1,4 +1,6 @@
-import os, re, magic, time, tempfile, shutil, mimetypes
+import os, re, time, tempfile, shutil, mimetypes, platform
+if platform.system() == 'Linux':
+    import magic
 try:
     from PIL import Image
 except ImportError:
@@ -258,7 +260,10 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         Attempt to read the file's mimetype.
         """
         fp = self._fopen(path)
-        mime = None#magic.Magic(mime=True).from_buffer(fp.read())
+        if platform.system() == 'Linux':
+            magic.Magic(mime=True).from_buffer(fp.read())
+        else:
+            mime = None
         fp.close()
         return mime
     
@@ -524,8 +529,10 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         """
         if os.path.isdir(path):
             return 'directory'
-
-        mime = None#magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
+        if platform.system() == 'Linux':
+            magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
+        else:
+            mime = None
         int_mime = None
 
         if not mime or mime in ['inode/x-empty', 'application/empty']:

@@ -13,6 +13,7 @@ from django import forms
 from eav.models import Attribute
 from eav.fields import EavSlugField
 from django.contrib.admin.models import LogEntry, CHANGE
+import platform
 class Price(models.Model):
     prices_path=path.join(settings.PROJECT_PATH,settings.MEDIA_ROOT,'files','generated_prices')
 
@@ -78,8 +79,13 @@ class PriceTemplate(models.Model):
     def generate_price(self, folder):
         res_path=path.join(folder, self.get_price_name())
         context=self.get_template_context()
-        template=path.join(settings.PROJECT_PATH,self.template_file.url)
-        renderer = Renderer(template, context, res_path,  overwriteExisting=True)
+        if platform.system() == 'Linux':
+            template=settings.PROJECT_PATH+self.template_file.url
+            renderer = Renderer(template, context, res_path,  overwriteExisting=True)
+        else:
+            template=path.join(settings.PROJECT_PATH,self.template_file.url.replace('/','\\')[1:])
+            renderer = Renderer(template, context, res_path,  overwriteExisting=True, pythonWithUnoPath='C:\\progra~2\\libreo~1.6\\program\\python.exe')
+
         renderer.run()
         #print "renderer  runned", template, res_path
 

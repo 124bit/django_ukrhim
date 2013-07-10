@@ -6,7 +6,7 @@ admin.autodiscover()
 import object_tools
 from cms.sitemaps import CMSSitemap
 from django.conf.urls.i18n import i18n_patterns
-
+import platform
 object_tools.autodiscover()
 urlpatterns = i18n_patterns('',
                        url(r'^admin_tools/', include('admin_tools.urls')),
@@ -33,11 +33,13 @@ if settings.DEBUG:
                            url(r'', include('django.contrib.staticfiles.urls')),
 
                            ) + urlpatterns
-if not settings.DEBUG:
-    urlpatterns=patterns('',
-     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
-     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-                )+ urlpatterns
+
+if platform.system() != 'Linux':
+    if not settings.DEBUG:
+        urlpatterns=patterns('',
+             url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+             url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+                        )+ urlpatterns
 
 
 

@@ -1,4 +1,6 @@
-import os, re, time, shutil #, magic
+import os, re, time, shutil, platform
+if platform.system() == 'Linux':
+     import magic
 try:
     from PIL import Image
 except ImportError:
@@ -176,8 +178,10 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Attempt to read the file's mimetype
         """
-        return None#magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
-    
+        if platform.system() == 'Linux':
+            magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
+        else:
+            return None
     def _readlink(self, path):
         """
         Return symlink target file

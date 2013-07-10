@@ -9,7 +9,7 @@ from django.core.files.images import ImageFile
 from django.conf import settings
 from django.utils.safestring import SafeText
 register = template.Library()
-
+import platform
 
 ASSIGNMENT_DELIMETER = 'as'
 HTML_ATTRS_DELIMITER = '--'
@@ -22,8 +22,12 @@ def get_cachefile(context, generator_id, generator_kwargs, source=None):
 
     #changed
     if type(kwargs['source'])==SafeText:
-        with open(settings.PROJECT_PATH+ kwargs['source'],'rb') as f:
-            source=ImageFile(f)
+        if platform.system() == 'Linux':
+            with open(settings.PROJECT_PATH+ kwargs['source'],'rb') as f:
+                source=ImageFile(f)
+        else:
+            with open(settings.PROJECT_PATH+ kwargs['source'].replace('/','\\'),'rb') as f:
+                source=ImageFile(f)
         kwargs['source']=source
     ##
 

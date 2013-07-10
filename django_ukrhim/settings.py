@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os#, sys
+import os, platform#, sys
 
 gettext = lambda s: s
 
@@ -14,8 +14,10 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 #sys.path.append(elfinder_path)
 
 #--------- DJANGO SETTINGS for django_ukrhim project.
-
-DEBUG = True
+if platform.system() == 'Linux':
+    DEBUG = False
+else:
+    DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
