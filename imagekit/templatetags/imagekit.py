@@ -22,7 +22,7 @@ def get_cachefile(context, generator_id, generator_kwargs, source=None):
 
     #changed
     if type(kwargs['source'])==SafeText:
-        with open(settings.PROJECT_PATH+ kwargs['source'].replace('/','\\'),'rb') as f:
+        with open(settings.PROJECT_PATH+ kwargs['source'],'rb') as f:
             source=ImageFile(f)
         kwargs['source']=source
     ##

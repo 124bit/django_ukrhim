@@ -15,7 +15,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 #--------- DJANGO SETTINGS for django_ukrhim project.
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
