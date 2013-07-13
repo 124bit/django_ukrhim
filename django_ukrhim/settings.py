@@ -15,7 +15,7 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 #--------- DJANGO SETTINGS for django_ukrhim project.
 if platform.system() == 'Linux':
-    DEBUG = False
+    DEBUG = True
 else:
     DEBUG = True
 TEMPLATE_DEBUG = DEBUG
