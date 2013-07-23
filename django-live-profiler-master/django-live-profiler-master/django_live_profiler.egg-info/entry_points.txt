@@ -1,0 +1,3 @@
+[console_scripts]
+aggregated = aggregate.server:main
+
