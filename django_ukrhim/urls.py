@@ -34,12 +34,11 @@ if settings.DEBUG:
 
                            ) + urlpatterns
 
-if platform.system() != 'Linux':
-    if not settings.DEBUG:
-        urlpatterns=patterns('',
-             url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
-             url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-                        )+ urlpatterns
+if not settings.DEBUG:
+    urlpatterns=patterns('',
+         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+                    )+ urlpatterns
 
 
 

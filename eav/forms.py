@@ -127,7 +127,7 @@ class BaseDynamicEntityForm(ModelForm):
                         choices = []
                     else:
                         folder_path =path.join(settings.PROJECT_PATH, folder_path)
-                        choices = [ (path.join(folder_path,file_name),file_name) for file_name in listdir(folder_path) if path.isfile(path.join(folder_path,file_name)) ]
+                        choices = [ (path.join(folder_path,file_name),file_name) for file_name in listdir(folder_path) if path.isfile(path.join(folder_path,file_name)) and '_face' not in file_name ]
 
                 elif 'site_list' in attribute.options:
                     choices = [(site.pk, site.name) for site in Site.objects.all()]

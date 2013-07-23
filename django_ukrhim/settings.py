@@ -334,5 +334,7 @@ ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 
 
 #--------------------compressors and minifiers settings
-HTML_MINIFY = True
 #COMPRESS_OFFLINE= True
+
+#--------------------urlify.js change - on _
+STATICFILES_DIRS = ('modifier/static',)

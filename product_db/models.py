@@ -7,7 +7,6 @@ from django.utils.translation import get_language
 
 from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
-
 class ProductType(models.Model):
     name_ru=models.CharField(max_length=30,verbose_name=_("Type name (ru)"), unique=True)
     name_en=models.CharField(max_length=30,verbose_name=_("Type name (en)"), unique=True)
