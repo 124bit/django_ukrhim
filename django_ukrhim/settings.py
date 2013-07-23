@@ -116,6 +116,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'profiler.middleware.ProfilerMiddleware',
+    'profiler.middleware.StatProfMiddleware',
     'django.middleware.gzip.GZipMiddleware',
    # 'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -197,7 +199,7 @@ INSTALLED_APPS = (
 
     #'polymorphic',
     'reversion',
-
+    'profiler',
     #-----our
     #'ukrhim_shop',
     'eav',
