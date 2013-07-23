@@ -28,7 +28,6 @@ from django.utils.safestring import mark_safe
 from .models import Attribute
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
-from eav.models import Value
 class BaseEntityAdmin(ModelAdmin):
     
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
@@ -94,17 +93,7 @@ class BaseEntityInline(InlineModelAdmin):
         form = formset.form(request.POST, instance=instance)
 
         return [(None, {'fields': form.fields.keys()})]
-
-
-def make_string(modeladmin, request, queryset):
-    for attr in queryset:
-        for value_obj in Value.objects.filter(attribute=attr):
-            value_obj.value_text=str(value_obj.value)
-            value_obj.save()
-        attr.datatype=Attribute.TYPE_TEXT
-        attr.save()
-make_string.short_description = _("Change datatype to string")
-
+from django.contrib.admin.util import unquote
 class AttributeAdmin(ModelAdmin):
     list_filter = ['datatype']
     prepopulated_fields = {'slug': ('name_en',)}
@@ -116,14 +105,6 @@ class AttributeAdmin(ModelAdmin):
             'fields': ('description_ru','description_en', 'importance', 'options')
         }),
     )
-    actions = [make_string]
-    def get_readonly_fields(self, request, obj=None):
-        '''
-        Override to make certain fields readonly if this is a change request
-        '''
-        if Value.objects.filter(attribute=obj).count()>0:
-            return self.readonly_fields + ('datatype',)
-        return self.readonly_fields
 
     def get_ordering(self, *args, **kwargs):
         if get_language()=='ru':
