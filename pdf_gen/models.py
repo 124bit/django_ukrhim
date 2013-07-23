@@ -14,8 +14,6 @@ from eav.models import Attribute
 from eav.fields import EavSlugField
 from django.contrib.admin.models import LogEntry, CHANGE
 import platform
-import subprocess
-
 class Price(models.Model):
     prices_path=path.join('django_ukrhim/media/files','generated_prices')
 
@@ -83,15 +81,12 @@ class PriceTemplate(models.Model):
         context=self.get_template_context()
         if platform.system() == 'Linux':
             template='django_ukrhim/'+self.template_file.url
-
-            proc=subprocess.Popen('soffice --invisible --headless "--accept=socket,host=localhost,port=2002;urp;"')
             renderer = Renderer(template, context, res_path,  overwriteExisting=True)
-            renderer.run()
-            proc.terminate()
         else:
             template=path.join(settings.PROJECT_PATH,self.template_file.url.replace('/','\\')[1:])
             renderer = Renderer(template, context, res_path,  overwriteExisting=True, pythonWithUnoPath='C:\\progra~2\\libreo~1.6\\program\\python.exe')
-            renderer.run()
+
+        renderer.run()
         #print "renderer  runned", template, res_path
 
     def get_template_context(self):

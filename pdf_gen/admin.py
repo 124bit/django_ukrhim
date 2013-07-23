@@ -6,7 +6,9 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.contrib.sites.models import Site
 from eav.models import Attribute
-
+from time import sleep
+import platform
+import subprocess
 class PriceTemplateForm(ModelForm):
 
     PRICE_FIELD_CHOICES=[]
@@ -31,8 +33,13 @@ class PriceTemplateInline(StackedInline):
 
 
 def update_price(modeladmin, request, queryset):
+    if platform.system() == 'Linux':
+        proc=subprocess.Popen('soffice --invisible --headless "--accept=socket,host=localhost,port=2002;urp;"', shell=True)
+        sleep(7)
     for price in queryset:
         price.generate_new_prices()
+    if platform.system() == 'Linux':
+        proc.terminate()
 update_price.short_description = _("Update prices info")
 
 class PriceAdmin(ModelAdmin):
