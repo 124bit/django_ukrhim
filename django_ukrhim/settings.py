@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os, platform#, sys
-
 gettext = lambda s: s
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -18,6 +17,7 @@ if platform.system() == 'Linux':
     DEBUG = True
 else:
     DEBUG = True
+PROFILE = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -116,8 +116,6 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'profiler.middleware.ProfilerMiddleware',
-    'profiler.middleware.StatProfMiddleware',
     'django.middleware.gzip.GZipMiddleware',
    # 'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -135,6 +133,10 @@ MIDDLEWARE_CLASSES = (
 
 
 )
+if PROFILE and  platform.system() == 'Linux':
+    MIDDLEWARE_CLASSES=('profiler.middleware.ProfilerMiddleware',
+    'profiler.middleware.StatProfMiddleware') + MIDDLEWARE_CLASSES
+
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
