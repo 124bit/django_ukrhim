@@ -1,0 +1,376 @@
+{% load cms_tags sekizai_tags %}
+<html>
+	<head>
+		
+		{% block meta %}
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+		{% endblock %}
+		
+		{% block title %}
+			<title>{% page_attribute "page_title" %}</title>
+		{% endblock %}
+		
+		{% render_block "css"  postprocessor "compressor.contrib.sekizai.compress" %}
+	  
+		{% addtoblock "css" %}
+			<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+			<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+
+			<link rel="stylesheet" type="text/css" href="style.css" />
+		{% endaddtoblock %}
+		
+			
+		{% addtoblock "js" %}
+			<script type="text/javascript" src="js/function.js"></script>
+			<script type="text/javascript" src="js/jquery-1.7.2.min.js" ></script>
+			
+			<!-- Плавная прокрутка страницы начало -->
+			<script type="text/javascript" src="js/jquery.scrollTo-min.js"></script>
+			<script type="text/javascript" src="js/jquery.localscroll-min.js"></script>
+			<script type="text/javascript" src="js/gallery.js"></script>
+			<script type="text/javascript" src="js/init.js" ></script>
+			<!-- Плавная прокрутка страницы конец -->
+		
+			<script src="js/menu.js" type="text/javascript"></script>
+		{% endaddtoblock %}
+		
+		{% block IE %}
+			<!--[if lt IE 9]>
+			   <style type="text/css">
+			   li a {display:inline-block;}
+			   li a {display:block;}
+			   </style>
+			<![endif]-->
+				 
+			<!--[if IE]>
+				<link rel="stylesheet" type="text/css" href="ie.css" />
+			<![endif]-->
+		{% endblock %}
+	  
+	</head>
+	
+	<body>
+		{% cms_toolbar %}
+		
+		{% block header %}
+			<header>
+				<a href="" class="logo"><img src="img/logo.png" /></a>
+				<div class="slogan">Производитель высококачественных изделий из полиэтилена</div>
+				<form id="search">
+					<input type="search" value="поиск по сайту" class="search-text" onfocus="{if (this.value == 'поиск по сайту')this.value = '';this.setAttribute('class','search-text')}" onblur="if (this.value == ''){this.value = 'поиск по сайту';this.setAttribute('class','search-text')}">
+					<a href="#" title="поиск по сайту"></input></a>
+				</form>
+				<nav class="menu-block">
+					<ul class="menu collapsible">
+						<li class="menu-item-1">
+							<a href="" class="product-item">Продукция</a>
+							<div class="acitem">
+								<div class="arrow-top"></div>
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a>
+										<div>
+											<img src="img/demo/pic-57.jpg" />
+											<a href="">Пластиковые горизонтальные<br /> емкости</a>
+										</div>
+									</li>
+									<li><a href="">Горизонтальные</a>
+										<div>
+											<img src="img/demo/pic-58.jpg" />
+											<a href="">Пластиковые горизонтальные<br /> емкости</a>
+										</div>
+									</li>
+									<li><a href="">Прямоугольные</a>
+										<div>
+											<img src="img/demo/pic-59.jpg" />
+											<a href="">Пластиковые горизонтальные<br /> емкости</a>
+										</div>
+									</li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="menu-item-2">
+							<a href="">Конструкторский отдел</a>
+							<div class="acitem">
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a></li>
+									<li><a href="">Горизонтальные</a></li>
+									<li><a href="">Прямоугольные</a></li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="menu-item-3">
+							<a href="">Новости и акции</a>
+							<div class="acitem">
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a></li>
+									<li><a href="">Горизонтальные</a></li>
+									<li><a href="">Прямоугольные</a></li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="menu-item-4">
+							<a href="">О нас</a>
+							<div class="acitem">
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a></li>
+									<li><a href="">Горизонтальные</a></li>
+									<li><a href="">Прямоугольные</a></li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="menu-item-5">
+							<a href="">Прайсы</a>
+							<div class="acitem">
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a></li>
+									<li><a href="">Горизонтальные</a></li>
+									<li><a href="">Прямоугольные</a></li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="menu-item-6">
+							<a href="">Где купить</a>
+							<div class="acitem">
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a></li>
+									<li><a href="">Горизонтальные</a></li>
+									<li><a href="">Прямоугольные</a></li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="menu-item-7">
+							<a href="">Контакты</a>
+							<div class="acitem">
+								<ul class="left">
+									<li class="item-title">Пластиковые емкости</li>
+									<li><a href="">Вертикальные</a></li>
+									<li><a href="">Горизонтальные</a></li>
+									<li><a href="">Прямоугольные</a></li>
+									<li><a href="">Плоские</a></li>
+									<li><a href="">Транспортные</a></li>
+									<li><a href="">Для душа</a></li>
+									<li><a href="">Для соления</a></li>
+									<li><a href="">Для канализации</a></li>
+									<li><a href="">Агроемкости</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Инженерные конструкции</li>
+									<li><a href="">Дорожные блоки</a></li>
+									<li><a href="">Рукава для сброса мусора</a></li>
+									<li><a href="">Септики</a></li>
+									<li><a href="">Колодцы насосные</a></li>
+									<li><a href="">Колодцы коммуникационные</a></li>
+									<li><a href="">Колодцы водопроводные</a></li>
+									<li><a href="">Поплавки для пульпопровода</a></li>
+								</ul>
+								<img src="img/separator-1.png" class="left"/>
+								<ul class="left">
+									<li class="item-title">Бытовые изделия</li>
+									<li><a href="">Туалетная кабина</a></li>
+									<li><a href="">Биотуалет торфяной дачный</a></li>
+									<li><a href="">Душ дачный</a></li>
+									<li><a href="">Детсткие песочницы</a></li>
+									<li><a href="">Элементы детстких площадок</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+					<a href="" class="language">рус <i></i></a>
+					<a href="" class="contry">украина <i></i></a>
+				</nav>
+			</header>
+		{% endblock %}
+		
+		{% block middle %}
+		{% endblock %}
+		
+		{% block footer %}
+			<footer>
+				<div class="left">
+					<p>© 2006-2012 «ООО «Укрхимпласт», ООО «Химстройпластмасс»</p>
+					<a href="">Карта сайта</a>
+					<a href="" class="contact-info">Контактная информация</a>
+				</div>
+				<div>
+					<ul>
+						<li>E-mail: sales@ukrhimplast.com</li>
+						<li>Skype: ukrhimplast</li>
+						<li>Телефон: +38 (044) 492-82-06</li>
+					</ul>
+				</div>
+				<div class="right">
+					<a href="" class="twitter"></a>
+					<a href="" class="vk"></a>
+					<a href="" class="fb"></a>
+					<p><a href="">Создание сайта</a> — студия «Март»<p>
+				</div>
+			</footer>
+		{% endblock %}
+      
+		{% render_block "js" postprocessor "compressor.contrib.sekizai.compress" %}
+	</body>
+</html>

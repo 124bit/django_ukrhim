@@ -1,2 +1,7 @@
 *.pyc
 .idea/
+django_ukrhim/static/
+django_ukrhim/media/CACHE
+django_ukrhim/media/files/*
+!django_ukrhim/media/files/site_static
+!django_ukrhim/media/files/cms_templates

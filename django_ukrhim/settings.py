@@ -245,11 +245,11 @@ LOGGING = {
 
 
 
-STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/sites_static')
+STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 
 #------CMS SETTINGS
 TEMPLATE_DIRS = (
-    "media/cms_templates",
+    "media/files/cms_templates",
 )
 
 CMS_TEMPLATES = (
