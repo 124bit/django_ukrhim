@@ -154,7 +154,7 @@ ROOT_URLCONF = 'django_ukrhim.urls'
 WSGI_APPLICATION = 'django_ukrhim.wsgi.application'
 
 
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
+
 
 INSTALLED_APPS = (
 # s = s.replace(/[-\s]+/g, '_'); // convert spaces to hyphens #changed  indjango urlify.js
@@ -245,14 +245,11 @@ LOGGING = {
 
 
 
-
+STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/sites_static')
 
 #------CMS SETTINGS
-
 TEMPLATE_DIRS = (
-    # The docs say it should be absolute path: PROJECT_PATH is precisely one.
-    # Life is wonderful!
-    os.path.join(PROJECT_PATH, "templates"),
+    "media/cms_templates",
 )
 
 CMS_TEMPLATES = (
@@ -341,4 +338,3 @@ ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 #COMPRESS_OFFLINE= True
 
 #--------------------urlify.js change - on _
-STATICFILES_DIRS = ('modifier/static',)
