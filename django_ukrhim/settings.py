@@ -253,8 +253,14 @@ TEMPLATE_DIRS = (
 )
 
 CMS_TEMPLATES = (
-    ('template_1.html', 'Template One'),
-    ('template_2.html', 'Template Two'),
+    ('base.html', gettext('Base template')),
+    ('main.html', gettext('Main page template')),
+    ('menu.html', gettext('All menu settings')),
+    ('news.html', gettext('News template')),
+    ('products.html', gettext('Products type page template')),
+    ('where_to_buy.html', gettext('"Where to buy" page template')),
+    ('contacts.html', gettext('Contacts page template')),
+    ('development.html', gettext('Development page template'))
 )
 
 LANGUAGES = [
