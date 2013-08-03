@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load cms_tags ukrhim_extras assign i18n %}
+
+{% block options %}
+	{% placeholder "right block" %}
+{% endblock %}
+
+{% block middle %}
+
+	<div class="middle background">
+		<nav class="menu-left" id="sticker">
+			{% show_placeholder "menu" "about_us" %}
+			<p class="green">{% trans "Archive" %}</p>
+			<ul>{% assign name="now_year" %}{% now "Y" %}{% endassign %}
+				{% mkrange 2011 now_year as year_range %} 
+				{% for year in year_range %} 
+					<li><a {% if "year" in request.GET and request.GET.year == year|slugify %} class="archive-button"  {% endif %} href="{% page_url "news_list" %}?year={{ year }}">{{ year }}</a></li>
+				{% endfor %}
+			</ul>
+		</nav>
+		
+		<div class="right-block">
+				{% placeholder "right block" "news_list" %}
+		</div>
+		
+		<div class="center-block">
+			<ul class="bread-crumbs">
+				{% bread_crumbs %}
+			</ul>
+			{% block content %}
+			<h1>{% page_attribute "page_title" request.current_page %}</h1>
+			
+				{% if "year" in request.GET %}
+					{% for news in request.current_page.get_children %}
+						{% assign name="news_date" %}{% show_placeholder 'date' news %}{% endassign %}
+						{% if news_date|slice:'-5:'|slugify == request.GET.year|slugify and news.in_navigation %}
+							<div class="news-item">
+								<p>{% show_placeholder "date" news %}</p>
+								<img src="{% show_placeholder 'picture' news %}" />
+								<a href="{% page_url news %}">{% show_placeholder 'heading text' news %}</a>
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% else %}
+					{% for news in request.current_page.get_children %}
+						{% if forloop.counter < 10 and news.in_navigation %}
+							<div class="news-item">
+								<p>{% show_placeholder "date" news %}</p>
+								<img src="{% show_placeholder 'picture' news %}" />
+								<a href="{% page_url news %}">{% show_placeholder 'heading text' news %}</a>
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endblock %}	
+			
+		</div>
+		<br />
+	</div>
+	
+{% endblock %}

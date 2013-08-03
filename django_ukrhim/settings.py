@@ -146,6 +146,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
+    'modifier.context_processors.add_sites'
 )
 
 ROOT_URLCONF = 'django_ukrhim.urls'
@@ -177,6 +178,7 @@ INSTALLED_APPS = (
     'rosetta',
     #'htmlmin',
     'compressor',
+    'templateaddons',
     #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -194,7 +196,7 @@ INSTALLED_APPS = (
     'menus',
     'south',
     'sekizai',
-
+    'tinymce',
 
     'cms.plugins.text',
     'cms.plugins.inherit',
@@ -208,7 +210,7 @@ INSTALLED_APPS = (
     'product_db',
     'pdf_gen',
     'modifier', #all monkey patching of apps done her, some twix, glue for all apps
-
+    'cmsplugin_plaintext'
 )
 
 
@@ -249,19 +251,24 @@ STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 
 #------CMS SETTINGS
 TEMPLATE_DIRS = (
-    "media/files/cms_templates",
+    "django_ukrhim/media/files/cms_templates",
 )
 
 CMS_TEMPLATES = (
     ('base.html', gettext('Base template')),
     ('main.html', gettext('Main page template')),
-    ('menu.html', gettext('All menu settings')),
-    ('news.html', gettext('News template')),
-    ('products.html', gettext('Products type page template')),
+    ('news_list.html', gettext('"News list" page template')),
+    ('news.html', gettext('"News" page template')),
+    ('products.html', gettext('Products (menu options) template')),
+    ('product_category.html', gettext('Product categoty (menu options) template')),
+    ('product_type.html', gettext('"Product type" page template')),
     ('where_to_buy.html', gettext('"Where to buy" page template')),
-    ('contacts.html', gettext('Contacts page template')),
-    ('development.html', gettext('Development page template'))
+    ('about_us.html', gettext('"About us" (menu options) template')),
+    ('development.html', gettext('Development (menu options) template')),
+    ('development_with_us.html', gettext('"Development with us" page template')),
+    ('standard.html', gettext('Common page template'))
 )
+
 
 LANGUAGES = [
     ('en', 'English'),
@@ -276,6 +283,15 @@ APPEND_SLASH=True
 CMS_MENU_TITLE_OVERWRITE=True
 CMS_REDIRECTS=True
 #CMS_SOFTROOT=True
+CMS_PLUGIN_TEXT_TINYMCE_CONFIG  = {
+    "width": "100%",
+    "height": "625px",
+    "theme": "simple",
+    "relative_urls": False
+    }
+
+
+
 CMS_SEO_FIELDS=True
 CMS_LANGUAGES = {
     1: [

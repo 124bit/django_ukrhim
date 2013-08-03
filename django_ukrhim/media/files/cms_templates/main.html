@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load cms_tags %}
+
+{% block common_input %}
+	{% placeholder "logo" %}
+	{% placeholder "favicon" %}
+	{% placeholder "slogan" %}
+	{% placeholder "site company" %}
+	{% placeholder "site skype" %}
+	{% placeholder "site emeil" %}
+	{% placeholder "site phone" %}
+	{% placeholder "site twitter" %}
+	{% placeholder "site vk" %}
+	{% placeholder "site fb" %}
+{% endblock %}
+
+{% block middle %}
+	<br />
+	<div class="middle">
+		<div class="slider">
+			<h1>Мы производим</h1>
+			<a href="" class="all-products">Посмотреть все изделия</a>
+			<div id="slides">
+			
+				{% placeholder "slider slides" %}
+				
+				<a href="#" class="slidesjs-previous slidesjs-navigation arrow-left"></a>
+				<a href="#" class="slidesjs-next slidesjs-navigation arrow-right"></a>
+			</div>
+		</div>
+	</div>
+	<div class="directions">
+		<h1>{% placeholder "work directions header" %}</h1>
+		<div class="middle">
+			{% placeholder "work direction 1" %}
+			<img src="/static/img/separator.png" />
+			{% placeholder "work direction 2" %}
+			<img src="/static/img/separator.png" />
+			{% placeholder "work direction 3" %}
+			<img src="/static/img/separator.png" />
+			{% placeholder "work direction 4" %}		
+		</div>
+	</div>
+{% endblock %}
+
+{% block footer %}
+	<div class="main-footer">
+		{{ block.super }} 
+	</div>
+	<!-- SlidesJS Required: Link to jquery.slides.js -->
+	<script src="/static/js/jquery.slides.min.js"></script>
+	<!-- End SlidesJS Required -->
+	<!-- SlidesJS Required: Initialize SlidesJS with a jQuery doc ready -->
+	<script>
+	$(function() {
+	  $('#slides').slidesjs({
+		width: 940,
+		height: 528,
+		navigation: false
+	  });
+	});
+	</script>
+	<!-- End SlidesJS Required -->
+{% endblock %}
+

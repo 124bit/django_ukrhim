@@ -2,7 +2,7 @@
 
 #image-gallery a,#single-image{border-bottom:0}
 
-.not-ready-yet-notice{padding:20px;background:#EEE}#footer{border-top:1px solid #DDD;padding-top:3em;margin:5em 0 0;width:100%;text-align:center;opacity:.9}
+.not-ready-yet-notice{padding:20px;background:#EEE}
 
 #conditional-lightbox-notice{display:none}
 
@@ -54,7 +54,7 @@ button.mfp-close,button.mfp-arrow{overflow:visible;cursor:pointer;/*background:t
 
 button::-moz-focus-inner{padding:0;border:0}
 
-.mfp-close{width:44px;height:44px;line-height:44px;position:absolute;right:0;top:0;text-decoration:none;text-align:center;opacity:.65;padding:0 0 18px 10px;color:#fff;font-style:normal;font-size:28px;font-family:Arial,Baskerville,monospace;display:none!important;}
+.mfp-close{width:44px;height:44px;line-height:44px;position:absolute;right:0;top:0;text-decoration:none;text-align:center;opacity:.65;padding:0 0 18px 10px;color:#fff;font-style:normal;font-size:28px;font-family:Arial,Baskerville,monospace;background:none!important;}
 
 .mfp-close:hover,.mfp-close:focus{opacity:1}
 

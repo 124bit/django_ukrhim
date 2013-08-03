@@ -1174,7 +1174,14 @@ class Page(MPTTModel):
             for language in get_language_tuple():
                 add_plugin(placeholder,InheritPagePlaceholderPlugin,language[0],from_language=language[0])
 
-
+    def has_active_children(self):
+        has=False
+        for child in self.get_children():
+            if child.in_navigation:
+                has=True
+                break
+        print has
+        return has
 def _reversion():
     exclude_fields = ['publisher_is_draft', 'publisher_public', 'publisher_state']
 

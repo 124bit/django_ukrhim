@@ -1,14 +1,14 @@
-.menu-item-1{width:111px;}
-.menu-item-2{width:184px;}
-.menu-item-3{width:141px;}
-.menu-item-4{width:68px;}
-.menu-item-5{width:80px;}
-.menu-item-6{width:101px;}
-.menu-item-7{width:36px;}
+.menu-block {height:42px;}
 
-.menu-item-2 .acitem{margin-left:-111px;}
-.menu-item-3 .acitem{margin-left:-295px;}
-.menu-item-4 .acitem{margin-left:-436px;}
-.menu-item-5 .acitem{margin-left:-504px;}
-.menu-item-6 .acitem{margin-left:-584px;}
-.menu-item-7 .acitem{margin-left:-685px;}
+.menu-item-1{width:114px;}
+.menu-item-2{width:188px;}
+.menu-item-4{width:60px;}
+.menu-item-6{width:96px;}
+
+/*.menu-item-2 .acitem{margin-left:-114px;}
+.menu-item-4 .acitem{margin-left:-441px;}
+.menu-item-6 .acitem{margin-left:-576px;}*/
+
+form#search{width: 190px; -webkit-appearance: textfield; -webkit-box-sizing: content-box; font-family: inherit;font-size: 100%; font-style:italic;border: none; padding: 5px 25px 8px 10px; -webkit-border-radius:5px; -moz-border-radius: 5px; border-radius: 5px;font-size:12px;background: linear-gradient(top, #e0e0e0, #fefefe);background: -webkit-linear-gradient(top, #e0e0e0, #fefefe);background: -moz-linear-gradient(top, #e0e0e0, #fefefe);background: -o-linear-gradient(top, #e0e0e0, #fefefe); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e0e0e0', endColorstr='#fefefe',GradientType=0);box-shadow:0px -1px 2px grey;color:#999;behavior: url(PIE.htc);}
+
+.slogan {font-family: 'PT Sans', sans-serif;}

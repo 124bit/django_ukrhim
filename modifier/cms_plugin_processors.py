@@ -3,7 +3,8 @@ from django.template import Context, Template
 from django.contrib.sites.models import Site
 from product_db.models import Product, ProductType, ProductTag
 from django.conf import settings
-
+from sekizai.data import SekizaiDictionary
+from sekizai.helpers import get_varname
 def render_with_tags(instance, placeholder, rendered_content, original_context):
     '''
     plugin processor fuction. Changes any plugins output. Renders output as django template,
@@ -17,10 +18,10 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     #try:
     #TODO DO SOMETHING WITH ERRORS no seen!!!!
 
-    try:
-        plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
-    except Exception as ex:
-        return ex
+   # try:
+    plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
+    #except Exception as ex:
+    #    return ex
     #except Exception, exc_text:
     #    if original_context['request'].path.startswith('/admin'):
     #        return  exc_text
@@ -73,8 +74,9 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     plugin_context_dict['site']=current_site.site_cutting
     plugin_context_dict[current_site.site_cutting]=1
 
+    plugin_context_dict['request']=original_context['request']
+    plugin_context_dict[get_varname()]=SekizaiDictionary()
     plugin_context = Context(plugin_context_dict)
-
     #todo try render
     if settings.DEBUG==False:
         try:

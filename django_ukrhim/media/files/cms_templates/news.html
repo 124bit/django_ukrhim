@@ -1,0 +1,13 @@
+{% extends "news_list.html" %}
+{% load cms_tags %}
+
+{% block content %}
+	<h1>{% placeholder "heading text" %}</h1>
+	
+	{% placeholder "picture" %}
+	{% placeholder "text" %}
+	{% placeholder "date" %}
+{% endblock %}
+
+{% block options %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% load cms_tags %}
+{% for ance in request.current_page.get_ancestors %} 
+	{% if ance.in_navigation %}
+		<li><a href="{% page_url ance %}">{% page_attribute "menu_title" ance %}</a></li> <i></i>
+	{% else %}
+		<li>{% page_attribute "menu_title" ance %}</li> <i></i>
+	{% endif %}
+{% endfor %}
+<li>{% page_attribute "menu_title" %}</li>
