@@ -36,6 +36,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
+from south.modelsinspector import add_introspection_rules
 
 class EavSlugField(models.SlugField):
     '''
@@ -70,6 +71,8 @@ class EavSlugField(models.SlugField):
         return re.sub('[^\w]', '', name)
 
 
+add_introspection_rules([], ["^eav\.fields\.EavSlugField"])
+
 class EavDatatypeField(models.CharField):
     '''
     The datatype field used by :class:`~eav.models.Attribute`
@@ -86,6 +89,7 @@ class EavDatatypeField(models.CharField):
         if not instance.pk:
             return
 
+add_introspection_rules([], ["^eav\.fields\.EavDatatypeField"])
 
 from django import forms
 from django.utils.text import capfirst
@@ -174,5 +178,4 @@ class MultiSelectField(models.TextField):
 
 # needed for South compatibility
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^coop\.utils\.fields\.MultiSelectField"])
+add_introspection_rules([], ["^eav\.fields\.MultiSelectField"])
