@@ -29,6 +29,7 @@ from .models import Attribute
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
 from eav.models import Value
+from django.conf import settings
 class BaseEntityAdmin(ModelAdmin):
     
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
@@ -108,14 +109,7 @@ make_string.short_description = _("Change datatype to string")
 class AttributeAdmin(ModelAdmin):
     list_filter = ['datatype']
     prepopulated_fields = {'slug': ('name',)}
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'slug', 'datatype')
-        }),
-        (_('Additional options'), {
-            'fields': ('units','description_ru','description_en', 'importance', 'options')
-        }),
-    )
+
     ordering=['name']
     list_display = ('name', 'slug', 'datatype', 'description_ru', 'importance')
     actions = [make_string]
@@ -129,7 +123,18 @@ class AttributeAdmin(ModelAdmin):
 
 
 
-
+    def get_fieldsets(*args, **kwargs):
+        first_fields= ['name_'+lang[0] for lang in settings.LANGUAGES] +['slug', 'datatype']
+        second_fields= ['units_'+lang[0] for lang in settings.LANGUAGES] + ['description_ru','description_en', 'importance', 'options']
+        fieldsets = (
+        (None, {
+            'fields': first_fields
+        }),
+        (_('Additional options'), {
+            'fields': second_fields
+        }),
+        )
+        return fieldsets
 
 
 

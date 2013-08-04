@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.sites.models import Site
 from django.utils.translation import get_language
 from import_export.admin import ImportExportModelAdmin
-
+from django.conf import settings
 class ProductAdminForm(BaseDynamicEntityForm):
     model = Product
 
@@ -71,6 +71,18 @@ class ProductTypeAdmin(ModelAdmin):
     list_display = ('name', 'count_products_of_type')
     ordering = ['name']
 
+    def get_fieldsets(*args, **kwargs):
+        first_fields= ['name', 'slug', 'fields']
+        second_fields=['template'] + ['type_description_'+lang[0] for lang in settings.LANGUAGES]
+        fieldsets = (
+        (None, {
+            'fields': first_fields
+        }),
+        (_('Additional options'), {
+            'fields': second_fields
+        }),
+        )
+        return fieldsets
 
 
 
