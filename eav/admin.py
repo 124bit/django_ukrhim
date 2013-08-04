@@ -116,6 +116,8 @@ class AttributeAdmin(ModelAdmin):
             'fields': ('units','description_ru','description_en', 'importance', 'options')
         }),
     )
+    ordering=['name']
+    list_display = ('name', 'slug', 'datatype', 'description_ru', 'importance')
     actions = [make_string]
     def get_readonly_fields(self, request, obj=None):
         '''
@@ -125,19 +127,9 @@ class AttributeAdmin(ModelAdmin):
             return self.readonly_fields + ('datatype',)
         return self.readonly_fields
 
-    def get_ordering(self, *args, **kwargs):
-        if get_language()=='ru':
-            self.ordering = ['name_ru']
-        else:
-            self.ordering = ['name_en']
-        return super(AttributeAdmin, self).get_ordering(*args, **kwargs)
 
-    def get_list_display(self, *args, **kwargs):
-        if get_language()=='ru':
-            self.list_display = ('name_ru', 'slug', 'datatype', 'description_ru', 'importance')
-        else:
-            self.list_display = ('name_en', 'slug', 'datatype', 'description_en', 'importance')
-        return super(AttributeAdmin, self).get_list_display(*args, **kwargs)
+
+
 
 
 
