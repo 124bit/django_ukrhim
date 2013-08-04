@@ -169,7 +169,8 @@ INSTALLED_APPS = (
      'admin_tools.theming',
      'admin_tools.menu',
      'admin_tools.dashboard',
-
+     'templateaddons',
+     'modeltranslation',
 
      #------not important
      'jsonfield',
@@ -178,7 +179,7 @@ INSTALLED_APPS = (
     'rosetta',
     #'htmlmin',
     'compressor',
-    'templateaddons',
+
     #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -252,6 +253,7 @@ STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 #------CMS SETTINGS
 TEMPLATE_DIRS = (
     "django_ukrhim/media/files/cms_templates",
+    "django_ukrhim/media/files/products_media"
 )
 
 CMS_TEMPLATES = (

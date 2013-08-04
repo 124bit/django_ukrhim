@@ -107,13 +107,13 @@ make_string.short_description = _("Change datatype to string")
 
 class AttributeAdmin(ModelAdmin):
     list_filter = ['datatype']
-    prepopulated_fields = {'slug': ('name_en',)}
+    prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
         (None, {
-            'fields': ('name_ru','name_en', 'slug', 'datatype')
+            'fields': ('name', 'slug', 'datatype')
         }),
         (_('Additional options'), {
-            'fields': ('description_ru','description_en', 'importance', 'options')
+            'fields': ('units','description_ru','description_en', 'importance', 'options')
         }),
     )
     actions = [make_string]

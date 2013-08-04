@@ -4,14 +4,17 @@ from eav.models import Attribute
 from eav.fields import EavSlugField
 import eav
 from django.utils.translation import get_language
+from elfinder.fields import ElfinderField
 
 from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
 class ProductType(models.Model):
-    name_ru=models.CharField(max_length=30,verbose_name=_("Type name (ru)"), unique=True)
-    name_en=models.CharField(max_length=30,verbose_name=_("Type name (en)"), unique=True)
+    name=models.CharField(max_length=30,verbose_name=_("Type name"))
     slug=EavSlugField(max_length=30,verbose_name=_("Type slug"),help_text=_("Short unique type label."), unique=True)
     fields=models.ManyToManyField(Attribute, verbose_name=_("Fields of type"), help_text=_("Data fields always assigned to products of this type."), blank=True)
+    type_description=models.TextField(null=True, blank=True ,verbose_name=_("Product description"), help_text=_("Common description for products of this type."))
+    template=models.TextField(null=True, blank=True ,verbose_name=_("Template"), help_text=_("Common template to render product on its page."))
+
     class Meta:
         verbose_name = _('product type')
         verbose_name_plural = _('Product types')
@@ -19,6 +22,10 @@ class ProductType(models.Model):
     def count_products_of_type(self):
       return self.product_set.count()
     count_products_of_type.short_description = _("Tagged producs")
+
+    def get_products_of_type_and_accessoires(self):
+            products_list=self.product_set.all() | Product.objects.filter(type_accessoires__contains=ProductType.pk)
+            return products_list
 
     def __unicode__(self):
         current_lang=get_language()
@@ -75,6 +82,9 @@ class Product(models.Model):
     get_prices_for_list.short_description = _("Tagged producs")
 
     #TODO make name unique, make slug field - python slug, mayby slug readonly
+
+
+
 
 
 

@@ -31,7 +31,7 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
     list_display = ('name_en', 'product_type', 'active')
     list_filter= ('product_type', 'product_tags')
     list_editable = ('active',)
-    prepopulated_fields = {'slug':("name_en",)}
+    prepopulated_fields = {'slug':("name",)}
     filter_horizontal=('additional_fields',)
     save_on_top=True
 
@@ -67,7 +67,7 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
 
 class ProductTypeAdmin(ModelAdmin):
 
-    prepopulated_fields = {'slug': ('name_en',)}
+    prepopulated_fields = {'slug': ('name',)}
 
     def get_ordering(self, *args, **kwargs):
         if get_language()=='ru':

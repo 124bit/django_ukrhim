@@ -152,12 +152,8 @@ class Attribute(models.Model):
         TYPE_LIST: MultiSelectFormField
     }
 
-    name_ru = models.CharField(_("Name (ru)"), max_length=100,
-                            help_text=_("User-friendly data field name. For russian users."),
-                            unique=True)
-    name_en = models.CharField(_("Name (en)"), max_length=100,
-                            help_text=_("User-friendly data field name. For english users."),
-                            unique=True)
+    name = models.CharField(_("Name"), max_length=100,
+                            help_text=_("User-friendly data field name.")) #, unique=True
 
     slug = EavSlugField(_("Attribute slug"), max_length=50, db_index=True,
                           help_text=_("Short unique data field label."),
@@ -175,6 +171,9 @@ class Attribute(models.Model):
                                         blank=True, null=True,
                                      help_text=_("Short description for english users."))
 
+    units = models.CharField(_("Units of field"), max_length=40,
+                                        blank=True, null=True,
+                                     help_text=_("Units of field."))
 
 
     importance = models.IntegerField(_("Importance"),
@@ -267,12 +266,7 @@ class Attribute(models.Model):
 
     def __unicode__(self):
 
-        current_lang=get_language()
-        if current_lang[:2]=='ru':
-            name=self.name_ru
-        else:
-            name=self.name_en
-        return u"%s (%s)" % (name, self.get_datatype_display())
+        return u"%s (%s)" % (self.name, self.get_datatype_display())
 
     def str_without_type(self):
 
@@ -394,7 +388,7 @@ class Entity(object):
             try:
                 attribute = self.get_attribute_by_slug(name)
             except Attribute.DoesNotExist:
-                raise AttributeError(_(u" EAV attribute doesen't exist " \
+                raise AttributeError(_(u" EAV field doesen't exist " \
                                        u"'%(attr)s'") % \
                                      { 'attr': name})
             try:

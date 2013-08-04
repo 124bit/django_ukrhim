@@ -37,6 +37,7 @@ from os import listdir, path
 from django.conf import  settings
 from django.contrib.sites.models import Site
 from django.utils.translation import get_language
+from product_db.models import ProductType
 class BaseDynamicEntityForm(ModelForm):
     '''
     ModelForm for entity with support for EAV attributes. Form fields are
@@ -131,6 +132,8 @@ class BaseDynamicEntityForm(ModelForm):
 
                 elif 'site_list' in attribute.options:
                     choices = [(site.pk, site.name) for site in Site.objects.all()]
+                elif 'type_list' in attribute.options:
+                    choices = [(product_type.pk, product_type) for product_type in ProductType.objects.all()]
 
                 defaults.update({'choices': choices})
 

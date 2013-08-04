@@ -23,8 +23,8 @@ def currency(site=None, price_index=None,price_slug=None):
     #todo check for safety return this and all
     try:
         price_field=Attribute.objects.get(slug=price_slug)
-        curr=price_field.options['price_field']['currency']
-        return _(curr)
+        curr=price_field.options['price_field'].units
+        return curr
     except KeyError:
         return ''
     except ObjectDoesNotExist:
