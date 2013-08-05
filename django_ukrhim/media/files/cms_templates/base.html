@@ -187,7 +187,7 @@
 					{% language_chooser "language_chooser.html" %}
 					
 					<div id="dd-1" class="wrapper-dropdown-1 contry" tabindex="1">
-						<span>{{ site.options.country|get_item:current_language }}</span> <i></i>
+						<span>{{ site.options.country }}</span> <i></i>
 						<ul class="dropdown" tabindex="1">
 							{% for site in sites %}
 								<li><a href="{{ site.get_absolute_url }}/{{current_language }}/">{{ site.options.country.en }} - {{ site.options.company.en }}</a></li>
