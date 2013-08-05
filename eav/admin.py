@@ -124,7 +124,7 @@ class AttributeAdmin(ModelAdmin):
 
 
     def get_fieldsets(*args, **kwargs):
-        first_fields= ['name_'+lang[0] for lang in settings.LANGUAGES] +['slug', 'datatype']
+        first_fields= ['name_'+lang[0] for lang in settings.LANGUAGES] +['name','slug', 'datatype']
         second_fields= ['units_'+lang[0] for lang in settings.LANGUAGES] + ['description_ru','description_en', 'importance', 'options']
         fieldsets = (
         (None, {

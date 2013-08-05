@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'rosetta',
     #'htmlmin',
     'compressor',
+    'cmsplugin_plaintext',
 
     #----django
     'django.contrib.auth',
@@ -211,7 +212,7 @@ INSTALLED_APPS = (
     'product_db',
     'pdf_gen',
     'modifier', #all monkey patching of apps done her, some twix, glue for all apps
-    'cmsplugin_plaintext'
+
 )
 
 

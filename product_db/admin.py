@@ -73,7 +73,7 @@ class ProductTypeAdmin(ModelAdmin):
 
     def get_fieldsets(*args, **kwargs):
         first_fields= ['name', 'slug', 'fields']
-        second_fields=['template'] + ['type_description_'+lang[0] for lang in settings.LANGUAGES]
+        second_fields=['template','type_description'] + ['type_description_'+lang[0] for lang in settings.LANGUAGES]
         fieldsets = (
         (None, {
             'fields': first_fields

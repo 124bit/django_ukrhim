@@ -29,7 +29,7 @@ def for_site(self, site):
 
 @monkeypatch_method(SiteAdmin)
 def get_fieldsets(*args, **kwargs):
-        fields= ['domain', 'name', 'site_cutting','price_field_slugs'] + ['country_'+lang[0] for lang in settings.LANGUAGES] + ['company_'+lang[0] for lang in settings.LANGUAGES]
+        fields= ['domain', 'name', 'site_cutting','price_field_slugs','country','company'] + ['country_'+lang[0] for lang in settings.LANGUAGES] + ['company_'+lang[0] for lang in settings.LANGUAGES]
         fieldsets = (
         (None, {
             'fields': fields
