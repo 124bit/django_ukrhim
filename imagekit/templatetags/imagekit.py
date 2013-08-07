@@ -5,12 +5,12 @@ from .compat import parse_bits
 from ..cachefiles import ImageCacheFile
 from ..registry import generator_registry
 from modifier.models import ImageSpecModel
-from django.core.files.images import ImageFile
 from django.conf import settings
 from django.utils.safestring import SafeText
-register = template.Library()
 import platform
-
+from django.core.files.images import ImageFile
+from os.path import join, exists
+register = template.Library()
 ASSIGNMENT_DELIMETER = 'as'
 HTML_ATTRS_DELIMITER = '--'
 DEFAULT_THUMBNAIL_GENERATOR = 'imagekit:thumbnail'
@@ -21,13 +21,20 @@ def get_cachefile(context, generator_id, generator_kwargs, source=None):
     kwargs = dict((k, v.resolve(context)) for k, v in generator_kwargs.items())
 
     #changed
-    if type(kwargs['source'])==SafeText:
+    if type(kwargs['source'])==SafeText or type(kwargs['source'])==str or type(kwargs['source'])==unicode:
+
         if platform.system() == 'Linux':
-            with open(settings.PROJECT_PATH+ kwargs['source'],'rb') as f:
+            with open(join(settings.PROJECT_PATH, kwargs['source']),'rb') as f:
                 source=ImageFile(f)
         else:
-            with open(settings.PROJECT_PATH+ kwargs['source'].replace('/','\\'),'rb') as f:
-                source=ImageFile(f)
+            f_path=settings.PROJECT_PATH+kwargs['source'].replace('/','\\')
+            print f_path
+            if exists(f_path):
+                with open(f_path,'rb') as f:
+                    source=ImageFile(f)
+            else:
+                with open(join(settings.PROJECT_PATH, kwargs['source'].replace('/','\\')),'rb') as f:
+                    source=ImageFile(f)
         kwargs['source']=source
     ##
 

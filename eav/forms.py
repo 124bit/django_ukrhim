@@ -38,6 +38,7 @@ from django.conf import  settings
 from django.contrib.sites.models import Site
 from django.utils.translation import get_language
 from product_db.models import ProductType
+from urlparse import urljoin
 class BaseDynamicEntityForm(ModelForm):
     '''
     ModelForm for entity with support for EAV attributes. Form fields are
@@ -72,10 +73,7 @@ class BaseDynamicEntityForm(ModelForm):
             if value:
                 self.initial[attribute.slug] = value
 
-            if get_language()=='ru':
-                label = attribute.name_ru
-            else:
-                label = attribute.name_en
+            label=attribute.str_without_type()
             defaults = {
                 'label': label,
                 'required': False,
@@ -127,8 +125,8 @@ class BaseDynamicEntityForm(ModelForm):
                     if folder_path=='':
                         choices = []
                     else:
-                        folder_path =path.join(settings.PROJECT_PATH, folder_path)
-                        choices = [ (path.join(folder_path,file_name),file_name) for file_name in listdir(folder_path) if path.isfile(path.join(folder_path,file_name)) and '_face' not in file_name ]
+                        full_path =path.join(settings.PROJECT_PATH, folder_path)
+                        choices = [ (urljoin('/'+folder_path+'/',file_name),file_name) for file_name in listdir(full_path) if path.isfile(path.join(full_path,file_name)) and '_face' not in file_name ]
 
                 elif 'site_list' in attribute.options:
                     choices = [(site.pk, site.name) for site in Site.objects.all()]

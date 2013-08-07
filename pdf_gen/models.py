@@ -97,14 +97,13 @@ class PriceTemplate(models.Model):
         template_context={}
         for product in all_products:
             price_string=product.price(price_slug=self.price_field)
-            if price_string!='':
-                template_context[product.slug+'__price']=format(price_string, ".2f")
+            if price_string!='' : #???
+                template_context[product.slug+'__price']=format(price_string, ".2f").replace('.',',')
             else:
                 template_context[product.slug+'__price']=price_string
-            for field in product.additional_fields.all():
+            for field in product.get_secondary_attributes():
                 if field.datatype==Attribute.TYPE_TEXT or field.datatype==Attribute.TYPE_FLOAT or field.datatype==Attribute.TYPE_DATE:
                     template_context[product.slug+'__'+field.slug]=getattr(product,field.slug)
-            print template_context
         return template_context
 
 

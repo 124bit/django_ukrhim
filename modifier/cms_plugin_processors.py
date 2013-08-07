@@ -19,7 +19,8 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     #TODO DO SOMETHING WITH ERRORS no seen!!!!
 
    # try:
-    plugin_text=Template(rendered_content.replace('<pre>','').replace('</pre>',''))
+    plugin_text=Template(rendered_content)
+    plugin_context_dict={}
     #except Exception as ex:
     #    return ex
     #except Exception, exc_text:
@@ -29,54 +30,55 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     #        return ''
 
     #todo brake to functions
-    current_site=Site.objects.get_current()
-    all_products=Product.objects.filter(active=True)
-    site_products_ids=[]
-    for product in all_products:
-        try:
-            if str(current_site.pk) not in product.include_at_sites:
-                continue
-        except AttributeError:
-            pass
-        #todo exclude_include slugs problem
+    # current_site=Site.objects.get_current()
+    # all_products=Product.objects.filter(active=True)
+    # site_products_ids=[]
+    # for product in all_products:
+    #     try:
+    #         if str(current_site.pk) not in product.include_at_sites:
+    #             continue
+    #     except AttributeError:
+    #         pass
+    #     #todo exclude_include slugs problem
+    #
+    #     try:
+    #         if str(current_site.pk) in product.exclude_at_sites:
+    #             continue
+    #     except AttributeError:
+    #         pass
+    #     site_products_ids.append(product.pk)
+    #
+    # site_products=all_products.filter(id__in=site_products_ids)
+    #
+    #
 
-        try:
-            if str(current_site.pk) in product.exclude_at_sites:
-                continue
-        except AttributeError:
-            pass
-        site_products_ids.append(product.pk)
-
-    site_products=all_products.filter(id__in=site_products_ids)
-
-
-    plugin_context_dict={}
-    plugin_context_dict['products']=site_products
-    plugin_context_dict['all_products']=all_products
-
-    #TODO make inique slugs
-    for product in site_products:
-        plugin_context_dict[product.slug]=product
-
-    for product_tag in ProductTag.objects.all():
-        plugin_context_dict['all_'+product_tag.slug]=all_products.filter(product_tags__in=[product_tag])
-
-    for product_type in ProductType.objects.all():
-        plugin_context_dict['all_'+product_type.slug]=all_products.filter(product_type=product_type)
-
-
-    for product_tag in ProductTag.objects.all():
-        plugin_context_dict[product_tag.slug]=site_products.filter(product_tags__in=[product_tag])
-
-    for product_type in ProductType.objects.all():
-        plugin_context_dict[product_type.slug]=site_products.filter(product_type=product_type)
-
-    plugin_context_dict['site']=current_site.site_cutting
-    plugin_context_dict[current_site.site_cutting]=1
+    # plugin_context_dict['products']=site_products
+    # plugin_context_dict['all_products']=all_products
+    #
+    # #TODO make inique slugs
+    # for product in site_products:
+    #     plugin_context_dict[product.slug]=product
+    #
+    # for product_tag in ProductTag.objects.all():
+    #     plugin_context_dict['all_'+product_tag.slug]=all_products.filter(product_tags__in=[product_tag])
+    #
+    # for product_type in ProductType.objects.all():
+    #     plugin_context_dict['all_'+product_type.slug]=all_products.filter(product_type=product_type)
+    #
+    #
+    # for product_tag in ProductTag.objects.all():
+    #     plugin_context_dict[product_tag.slug]=site_products.filter(product_tags__in=[product_tag])
+    #
+    # for product_type in ProductType.objects.all():
+    #     plugin_context_dict[product_type.slug]=site_products.filter(product_type=product_type)
+    #
+    # plugin_context_dict['site']=current_site.site_cutting
+    # plugin_context_dict[current_site.site_cutting]=1
 
     plugin_context_dict['request']=original_context['request']
     plugin_context_dict[get_varname()]=SekizaiDictionary()
     plugin_context = Context(plugin_context_dict)
+
     #todo try render
     if settings.DEBUG==False:
         try:

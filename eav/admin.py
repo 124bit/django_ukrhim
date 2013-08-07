@@ -108,11 +108,20 @@ make_string.short_description = _("Change datatype to string")
 
 class AttributeAdmin(ModelAdmin):
     list_filter = ['datatype']
-    prepopulated_fields = {'slug': ('name',)}
+    prepopulated_fields = {'slug': ('name_en',)}
 
     ordering=['name']
-    list_display = ('name', 'slug', 'datatype', 'description_ru', 'importance')
+    list_display = ('name', 'units', 'slug', 'datatype', 'importance')
     actions = [make_string]
+
+    fieldsets = (
+        (None, {
+            'fields': ['name_'+lang[0] for lang in settings.LANGUAGES] +['slug', 'datatype']
+        }),
+        (_('Additional options'), {
+            'fields': ['units_'+lang[0] for lang in settings.LANGUAGES] + ['description_ru','description_en', 'importance', 'options']
+        }),
+        )
     def get_readonly_fields(self, request, obj=None):
         '''
         Override to make certain fields readonly if this is a change request
@@ -122,19 +131,6 @@ class AttributeAdmin(ModelAdmin):
         return self.readonly_fields
 
 
-
-    def get_fieldsets(*args, **kwargs):
-        first_fields= ['name_'+lang[0] for lang in settings.LANGUAGES] +['name','slug', 'datatype']
-        second_fields= ['units_'+lang[0] for lang in settings.LANGUAGES] + ['description_ru','description_en', 'importance', 'options']
-        fieldsets = (
-        (None, {
-            'fields': first_fields
-        }),
-        (_('Additional options'), {
-            'fields': second_fields
-        }),
-        )
-        return fieldsets
 
 
 

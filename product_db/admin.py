@@ -48,7 +48,7 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
             column_name=site.site_cutting
             attr_slugs=site.price_field_slugs.split(', ')
             for attr_slug in attr_slugs:
-                currency=str(Attribute.objects.get(slug=attr_slug).options['price_field']['currency'])
+                currency=Attribute.objects.get(slug=attr_slug).units
                 func_name='getter_'+attr_slug
                 price_func_slugs.append(func_name)
                 if func_name not in Product.__dict__:
@@ -58,7 +58,7 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
                                 return getattr(self,slug)
                             except AttributeError:
                                 return ''
-                        get_price.short_description = _(column_name)+', '+_(currency)
+                        get_price.short_description = _(column_name)+', '+currency
                         return  get_price
                     setattr(Product,func_name,get_price_generator(attr_slug))
         return  list(self.list_display)+price_func_slugs+['active']
@@ -67,23 +67,18 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
 
 class ProductTypeAdmin(ModelAdmin):
 
-    prepopulated_fields = {'slug': ('name',)}
+    prepopulated_fields = {'slug': ('name_en',)}
     list_display = ('name', 'count_products_of_type')
     ordering = ['name']
 
-    def get_fieldsets(*args, **kwargs):
-        first_fields= ['name', 'slug', 'fields']
-        second_fields=['template','type_description'] + ['type_description_'+lang[0] for lang in settings.LANGUAGES]
-        fieldsets = (
+    fieldsets = (
         (None, {
-            'fields': first_fields
+            'fields': ['name_'+lang[0] for lang in settings.LANGUAGES] + ['slug', 'fields']
         }),
         (_('Additional options'), {
-            'fields': second_fields
+            'fields': ['template'] + ['type_description_'+lang[0] for lang in settings.LANGUAGES]
         }),
         )
-        return fieldsets
-
 
 
 

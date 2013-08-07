@@ -27,16 +27,14 @@ def monkeypatch_method(cls):
 def for_site(self, site):
     self.fields['from_page'].queryset = Page.objects.drafts().on_site(1)
 
-@monkeypatch_method(SiteAdmin)
-def get_fieldsets(*args, **kwargs):
-        fields= ['domain', 'name', 'site_cutting','price_field_slugs','country','company'] + ['country_'+lang[0] for lang in settings.LANGUAGES] + ['company_'+lang[0] for lang in settings.LANGUAGES]
-        fieldsets = (
+
+
+SiteAdmin.fieldsets=fieldsets = (
         (None, {
-            'fields': fields
+            'fields': ['domain', 'name', 'site_cutting','price_field_slugs'] + ['country_'+lang[0] for lang in settings.LANGUAGES] + ['company_'+lang[0] for lang in settings.LANGUAGES]
         }),
 
         )
-        return fieldsets
 # add shortning to Site model. For auto selecting site-dependent information
 Site.add_to_class('site_cutting', EavSlugField(_('Site cutting'),help_text=_("Short unique site identifier."), max_length=14, unique=True))
 Site.add_to_class('price_field_slugs', CharField(_('Price field attrs'),help_text=_("Attributes of price fields for this site, separated with comma-space."), max_length=200))

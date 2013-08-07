@@ -1,9 +1,125 @@
 {% extends "base.html" %}
-{% load cms_tags %}
+{% load assign cms_tags ukrhim_extras i18n %}
 
 {% block middle %}
-	{% placeholder "content" %}
-{% endblock %}
-{% block options %}
-	{% placeholder "introduction" %}
+<div class="middle background">
+		<nav class="menu-left" id="sticker">
+			<ul>
+				{% assign name='ukraine_menu' %}
+				<li class="country-list">УКРАИНА
+					<ul>
+						<li><a href="#kiev">Киев</a></li>
+						<li><a href="#kharkov">Харьков</a></li>
+						<li><a href="#donetck">Донецк</a></li>
+						<li><a href="#zaporozhie">Запорожье</a></li>
+					</ul>
+				</li>
+				{% endassign %}
+				{% assign name='belarus_menu' %}
+				<li class="country-list">БЕЛОРУСЬ
+					<ul>
+						<li><a href="#minsk">Минск</a></li>
+					</ul>
+				</li>
+				{% endassign %}
+				{% assign name='russian_menu' %}
+				<li class="country-list">РОССИЯ
+					<ul>
+						<li><a href="#belgorod">Белгород</a></li>
+					</ul>				
+				</li>
+				{% endassign %}
+				
+				{% make_dict Ukraine=ukraine_menu Belarus=belarus_menu Russia=russian_menu as menu_dict %}
+
+				{{ menu_dict|dict_pop:site.country_en }}
+				
+				{% for menu in menu_dict.values %}
+						{{ menu }}
+				{% endfor %}
+			</ul>
+		</nav>
+		<div class="main-block right">
+			<ul class="bread-crumbs">
+				{% bread_crumbs %}
+			</ul>
+			<h1>{% page_attribute "page_title" request.current_page %}</h1>
+			{% placeholder "For clients" %}
+			<p class="green">{% trans 'Shops and warehouses' %}</p>
+			<div class="map" id="YMapsID" style="width:765px;height:320px"></div>
+			
+
+				{% assign name='ukraine_shops' %}
+				<div class="country-name">Украина</div>
+				<div class="city">Сеть магазинов Эпицентр, список магазинов: <a href="" class="epicentrk">epicentrk.com.ua/kariera.php</a></div>
+				<div class="city">
+					<div class="city-name" id="kiev">Киев</div>
+					<div class="city-contacts">
+						<p><i class="ie"></i> Наш официальный интернет магазин: <a href="">emkost.com.ua</a><br />Тел.: (044) 361-70-75, (067) 411-70-75, (050) 411-70-75</p>
+						<p class="different"><i class="ie"></i> Интернет магазин: <a href="">baki.in.ua</a></p>
+						<p><i class="bilding"></i> Наш центральный офис: ул. Народного Ополчения  26-А, <br />Тел.: (044) 492-82-06, 067 240-03-45</p>
+					</div>
+				</div>
+				<div class="city">
+					<div class="city-name" id="kharkov">Харьков</div>
+					<div class="city-contacts">
+						<p><i class="pushcart"></i> Магазин: <a href="">ukr-plast.com.ua</a><br />Тел.: (096) 345-12-70, (067) 839-91-69</p>
+					</div>
+				</div>
+				<div class="city">
+					<div class="city-name" id="zaporozhie">Запорожье</div>
+					<div class="city-contacts">
+						<p><i class="pushcart"></i> Магазин: <a href="">bnv.ua</a><br />«БНВ-Стройсервис» <br /> Тел.: 061 220-08-35 (36) </p>
+					</div>
+				</div>
+				<div class="city last">
+					<div class="city-name" id="donetck">Донецк</div>
+					<div class="city-contacts">
+						<p><i class="carriage"></i> Региональный склад: ЧП «Тихомиров В.П.»<br />Тел.: (050) 311-30-07, (062) 387-41-33</p>
+					</div>
+				</div>
+				<br />
+				{% endassign %}
+
+			
+	
+				{% assign name='belarus_shops' %}
+				<div class="country-name">Белорусь</div>
+				<div class="city last">
+					<div class="city-name" id="minsk">Минск</div>
+					<div class="city-contacts">
+						<p><i class="pushcart"></i> Магазин: <a href="">belhimplast.by</a><br />«БелХимПласт»<br /> Тел.: +37 517 289 81 82, +37 517 335 30 50, моб. +37 044 788 10 </p>
+					</div>
+				</div>
+				<br />
+				{% endassign %}
+
+			
+				{% assign name='russian_shops' %}
+				<div class="country-name">Россия</div>
+				<div class="city last">
+					<div class="city-name" id="belgorod">Белгород</div>
+					<div class="city-contacts">
+						<p><i class="pushcart"></i> Официальный представитель: 
+<a href="">belgorod-bochka.narod.ru</a><br />«БелХимПласт»<br /> Тел.: + 7 (4722) 597 587, +7 9056733902 </p>
+					</div>
+				</div>
+				<br />
+				{% endassign %}
+			
+			{% make_dict Ukraine=ukraine_shops Belarus=belarus_shops Russia=russian_shops as shops_dict %}
+			<div class="country-block">
+				{{ shops_dict|dict_pop:site.country_en }}
+			</div>
+			{% for shops in shops_dict.values %}
+			
+			<div class="country-block {% if forloop.last %}last{% endif %}">	 
+					{{ shops }}
+			</div>
+			{% endfor %}
+		
+		</div>
+	<br />		
+	</div>
+	<br />
 {% endblock %}

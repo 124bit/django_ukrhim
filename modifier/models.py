@@ -89,6 +89,15 @@ class TransparentBg(object):
             t=self.thresh2, d=self.distance2, c=self.color, r=red, g=green, b=blue, a=alpha))
         return image
 
+class ColorBg(object):
+    def __init__(self,color):
+        self.color=color
+    def process(self, im):
+        background = Image.new('RGBA', im.size, self.color)
+        background.paste(im, im)
+        im = background.convert('RGB')
+        return im
+
 class ImageSpecModel(models.Model):
     name=EavSlugField(max_length=30, help_text=_("Image specifications profiles are used for automatic image generation in templates."), verbose_name=_("Profile name"))
     specs=JSONField(verbose_name=_("Options"), default="{}" , blank=True, help_text=_("Options of image convertation."))

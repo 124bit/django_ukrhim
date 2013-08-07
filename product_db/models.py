@@ -135,18 +135,30 @@ class Product(models.Model):
     #----for direct EAV attr access
     def __getattr__(self, attr):
         current_lang=get_language()
-        try:
-            res=getattr(self.eav, attr+'_'+current_lang)
-            return res
-        except  AttributeError:
-            for lang in get_fallback_languages(current_lang):
-                try:
-                    res=getattr(self.eav, attr+'_'+lang)
-                    return res
-                except  AttributeError:
-                    pass
+        lang_attr=attr+'_'+current_lang
 
+        if lang_attr in self.__dict__:
+                return self.__dict__[lang_attr]
+
+        for lang in get_fallback_languages(current_lang):
+            lang_attr=attr+'_'+lang
+            if lang_attr in self.__dict__:
+                return self.__dict__[lang_attr]
+
+        # secondary_attrs=self.get_secondary_attributes()
+        # if attr in secondary_attrs:
+        #     return getattr(self.eav, attr)
+        #
+        # lang_attr=attr+'_'+current_lang
+        # if lang_attr in secondary_attrs:
+        #         return getattr(self.eav, lang_attr)
+        #
+        # for lang in get_fallback_languages(current_lang):
+        #     lang_attr=attr+'_'+lang
+        #     if lang_attr in secondary_attrs:
+        #         return getattr(self.eav, lang_attr)
         return getattr(self.eav, attr)
+
 
 
     #----for export_import attribute import

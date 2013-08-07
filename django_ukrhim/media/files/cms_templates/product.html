@@ -1,0 +1,12 @@
+
+{% load ukrhim_extras %}
+{% get_product as product %}
+{% get_product_field product "type" as type %}
+{% get_product_field product "template" as template %}
+{% if template %}
+	{% render_text template %}
+{% elif type and type.template %}
+	{% render_text type.template %}
+{% else %}
+	{% ssi 'django_ukrhim/media/files/cms_templates/product_common.html' parsed %}
+{% endif %}

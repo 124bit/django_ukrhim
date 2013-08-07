@@ -265,6 +265,7 @@ CMS_TEMPLATES = (
     ('products.html', gettext('Products (menu options) template')),
     ('product_category.html', gettext('Product categoty (menu options) template')),
     ('product_type.html', gettext('"Product type" page template')),
+    ('product.html', gettext('Common "Product page" template')),
     ('where_to_buy.html', gettext('"Where to buy" page template')),
     ('about_us.html', gettext('"About us" (menu options) template')),
     ('development.html', gettext('Development (menu options) template')),
@@ -361,5 +362,7 @@ ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 
 #--------------------compressors and minifiers settings
 #COMPRESS_OFFLINE= True
+COMPRESS_ENABLED=False
 
-#--------------------urlify.js change - on _
+#--SSI
+ALLOWED_INCLUDE_ROOTS=('django_ukrhim/media/files/cms_templates',)

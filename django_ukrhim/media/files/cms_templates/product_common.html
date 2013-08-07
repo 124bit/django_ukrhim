@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load i18n ukrhim_extras cms_tags currency imagekit assign %}
+
+
+{% block middle %}
+
+{% get_product as product %}
+	<div class="middle background">
+		<nav class="menu-left" id="sticker">
+				{% placeholder "left menu" "inherit" %}
+		</nav>
+		<div class="main-block right">
+			<ul class="bread-crumbs">
+				{% for ance in request.current_page.get_ancestors %} 
+					{% if ance.in_navigation %}
+						<li><a href="{% page_url ance %}">{% page_attribute "menu_title" ance %}</a></li> <i></i>
+					{% else %}
+						<li>{% page_attribute "menu_title" ance %}</li> <i></i>
+					{% endif %}
+				{% endfor %}
+				<li>{% page_attribute "menu_title" request.GET.type_id %}</li><i></i>
+				<li> {{ product.name }}</li>
+				
+			</ul>
+			{% get_product_field product "product_type" as type %}
+			{% get_product_field product "descriprion" as descr %}
+			<h1>{% block heading %} {{ product.name }} {% if type %}{{ type.name}}{% endif %} {% endblock %}</h1>
+			{% get_product_field product "photo" as photo %}
+			
+			<p class="about">{% if photo %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}{% block about %}{% if  descr %} {{ descr }}{% elif type.type_description %} {{ type.type_description }} {% endif %}{% endblock %}</p>
+			<h3 class="left">{% trans "characteristics" %}</h3>
+			<ul class="features left">
+			{% block characteristics %}
+					{% with "length width height" as fields %}
+						{% with fields.split as field_list %}
+							{% for field in field_list %}
+								{% get_product_field product field as field_content %}
+
+								{% if field_content %}
+									<li>{% get_field_name field %} : {{ field_content }} {% get_field_units field %}</li>
+								{% endif %}
+							{% endfor %}
+						{% endwith %}
+					{% endwith %}
+			{% endblock %}
+				<li class="price">{% block price %} {% trans "Price" %}: {{ product.price }} {% currency %}. {% endblock %}</li>
+			</ul>
+			<br />
+			{% block tabs %}
+			{% get_product_field product "sketch" as sketch %}
+			{% get_product_field product "animation_3d" as animation_3d %}
+			{% get_product_field product "list_photos" as list_photos %}
+			<nav id="tabs" class="category">
+				<ul>
+					{% if sketch %}<li><a href="#tab1">Чертежи</a></li> {% endif %}
+					{% if animation_3d %}<li><a href="#tab2">3D модель</a></li>{% endif %}
+					{% if list_photos.0 %}<li><a href="#tab3">Фото</a></li>{% endif %}
+					{% assign name="sert" %}{% placeholder "sert and instr" request.GET.type_id %}{% endassign %}
+					{% if sert %}<li><a href="#tab3">Сертификаты и Инструкция</a></li>{% endif %}
+
+					
+				</ul>
+				<br />
+			</nav>
+			
+			<div id="panels">
+				<div class="panel-wrapper">
+					{% if sketch %}
+						<div class="panel" style="display: block;">
+							
+							<p>{% generateimage "sketch_in_products" source=sketch.url %}</p>
+						</div>
+					{% endif %}
+					{% if animation_3d %}
+					<div class="panel" style="display: none;">
+						<p><img src="{{ animation_3d.url }}"/></p>
+					</div>
+					{% endif %}
+					{% if list_photos.0 %}
+					<div class="panel" style="display: none;">
+						<div class="zoom-gallery">
+						{% for product_photo in list_photos %}
+							{% generateimage "photo_big" source=product_photo  as big_photo %}
+							<a href="{{ big_photo.url }}" class="gallery-product" title="Агроемкости">
+								{% generateimage "gallery_photo_small" source=product_photo  %}
+							</a>
+						{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					{% if sert %}
+					<div class="panel" style="display:none ;">
+						{{ sert }}		
+					</div>
+					{% endif %}
+					
+				</div>
+			</div>	
+			{% endblock %}
+
+
+			
+		</div>
+	<br />		
+	</div>
+	<br />
+
+{% endblock %}
