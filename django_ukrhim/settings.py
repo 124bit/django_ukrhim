@@ -175,7 +175,6 @@ INSTALLED_APPS = (
      #------not important
      'jsonfield',
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
-     'smuggler',
     'rosetta',
     #'htmlmin',
     'compressor',
@@ -262,15 +261,18 @@ CMS_TEMPLATES = (
     ('main.html', gettext('Main page template')),
     ('news_list.html', gettext('"News list" page template')),
     ('news.html', gettext('"News" page template')),
+    ('share.html', gettext('"Share and sale" page template')),
     ('products.html', gettext('Products (menu options) template')),
-    ('product_category.html', gettext('Product categoty (menu options) template')),
+    ('product_category.html', gettext('Product category (empty) template')),
     ('product_type.html', gettext('"Product type" page template')),
-    ('product.html', gettext('Common "Product page" template')),
+    ('product.html', gettext('Auto "Product page" template')),
     ('where_to_buy.html', gettext('"Where to buy" page template')),
     ('about_us.html', gettext('"About us" (menu options) template')),
     ('development.html', gettext('Development (menu options) template')),
     ('development_with_us.html', gettext('"Development with us" page template')),
-    ('standard.html', gettext('Common page template'))
+    ('contacts.html', gettext('"Contacts" page template')),
+    ('standard.html', gettext('Common page template')),
+
 )
 
 
@@ -361,8 +363,8 @@ ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 
 
 #--------------------compressors and minifiers settings
-#COMPRESS_OFFLINE= True
-COMPRESS_ENABLED=False
+COMPRESS_OFFLINE= False
+COMPRESS_ENABLED= True
 
 #--SSI
 ALLOWED_INCLUDE_ROOTS=('django_ukrhim/media/files/cms_templates',)

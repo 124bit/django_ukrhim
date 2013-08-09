@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load cms_tags %}
+{% load cms_tags sekizai_tags compress%}
 
 {% block options %}
 	{% placeholder "catalogue" %}
@@ -8,6 +8,55 @@
 
 
 {% block middle %}
-	{% placeholder "middle" %}
+	{% placeholder "middle" %}	
 {% endblock %}
+
+{% block js %}
+	{{ block.super }}
+	{% compress js %}
+		<script type="text/javascript" src="/static/js/jquery.scrollTo-min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.localscroll-min.js"></script>
+		<script type="text/javascript" src="/static/js/gallery.js"></script>
+		<script type="text/javascript" src="/static/js/init.js" ></script>
+	{% endcompress %}
+	{% compress js %}
+		<script src="/static/js/jquery.magnific-popup.min.js"></script>
+		<script type="text/javascript">
+		  $(document).ready(function() {
+			$('.zoom-gallery').magnificPopup({
+			  delegate: 'a',
+			  type: 'image',
+			  closeOnContentClick: false,
+			  closeBtnInside: false,
+			  mainClass: 'mfp-with-zoom mfp-img-mobile',
+			  image: {
+				verticalFit: true,
+				titleSrc: function(item) {
+				  return item.el.attr('title') + '  ';
+				}
+			  },
+			  gallery: {
+				enabled: true
+			  },
+			  zoom: {
+				enabled: true,
+				duration: 300, // don't foget to change the duration also in CSS
+				opener: function(element) {
+				  return element.find('img');
+				}
+			  }
+			});
+		  });
+		</script>
+	{% endcompress %}
+{% endblock %}
+
+{% block css %}
+	{{ block.super }}
+	{% compress css %}
+		<link href="/static/gal.css" rel="stylesheet">
+	{% endcompress %}
+{% endblock %}
+
+
 

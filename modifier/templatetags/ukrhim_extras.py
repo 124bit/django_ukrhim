@@ -1,6 +1,6 @@
 __author__ = 'Agafon'
 from django import template
-from product_db.models import Product
+from product_db.models import Product, ProductType
 from eav.models import Attribute
 from django.template import  Template
 from django.http import Http404
@@ -22,6 +22,11 @@ def arg(obj,key):
 def dict_pop(obj,key):
     return obj.pop(key)
 
+@register.filter
+def pname_foramtter(name):
+    name.replace('-', ' - ',1)
+    return name.replace('-', ' - ',1)
+
 def make_list(*args):
     a=[]
     for arg in args:
@@ -32,6 +37,10 @@ register.assignment_tag()(make_list)
 def make_dict(**kwargs):
     return kwargs
 register.assignment_tag()(make_dict)
+
+def type_products(type_slug):
+    return ProductType.objects.get(slug=type_slug).product_set.all()
+register.assignment_tag(type_products)
 
 def get_product(context):
     return get_object_or_404(Product,slug=context['request'].GET['product'])
@@ -64,6 +73,10 @@ def make_dict(key, val):
 @register.filter
 def stringify(key):
     return str(key)
+
+@register.filter
+def intify(key):
+    return int(key)
 
 def bread_crumbs(context):
     return context

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% load cms_tags ukrhim_extras assign i18n %}
+{% load cms_tags ukrhim_extras assign i18n imagekit %}
 
 {% block options %}
-	{% placeholder "right block" %}
+	{% placeholder "news start year" %}
 {% endblock %}
 
 {% block middle %}
@@ -12,7 +12,8 @@
 			{% show_placeholder "menu" "about_us" %}
 			<p class="green">{% trans "Archive" %}</p>
 			<ul>{% assign name="now_year" %}{% now "Y" %}{% endassign %}
-				{% mkrange 2011 now_year as year_range %} 
+				{% get_placeholder "news start year" "news_list" as first_year %}
+				{% mkrange first_year|intify|add:"-1" now_year as year_range %} 
 				{% for year in year_range %} 
 					<li><a {% if "year" in request.GET and request.GET.year == year|slugify %} class="archive-button"  {% endif %} href="{% page_url "news_list" %}?year={{ year }}">{{ year }}</a></li>
 				{% endfor %}
@@ -20,7 +21,11 @@
 		</nav>
 		
 		<div class="right-block">
-				{% placeholder "right block" "news_list" %}
+				{% for share in request.current_page.get_children %}
+							{% if share.in_navigation and share.template == 'share.html' %}
+								{% show_placeholder 'list heading block' share %}
+							{% endif %}
+				{% endfor %}
 		</div>
 		
 		<div class="center-block">
@@ -32,24 +37,28 @@
 			
 				{% if "year" in request.GET %}
 					{% for news in request.current_page.get_children %}
-						{% assign name="news_date" %}{% show_placeholder 'date' news %}{% endassign %}
-						{% if news_date|slice:'-5:'|slugify == request.GET.year|slugify and news.in_navigation %}
-							<div class="news-item">
-								<p>{% show_placeholder "date" news %}</p>
-								<img src="{% show_placeholder 'picture' news %}" />
-								<a href="{% page_url news %}">{% show_placeholder 'heading text' news %}</a>
-							</div>
+						{% if news.template == 'news.html' and news.in_navigation %}
+							{% get_placeholder 'date' news as news_date %}
+							{% if news_date|slice:'-5:'|slugify == request.GET.year|slugify and news.in_navigation %}
+								<div class="news-item">
+									<p>{{ news_date }}</p>
+									{% get_placeholder 'picture' news as pic %}
+									{% generateimage "news_pic_news_list" source=pic %}
+									<a href="{% page_url news %}">{% show_placeholder 'list heading text' news %}</a>
+								</div>
+							{% endif %}
 						{% endif %}
 					{% endfor %}
 				{% else %}
 					{% for news in request.current_page.get_children %}
-						{% if forloop.counter < 10 and news.in_navigation %}
-							<div class="news-item">
-								<p>{% show_placeholder "date" news %}</p>
-								<img src="{% show_placeholder 'picture' news %}" />
-								<a href="{% page_url news %}">{% show_placeholder 'heading text' news %}</a>
-							</div>
-						{% endif %}
+							{% if forloop.counter < 12 and news.in_navigation and news.template == 'news.html' %}
+								<div class="news-item">
+									<p>{% show_placeholder 'date' news %}</p>
+									{% get_placeholder 'picture' news as pic %}
+									{% generateimage "news_pic_news_list" source=pic %}
+									<a href="{% page_url news %}">{% show_placeholder 'list heading text' news %}</a>
+								</div>
+							{% endif %}
 					{% endfor %}
 				{% endif %}
 			{% endblock %}	

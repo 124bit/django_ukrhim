@@ -1,19 +1,19 @@
-{% load i18n menu_tags %}
+{% load i18n menu_tags cms_tags %}
 {% get_available_languages as languages %}
-<div id="dd" class="wrapper-dropdown-1 language" tabindex="1">
+
 	{% for language in languages %}
 			{% ifequal current_language language.0 %}
 				{% get_language_info for language.0 as lang %}
-				<span>{{ lang.name_local|upper |slice:":3" }}</span> <i></i>
+				<div class="level1 language">{{ lang.name_local|upper |slice:":3" }}<i></i></div>
 			{% endifequal %}
 	{% endfor %}
 	
-	<ul class="dropdown" tabindex="1">
-		{% for language in languages %}
-			{% ifnotequal current_language language.0 %}
-				{% get_language_info for language.0 as lang %}
-				<li><a href="{% page_language_url language.0 %}">{{ lang.name_local |slice:":3" }}</a></li>
-			{% endifnotequal %}
-		{% endfor %}
-	</ul>
-</div>
+	<div class="level2 language-list">
+	{% for language in languages %}
+		{% ifnotequal current_language language.0 %}
+			{% get_language_info for language.0 as lang %}
+			<div><a href="{% page_url request.current_page %}">{{ lang.name_local |slice:":3" }}</a></div>
+		{% endifnotequal %}
+	{% endfor %}
+	</div>	
+	

@@ -26,6 +26,8 @@ from sekizai.helpers import Watcher, get_varname
 register = template.Library()
 
 
+
+
 def get_site_id(site):
     if site:
         if isinstance(site, Site):
@@ -109,6 +111,25 @@ def _get_page_by_untyped_arg(page_lookup, request, site_id):
             if settings.SEND_BROKEN_LINK_EMAILS:
                 mail_managers(subject, body, fail_silently=True)
             return None
+
+
+#changed
+
+def get_page (context, page_lookup,site=None):
+    if site==None:
+        site=context['site'].pk
+    return _get_page_by_untyped_arg(page_lookup, context['request'], site)
+register.assignment_tag(takes_context=True)(get_page)
+
+def get_placeholder(context, name, page_lookup, lang=None, site=None):
+    return _show_placeholder_for_page(context,name,page_lookup,lang,site)['content'].strip()
+register.assignment_tag(takes_context=True)(get_placeholder)
+
+def get_pl_parent(context, name, page_lookup):
+     return _get_placeholder(page_lookup, page_lookup, context, name).page_getter()
+register.assignment_tag(takes_context=True)(get_pl_parent)
+
+
 
 
 class PageUrl(InclusionTag):

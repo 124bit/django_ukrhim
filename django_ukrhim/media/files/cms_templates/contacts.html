@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load cms_tags compress %}
+
+{% block middle %}
+	{% placeholder "middle" %}
+{% endblock %}
+
+{% block js %}
+	{{ block.super }}
+	{% ssi 'django_ukrhim/media/files/cms_templates/gall_js.html' parsed %}
+	{% compress js inline %}
+		<script>
+				$(function () {
+			//script for popups
+			$('a.show_popup').click(function () {
+				$('div.'+$(this).attr("rel")).fadeIn(500);
+				$("body").append("<div id='overlay'></div>");
+				$('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
+				return false;				
+			});	
+			$('a.close').click(function () {
+				$(this).parent().fadeOut(100);
+				$('#overlay').remove('#overlay');
+				return false;
+			});
+		</script>
+	{% endcompress %}
+{% endblock %}
+
+{% block css %}
+	{{ block.super }}
+	{% compress css %}
+		<link href="/static/gal.css" rel="stylesheet">
+	{% endcompress %}
+{% endblock %}

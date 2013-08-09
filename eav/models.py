@@ -191,7 +191,7 @@ class Attribute(models.Model):
             name=self.description_en
 
 
-    created = models.DateTimeField(_("Сreated"), default=datetime.now, editable=False)
+    created = models.DateTimeField(_("Created"), default=datetime.now, editable=False)
     modified = models.DateTimeField(_("Modified"), auto_now=True)
 
     options = JSONField(verbose_name=_("Specific options"), default="{}" , blank=True, help_text=_("Additional options for field in JSON format."))

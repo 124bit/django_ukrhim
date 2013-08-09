@@ -10,7 +10,6 @@ import platform
 object_tools.autodiscover()
 urlpatterns = i18n_patterns('',
                        url(r'^admin_tools/', include('admin_tools.urls')),
-                    #   (r'^admin/', include('smuggler.urls')),
                        (r'^admin/', include(admin.site.urls)),
 
                        url(r'^elfinder/', include('elfinder.urls')),

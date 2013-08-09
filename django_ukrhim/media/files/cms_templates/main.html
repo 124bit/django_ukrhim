@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load cms_tags %}
+{% load cms_tags sekizai_tags compress %}
 
 {% block common_input %}
 	{% placeholder "logo" %}
@@ -18,9 +18,6 @@
 	<br />
 	<div class="middle">
 		<div class="slider">
-			<h1>Мы производим</h1>
-			<a href="" class="all-products">Посмотреть все изделия</a>
-			<div id="slides">
 			
 				{% placeholder "slider slides" %}
 				
@@ -49,3 +46,18 @@
 	</div>
 {% endblock %}
 
+{% block js %}
+	{{ block.super}}
+	{% compress js %}
+		<script src="/static/js/jquery.slides.min.js"></script>
+		<script>
+			$(function() {
+			  $('#slides').slidesjs({
+				width: 940,
+				height: 528,
+				navigation: false
+			  });
+			});
+		</script>
+	{% endcompress %}
+{% endblock %}	

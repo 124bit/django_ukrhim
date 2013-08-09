@@ -106,13 +106,25 @@ def make_string(modeladmin, request, queryset):
         attr.save()
 make_string.short_description = _("Change datatype to string")
 
+def to_int_text(modeladmin, request, queryset):
+    for attr in queryset:
+        for value_obj in Value.objects.filter(attribute=attr):
+            try:
+                int_val=int(float(value_obj.value))
+                value_obj.value_text=str(int_val)
+                value_obj.save()
+            except Exception,e:
+                raise e
+
+to_int_text.short_description = _("To text without zeros")
+
 class AttributeAdmin(ModelAdmin):
     list_filter = ['datatype']
     prepopulated_fields = {'slug': ('name_en',)}
 
     ordering=['name']
     list_display = ('name', 'units', 'slug', 'datatype', 'importance')
-    actions = [make_string]
+    actions = [make_string, to_int_text]
 
     fieldsets = (
         (None, {

@@ -75,8 +75,8 @@ def render_with_tags(instance, placeholder, rendered_content, original_context):
     # plugin_context_dict['site']=current_site.site_cutting
     # plugin_context_dict[current_site.site_cutting]=1
 
-    plugin_context_dict['request']=original_context['request']
-    plugin_context_dict[get_varname()]=SekizaiDictionary()
+    plugin_context_dict=original_context
+
     plugin_context = Context(plugin_context_dict)
 
     #todo try render
