@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load cms_tags %}
+{% load cms_tags compress %}
 
 {% block middle %}
 	{% placeholder "content" %}
@@ -9,4 +9,13 @@
 	{% placeholder "nav menu items" %}
 	{% placeholder "left menu items" %}
 	{% placeholder "sert and instr" %}
+{% endblock %}
+
+{% block js %}
+	{{ block.super }}
+	{% include 'scroll_js.html' %}
+	{% include 'scroll_move_js.html' %}
+	{% compress js %}
+		<script src="/static/js/bootstrap-scrollspy.js"></script>
+	{% endcompress %}
 {% endblock %}

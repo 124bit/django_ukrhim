@@ -11,12 +11,7 @@
 
 {% block js %}
 	{{ block.super }}
-	{% compress js %}
-		<script type="text/javascript" src="/static/js/jquery.scrollTo-min.js"></script>
-		<script type="text/javascript" src="/static/js/jquery.localscroll-min.js"></script>
-		<script type="text/javascript" src="/static/js/gallery.js"></script>
-		<script type="text/javascript" src="/static/js/init.js" ></script>
-	{% endcompress %}
+	{% include 'scroll_js.html' %}
 	
 
 	<script src="http://api-maps.yandex.ru/1.1/index.xml?key=AB6o91EBAAAA37mQDQMAwfZFspaSYWSTmKKXxENk0sA_MY8AAAAAAAAAAADCsOMd5U7HjgjG8qPNofE3qi-1Pw==" type="text/javascript"></script>
@@ -29,13 +24,6 @@
 		</script>
 	{% endcompress %}
 	
-	{% compress js %}
-		<script type="text/javascript" src="/static/js/jquery.sticky.js"></script>
-		<script>
-		$(window).load(function(){
-		  $("#sticker").sticky({ topSpacing: 10, bottomSpacing: 200 });
-		});
-		</script>
-	{% endcompress %}
+	{% include 'scroll_move_js.html' %}
 	
 {% endblock %}

@@ -271,8 +271,7 @@ CMS_TEMPLATES = (
     ('development.html', gettext('Development (menu options) template')),
     ('development_with_us.html', gettext('"Development with us" page template')),
     ('contacts.html', gettext('"Contacts" page template')),
-    ('standard.html', gettext('Common page template')),
-
+    ('standard.html', gettext('Base page template with middle plchldr'))
 )
 
 
