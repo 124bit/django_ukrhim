@@ -7,6 +7,7 @@ from django import forms
 from os import listdir
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
+from generic_positions.admin import GenericPositionsAdmin
 
 class MediaInline(OrderableStackedInline):
     model = Media
@@ -30,7 +31,8 @@ def delete_old_photos(modeladmin, request, queryset):
             if photo.slug not in photos_urls and photo.slug[:4]!='http':
                 photo.delete()
 delete_old_photos.short_description = _("Delete deleted photos")
-class AlbumAdmin(admin.ModelAdmin):
+
+class AlbumAdmin(GenericPositionsAdmin):
     model = Album
     inlines = [MediaInline]
     actions = [delete_old_photos]

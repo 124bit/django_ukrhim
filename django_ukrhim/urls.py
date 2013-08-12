@@ -16,10 +16,10 @@ urlpatterns = i18n_patterns('',
 
                        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': {'cmspages': CMSSitemap}}),
 
-
+                       url(r'^pos/', include('generic_positions.urls')),
 #-------cms.urls must be last
                        url(r'^', include('cms.urls')),
-                       url(r'^pos/', include('generic_positions.urls')),
+
 
                        )
 

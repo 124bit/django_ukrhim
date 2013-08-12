@@ -53,7 +53,7 @@ class Album(models.Model):
 
 
 class Media(Orderable):
-    slug=models.CharField(max_length=255,verbose_name=_("name/url"), unique=True)
+    slug=models.CharField(max_length=255,verbose_name=_("name/url"))
     descr_en=models.CharField(max_length=70,verbose_name=_("Photo description (ru)"),null=True,blank=True)
     descr_ru=models.CharField(max_length=70,verbose_name=_("Photo description (en)"),null=True,blank=True)
     show=models.BooleanField(verbose_name=_("Show photo"),default=True)
