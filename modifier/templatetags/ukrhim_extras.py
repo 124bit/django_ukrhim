@@ -6,6 +6,7 @@ from django.template import  Template
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from ukrhim_gallery.models import Album
+from collections import OrderedDict
 register = template.Library()
 @register.filter
 def get_item(dictionary, key):
@@ -40,13 +41,53 @@ def make_dict(**kwargs):
 register.assignment_tag()(make_dict)
 
 def get_albums():
-    return Album
+    return Album.objects.all()
 register.assignment_tag()(get_albums)
 
+def get_album_photos(slug):
+    photos=[]
+    for photo in Album.objects.get(slug=slug).media_set.all():
+        if photo.slug[:4]!='http':
+            photos.append(photo)
+    return photos
+register.assignment_tag()(get_album_photos)
+
+def get_album_videos(slug):
+    photos=[]
+    for photo in Album.objects.get(slug=slug).media_set.all():
+        if photo.slug[:4] == 'http':
+            photos.append(photo)
+    return photos
+
+register.assignment_tag()(get_album_videos)
 
 def type_products(type_slug):
-    return ProductType.objects.get(slug=type_slug).product_set.all()
+    products=ProductType.objects.get(slug=type_slug).product_set.all()
+    products_list=[]
+    for product in products:
+        products_list.append((product.slug, product))
+    return OrderedDict(products_list)
 register.assignment_tag(type_products)
+
+def add_to_item(products,slug,field, value):
+    value=str(value)
+    old_value=getattr(products[slug],field)
+    setattr(products[slug],field, str(old_value)+value)
+register.simple_tag(add_to_item)
+
+def get_type_and_addtnl_products(product):
+    return product.product_type.get_products_of_type_and_accessoires()
+register.assignment_tag(get_type_and_addtnl_products)
+
+def change_item(products,slug,field, value):
+    value=str(value)
+    old_value=str(getattr(products[slug],field))
+    if '{}' in value:
+        new_value= value.replace('{}',old_value)
+    else:
+        new_value= value
+    setattr(products[slug],field, new_value)
+register.simple_tag(change_item)
 
 def get_product(context):
     return get_object_or_404(Product,slug=context['request'].GET['product'])
@@ -78,7 +119,18 @@ def make_dict(key, val):
 
 @register.filter
 def stringify(key):
-    return str(key)
+    if key:
+        return str(key)
+    else:
+        return ''
+
+@register.filter
+def unicodify(key):
+    if key:
+        return unicode(key)
+    else:
+        return ''
+
 
 @register.filter
 def intify(key):

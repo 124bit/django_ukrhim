@@ -23,9 +23,18 @@ class ProductType(models.Model):
       return self.product_set.count()
     count_products_of_type.short_description = _("Tagged producs")
 
+
     def get_products_of_type_and_accessoires(self):
-            products_list=self.product_set.all() | Product.objects.filter(type_accessoires__contains=ProductType.pk)
-            return products_list
+        accs_list=[]
+        accesoires=Product.objects.filter(product_type__slug='accessoires')
+        for acc in accesoires:
+            try:
+                if self.pk in acc.type_accessoires:
+                    accs_list.append(acc)
+            except AttributeError:
+                pass
+        products=self.product_set.all()
+        return list(products)+accs_list
 
     def __unicode__(self):
         current_lang=get_language()

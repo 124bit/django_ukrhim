@@ -131,7 +131,7 @@ class BaseDynamicEntityForm(ModelForm):
                 elif 'site_list' in attribute.options:
                     choices = [(site.pk, site.name) for site in Site.objects.all()]
                 elif 'type_list' in attribute.options:
-                    choices = [(product_type.pk, product_type) for product_type in ProductType.objects.all()]
+                    choices = [(product_type.pk, product_type) for product_type in ProductType.objects.all() if product_type.slug != 'accessoires']
 
                 defaults.update({'choices': choices})
 

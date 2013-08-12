@@ -7,7 +7,34 @@
 {% get_product as product %}
 	<div class="middle background">
 		<nav class="menu-left" id="sticker">
-				{% placeholder "left menu" "inherit" %}
+					{% if "type" in request.GET %}
+						<nav class="menu-left">
+							<ul>
+						{% get_page request.GET.type as parent %}			
+							
+								{% for child in parent.get_children %}
+									{% assign name="menu_items" %}{% show_placeholder 'left menu items' child %}{% endassign %}
+									{% if menu_items %}
+										{{ menu_items }}
+									{% else %}
+										<li><a href="{{ child.get_absolute_url }}" {% if child.reverse_id == request.current_page.reverse_id %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
+											{% if child.reverse_id == request.current_page.reverse_id %}
+												{% get_type_and_addtnl_products product as products %}
+												{% if products %}
+													<ul>
+													{% for product in products %}
+														<li><a href="{{ child.get_absolute_url }}?type={{ request.GET.type }}&product={{ product.slug }}" {% if 'product' in request.GET and request.GET.product == product.slug %} class="current-button" {% endif %}>{{ product.name }}</a></li>
+													{% endfor %}
+													</ul>
+												{% endif %}
+										{% endif %}
+										</li>
+									{% endif %}
+								{% endfor %}
+						
+							</ul>
+						</nav>
+					{% endif %}
 		</nav>
 		<div class="main-block right">
 			<ul class="bread-crumbs">
@@ -18,7 +45,7 @@
 						<li>{% page_attribute "menu_title" ance %}</li> <i></i>
 					{% endif %}
 				{% endfor %}
-				<li>{% page_attribute "menu_title" request.GET.type_id %}</li><i></i>
+				<li>{% page_attribute "menu_title" request.GET.type %}</li><i></i>
 				<li> {{ product.name }}</li>
 				
 			</ul>
@@ -27,7 +54,7 @@
 			<h1>{% block heading %} {{ product.name }} {% if type %}{{ type.name}}{% endif %} {% endblock %}</h1>
 			{% get_product_field product "photo" as photo %}
 			
-			<p class="about">{% if photo %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}{% block about %}{% if  descr %} {{ descr }}{% elif type.type_description %} {{ type.type_description }} {% endif %}{% endblock %}</p>
+			<p class="about">{% if photo.url %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}{% block about %}{% if  descr %} {{ descr }}{% elif type.type_description %} {{ type.type_description }} {% endif %}{% endblock %}</p>
 			<h3 class="left">{% trans "characteristics" %}</h3>
 			<ul class="features left">
 			{% block characteristics %}
@@ -52,10 +79,10 @@
 			{% get_product_field product "list_photos" as list_photos %}
 			<nav id="tabs" class="category">
 				<ul>
-					{% if sketch %}<li><a href="#tab1">Чертежи</a></li> {% endif %}
-					{% if animation_3d %}<li><a href="#tab2">3D модель</a></li>{% endif %}
+					{% if sketch.url %}<li><a href="#tab1">Чертежи</a></li> {% endif %}
+					{% if animation_3d.url %}<li><a href="#tab2">3D модель</a></li>{% endif %}
 					{% if list_photos.0 %}<li><a href="#tab3">Фото</a></li>{% endif %}
-					{% assign name="sert" %}{% placeholder "sert and instr" request.GET.type_id %}{% endassign %}
+					{% assign name="sert" %}{% placeholder "sert and instr" request.GET.type %}{% endassign %}
 					{% if sert %}<li><a href="#tab3">Сертификаты и Инструкция</a></li>{% endif %}
 
 					
@@ -65,13 +92,13 @@
 			
 			<div id="panels">
 				<div class="panel-wrapper">
-					{% if sketch %}
+					{% if sketch.url %}
 						<div class="panel" style="display: block;">
 							
 							<p>{% generateimage "sketch_in_products" source=sketch.url %}</p>
 						</div>
 					{% endif %}
-					{% if animation_3d %}
+					{% if animation_3d.url %}
 					<div class="panel" style="display: none;">
 						<p><img src="{{ animation_3d.url }}"/></p>
 					</div>
@@ -81,7 +108,7 @@
 						<div class="zoom-gallery">
 						{% for product_photo in list_photos %}
 							{% generateimage "photo_big" source=product_photo  as big_photo %}
-							<a href="{{ big_photo.url }}" class="gallery-product" title="Агроемкости">
+							<a href="{{ big_photo.url }}" class="gallery-product" >
 								{% generateimage "gallery_photo_small" source=product_photo  %}
 							</a>
 						{% endfor %}

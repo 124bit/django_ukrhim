@@ -12,8 +12,8 @@ from django.utils.translation import get_language
 from django.contrib.contenttypes import generic
 
 class Album(models.Model):
-    name_en=models.CharField(max_length=70,verbose_name=_("Album name (ru)"),null=True,blank=True)
-    name_ru=models.CharField(max_length=70,verbose_name=_("Album name (en)"),null=True,blank=True)
+    name_en=models.CharField(max_length=70,verbose_name=_("Album name (en)"),null=True,blank=True)
+    name_ru=models.CharField(max_length=70,verbose_name=_("Album name (ru)"),null=True,blank=True)
     slug=EavSlugField(max_length=30,verbose_name=_("album slug"),help_text=_("Short unique label."), unique=True)
     show=models.BooleanField(verbose_name=_("Show album"),default=True)
     face_photo=ElfinderField(help_text=_("Choose photo"))
@@ -22,6 +22,8 @@ class Album(models.Model):
     )
     class Meta:
         ordering = ['generic_position__position']
+        verbose_name = _('Album')
+        verbose_name_plural = _('Albums')
 
     def save(self,*args,**kwargs):
         super(Album,self).save(*args,**kwargs)

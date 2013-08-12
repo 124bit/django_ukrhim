@@ -352,11 +352,11 @@ SERIALIZATION_MODULES = {
 
 
 #-----------django_admin_tools settings
-#ADMIN_TOOLS_MENU = 'modifier.custom_menu.CustomMenu'
-#ADMIN_TOOLS_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomIndexDashboard'
-#ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashboard'
+ADMIN_TOOLS_MENU = 'modifier.custom_menu.CustomMenu'
+ADMIN_TOOLS_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashboard'
 
-#ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
+ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 #A good start is to copy the admin_tools/media/admin_tools/css/theming.css to your custom file and to modify it to suits your needs.
 
 
