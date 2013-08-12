@@ -19,6 +19,7 @@ urlpatterns = i18n_patterns('',
 
 #-------cms.urls must be last
                        url(r'^', include('cms.urls')),
+                       url(r'^pos/', include('generic_positions.urls')),
 
                        )
 

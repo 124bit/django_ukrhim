@@ -5,6 +5,7 @@ from eav.models import Attribute
 from django.template import  Template
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from ukrhim_gallery.models import Album
 register = template.Library()
 @register.filter
 def get_item(dictionary, key):
@@ -37,6 +38,11 @@ register.assignment_tag()(make_list)
 def make_dict(**kwargs):
     return kwargs
 register.assignment_tag()(make_dict)
+
+def get_albums():
+    return Album
+register.assignment_tag()(get_albums)
+
 
 def type_products(type_slug):
     return ProductType.objects.get(slug=type_slug).product_set.all()

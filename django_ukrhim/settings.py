@@ -171,14 +171,14 @@ INSTALLED_APPS = (
      'admin_tools.dashboard',
      'templateaddons',
      'modeltranslation',
-
+    'inline_ordering',
+    'generic_positions',
      #------not important
      'jsonfield',
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
     'rosetta',
     #'htmlmin',
     'compressor',
-    'cmsplugin_plaintext',
 
     #----django
     'django.contrib.auth',
@@ -190,7 +190,6 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'django.contrib.admin',
     'django.contrib.admindocs',
-
     #----django-cms
     'cms', #patched in modifier
     'mptt',
@@ -198,10 +197,9 @@ INSTALLED_APPS = (
     'south',
     'sekizai',
     'tinymce',
-
     'cms.plugins.text',
     'cms.plugins.inherit',
-
+    'cmsplugin_plaintext',
     #'polymorphic',
     'reversion',
     'profiler',
@@ -211,6 +209,7 @@ INSTALLED_APPS = (
     'product_db',
     'pdf_gen',
     'modifier', #all monkey patching of apps done her, some twix, glue for all apps
+    'ukrhim_gallery'
 
 )
 
@@ -353,11 +352,11 @@ SERIALIZATION_MODULES = {
 
 
 #-----------django_admin_tools settings
-ADMIN_TOOLS_MENU = 'modifier.custom_menu.CustomMenu'
-ADMIN_TOOLS_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomIndexDashboard'
-ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashboard'
+#ADMIN_TOOLS_MENU = 'modifier.custom_menu.CustomMenu'
+#ADMIN_TOOLS_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomIndexDashboard'
+#ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashboard'
 
-ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
+#ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 #A good start is to copy the admin_tools/media/admin_tools/css/theming.css to your custom file and to modify it to suits your needs.
 
 
