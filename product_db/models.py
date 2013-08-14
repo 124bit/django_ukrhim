@@ -5,9 +5,11 @@ from eav.fields import EavSlugField
 import eav
 from django.utils.translation import get_language
 from elfinder.fields import ElfinderField
-
+from inline_ordering.models import Orderable
 from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
+from positions import PositionField
+
 class ProductType(models.Model):
     name=models.CharField(max_length=30,verbose_name=_("Type name"))
     slug=EavSlugField(max_length=30,verbose_name=_("Type slug"),help_text=_("Short unique type label."), unique=True)
@@ -29,7 +31,7 @@ class ProductType(models.Model):
         accesoires=Product.objects.filter(product_type__slug='accessoires')
         for acc in accesoires:
             try:
-                if self.pk in acc.type_accessoires:
+                if str(self.pk) in acc.type_accessoires:
                     accs_list.append(acc)
             except AttributeError:
                 pass
@@ -80,6 +82,7 @@ class Product(models.Model):
     additional_fields=models.ManyToManyField(Attribute, verbose_name=_("Additional fields"), blank=True)
     product_tags=models.ManyToManyField(ProductTag, verbose_name=_("Product tags"),help_text=_("Tags are used for quick searching for products."), blank=True)
     active = models.BooleanField(default=True, verbose_name=_('Active'),help_text=_("If product is deactivated - it doesn't shown anywhere."))
+    position_in_list = PositionField(verbose_name=_('Position in type'), collection='product_type')
     date_added = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_('Date added'))
     last_modified = models.DateTimeField(auto_now=True,
@@ -100,6 +103,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = _('product')
         verbose_name_plural = _('Products')
+        ordering = ['position_in_list']
 
     def __unicode__(self):
         current_lang=get_language()
@@ -166,6 +170,8 @@ class Product(models.Model):
         #     lang_attr=attr+'_'+lang
         #     if lang_attr in secondary_attrs:
         #         return getattr(self.eav, lang_attr)
+        if attr== '_position_in_list_cache':
+            raise AttributeError
         return getattr(self.eav, attr)
 
 

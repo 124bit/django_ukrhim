@@ -5,8 +5,7 @@ class Orderable(models.Model):
     """Add extra field and default ordering column for and inline orderable model"""
     
     inline_ordering_position = models.IntegerField(blank = True, 
-                                                   null = True, 
-                                                   editable = True)
+                                                   null = True)
     
     class Meta:
         abstract = True 

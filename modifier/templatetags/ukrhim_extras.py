@@ -2,7 +2,7 @@ __author__ = 'Agafon'
 from django import template
 from product_db.models import Product, ProductType
 from eav.models import Attribute
-from django.template import  Template
+from django.template import  Template, Context
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from ukrhim_gallery.models import Album
@@ -75,8 +75,11 @@ def add_to_item(products,slug,field, value):
     setattr(products[slug],field, str(old_value)+value)
 register.simple_tag(add_to_item)
 
-def get_type_and_addtnl_products(product):
-    return product.product_type.get_products_of_type_and_accessoires()
+def get_type_and_addtnl_products(product, product_type_slug=None):
+    if product_type_slug:
+        return ProductType.objects.get(slug=product_type_slug).get_products_of_type_and_accessoires()
+    else:
+        return product.product_type.get_products_of_type_and_accessoires()
 register.assignment_tag(get_type_and_addtnl_products)
 
 def change_item(products,slug,field, value):
@@ -93,6 +96,13 @@ def get_product(context):
     return get_object_or_404(Product,slug=context['request'].GET['product'])
 register.assignment_tag(takes_context=True)(get_product)
 
+def parse_tmpl(tmpl,**kwargs):
+    return Template(tmpl).render(Context(kwargs))
+register.simple_tag(parse_tmpl)
+
+def make_str(string):
+    return string
+register.assignment_tag(make_str)
 def get_product_field(product, field_slug):
     try:
         res=getattr(product,field_slug)

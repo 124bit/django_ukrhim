@@ -11,6 +11,7 @@ from django.contrib.sites.models import Site
 from django.utils.translation import get_language
 from import_export.admin import ImportExportModelAdmin
 from django.conf import settings
+from inline_ordering.admin import OrderableStackedInline
 class ProductAdminForm(BaseDynamicEntityForm):
     model = Product
 
@@ -65,8 +66,8 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
 
 
 
-class ProductTypeAdmin(ModelAdmin):
 
+class ProductTypeAdmin(ModelAdmin):
     prepopulated_fields = {'slug': ('name_en',)}
     list_display = ('name', 'count_products_of_type')
     ordering = ['name']

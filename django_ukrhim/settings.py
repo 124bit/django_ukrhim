@@ -173,13 +173,15 @@ INSTALLED_APPS = (
      'modeltranslation',
     'inline_ordering',
     'generic_positions',
-     #------not important
+    'compressor',
      'jsonfield',
+     #------not important
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
     'rosetta',
     #'htmlmin',
-    'compressor',
-
+    'django_reset',
+    'profiler',
+    'positions',
     #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -196,13 +198,12 @@ INSTALLED_APPS = (
     'menus',
     'south',
     'sekizai',
-    'tinymce',
-    'cms.plugins.text',
+    #'cms.plugins.text',
     'cms.plugins.inherit',
     'cmsplugin_plaintext',
+    'django_ace',
     #'polymorphic',
     'reversion',
-    'profiler',
     #-----our
     #'ukrhim_shop',
     'eav',
@@ -287,12 +288,7 @@ APPEND_SLASH=True
 CMS_MENU_TITLE_OVERWRITE=True
 CMS_REDIRECTS=True
 #CMS_SOFTROOT=True
-CMS_PLUGIN_TEXT_TINYMCE_CONFIG  = {
-    "width": "100%",
-    "height": "625px",
-    "theme": "simple",
-    "relative_urls": False
-    }
+
 
 
 

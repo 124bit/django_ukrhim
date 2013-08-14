@@ -13,17 +13,17 @@
 						{% get_page request.GET.type as parent %}			
 							
 								{% for child in parent.get_children %}
-									{% assign name="menu_items" %}{% show_placeholder 'left menu items' child %}{% endassign %}
+									{% assign name="menu_items" %}{% show_uncached_placeholder 'left menu items product' child %}{% endassign %}
 									{% if menu_items %}
 										{{ menu_items }}
 									{% else %}
-										<li><a href="{{ child.get_absolute_url }}" {% if child.reverse_id == request.current_page.reverse_id %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
-											{% if child.reverse_id == request.current_page.reverse_id %}
-												{% get_type_and_addtnl_products product as products %}
+										<li><a href="{{ child.get_absolute_url }}" {% if request.GET.product_type == product_type %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
+										{% if request.GET.product_type == product_type %}
+												{% get_type_and_addtnl_products product request.GET.product_type as products %}
 												{% if products %}
 													<ul>
 													{% for product in products %}
-														<li><a href="{{ child.get_absolute_url }}?type={{ request.GET.type }}&product={{ product.slug }}" {% if 'product' in request.GET and request.GET.product == product.slug %} class="current-button" {% endif %}>{{ product.name }}</a></li>
+														<li><a href="{{ child.get_absolute_url }}?type={{ request.GET.type }}&product={{ product.slug }}" >{{ product.name }}</a></li>
 													{% endfor %}
 													</ul>
 												{% endif %}

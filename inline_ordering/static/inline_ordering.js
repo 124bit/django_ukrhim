@@ -14,18 +14,18 @@ var InlineOrdering = {
         var allInlineRows = InlineOrdering.jQuery('.inline-related'),
             i = 0,
             ids = [];
-        
+
         for (i = 0; i < allInlineRows.length; i = i + 1) {
             if (InlineOrdering.jQuery('.inline_ordering_position input, .field-inline_ordering_position input', allInlineRows[i]).val()) {
                 ids.push('#' + allInlineRows[i].id);
             }
         }
-        
-        // this redundant way is required, so that proper order is maintained, 
+
+        // this redundant way is required, so that proper order is maintained,
         // otherwise orderables were returned in more or less random order
-        return InlineOrdering.jQuery(ids.join(', ')); 
+        return InlineOrdering.jQuery(ids.join(', '));
     },
-    
+
     /**
      * Inits the jQuery UI D&D
      *
@@ -40,20 +40,20 @@ var InlineOrdering = {
             update: InlineOrdering.update
         });
         //jQuery("div.inline-group").disableSelection();
-        
+
         InlineOrdering.jQuery('div.field-inline_ordering_position').hide();
         InlineOrdering.jQuery('div.inline_ordering_position').hide();
         InlineOrdering.jQuery('td.inline_ordering_position input').hide();
-        
+
         InlineOrdering.jQuery('.add-row a').click(InlineOrdering.update);
-        
+
         InlineOrdering.getOrderables().css('cursor', 'move');
 
         InlineOrdering.update();
     },
-    
+
     jQuery: null,
-    
+
     /**
      * Updates the position field
      *
@@ -67,7 +67,7 @@ var InlineOrdering = {
     }
     
 };
-
-django.jQuery(function () {
-    InlineOrdering.init(django.jQuery);
+var j = jQuery.noConflict();
+j(function () {
+    InlineOrdering.init(j);
 });

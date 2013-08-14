@@ -7,10 +7,8 @@ from django import forms
 from os import listdir
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
-from generic_positions.admin import GenericPositionsAdmin
 class MediaInline(OrderableStackedInline):
     model = Media
-    fields = ('slug', 'descr_ru','descr_en', 'show')
     extra = 0
     #def get_readonly_fields(self, request, obj=None):
     #    '''
@@ -32,7 +30,7 @@ def delete_old_photos(modeladmin, request, queryset):
                 photo.delete()
 delete_old_photos.short_description = _("Delete deleted photos")
 
-class AlbumAdmin(GenericPositionsAdmin):
+class AlbumAdmin(admin.ModelAdmin):
     save_on_top=True
     model = Album
     inlines = [MediaInline]

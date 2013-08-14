@@ -386,23 +386,23 @@ class Entity(object):
         None.
         '''
         #Todo think, rewrite
-
-        try:
-            attribute = self.get_attribute_by_slug(name)
-        except Attribute.DoesNotExist:
-            raise AttributeError(_(u" EAV field doesen't exist " \
-                                   u"'%(attr)s'") % \
-                                 { 'attr': name})
-        try:
-            if self.model.get_secondary_attributes().filter(slug=name).count()!=0:
-                return self.get_value_by_attribute(attribute).value
-            else:
-                raise AttributeError(_(u"%(obj)s hasn't no EAV attribute named " \
-                                        u"'%(attr)s'") % \
-                                      {'obj': self.model, 'attr': name})
-        except Value.DoesNotExist:
-            return ''
-
+        if not name.startswith('_'):
+            try:
+                attribute = self.get_attribute_by_slug(name)
+            except Attribute.DoesNotExist:
+                raise AttributeError(_(u" EAV field doesen't exist " \
+                                       u"'%(attr)s'") % \
+                                     { 'attr': name})
+            try:
+                if self.model.get_secondary_attributes().filter(slug=name).count()!=0:
+                    return self.get_value_by_attribute(attribute).value
+                else:
+                    raise AttributeError(_(u"%(obj)s hasn't no EAV attribute named " \
+                                            u"'%(attr)s'") % \
+                                          {'obj': self.model, 'attr': name})
+            except Value.DoesNotExist:
+                return ''
+        return getattr(super(Entity, self), name)
 
     def get_all_attributes(self):
         '''
