@@ -82,6 +82,10 @@ def get_type_and_addtnl_products(product, product_type_slug=None):
         return product.product_type.get_products_of_type_and_accessoires()
 register.assignment_tag(get_type_and_addtnl_products)
 
+def get_type_name(slug):
+    return ProductType.objects.get(slug=slug).name
+register.simple_tag(get_type_name)
+
 def change_item(products,slug,field, value):
     value=str(value)
     old_value=str(getattr(products[slug],field))

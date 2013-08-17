@@ -10,8 +10,9 @@
 					{% if "type" in request.GET %}
 						<nav class="menu-left">
 							<ul>
-						{% get_page request.GET.type as parent %}			
 							
+						{% get_page request.GET.type as parent %}			
+								<li class="bold">{% page_attribute "menu_title" parent %}:</li>
 								{% for child in parent.get_children %}
 									{% assign name="menu_items" %}{% show_uncached_placeholder 'left menu items product' child %}{% endassign %}
 									{% if menu_items %}
@@ -46,6 +47,13 @@
 					{% endif %}
 				{% endfor %}
 				<li>{% page_attribute "menu_title" request.GET.type %}</li><i></i>
+				{% get_placeholder 'left menu items active' request.GET.product_category as menu %}
+				{% if menu %}
+					<li><a href="{% page_url request.GET.product_category %}#request.GET.product_type">{% get_type_name request.GET.product_type %}</a></li><i></i>
+				{% else %}
+					{% get_page request.GET.product_category as page %}
+					<li><a href="{% page_url request.GET.product_category %}">{% page_attribute "menu_title" page %}</a></li>
+				{% endif %}
 				<li> {{ product.name }}</li>
 				
 			</ul>
