@@ -17,7 +17,7 @@ if platform.system() == 'Linux':
     DEBUG = True
 else:
     DEBUG = True
-PROFILE = True
+PROFILE = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -26,7 +26,30 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
+
+if platform.system() == 'Linux':
+	if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
+		DATABASES = {
+			'default': {
+			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'. 
+			'NAME': 'ukrhimdev',                      # Or path to database file if using sqlite3.
+			'USER': 'ukrhimdev',                      # Not used with sqlite3.
+			'PASSWORD': 'oZK6vfLCFU', 
+			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+		}}
+	else:
+		DATABASES = {
+			'default': {
+			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+			'NAME': 'postgr2',                      # Or path to database file if using sqlite3.
+			'USER': 'postgres',                      # Not used with sqlite3.
+			'PASSWORD': '777777',                  # Not used with sqlite3.
+			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+		}}
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'postgr2',                      # Or path to database file if using sqlite3.
@@ -34,8 +57,8 @@ DATABASES = {
         'PASSWORD': '777777',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+    }}
+
 
 
 
