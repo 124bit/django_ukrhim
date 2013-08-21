@@ -33,8 +33,8 @@ if platform.system() == 'Linux':
 			'default': {
 			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'. 
 			'NAME': 'ukrhimdev',                      # Or path to database file if using sqlite3.
-			'USER': 'ukrhimdev',                      # Not used with sqlite3.
-			'PASSWORD': 'oZK6vfLCFU', 
+			'USER': 'postgres',                      # Not used with sqlite3.
+			'PASSWORD': '777777', 
 			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
 			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
 		}}
@@ -384,4 +384,11 @@ COMPRESS_OFFLINE= False
 COMPRESS_ENABLED= True
 
 #--SSI
-ALLOWED_INCLUDE_ROOTS=('django_ukrhim/media/files/cms_templates',)
+# if platform.system() == 'Linux':
+	# if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
+		# ALLOWED_INCLUDE_ROOTS=('/srv/www/django_ukrhim_dev/django_ukrhim/media/files/cms_templates/',)
+	# else:
+		# ALLOWED_INCLUDE_ROOTS=('/srv/www/django_ukrhim/django_ukrhim/media/files/cms_templates/',)
+# else:
+	# ALLOWED_INCLUDE_ROOTS=('django_ukrhim/media/files/cms_templates/',)
+# print ALLOWED_INCLUDE_ROOTS

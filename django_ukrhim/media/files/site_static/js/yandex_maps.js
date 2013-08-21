@@ -11,16 +11,56 @@ function init () {
         'YMapsID',
         // Параметры карты.
         {
-            // Географические координаты центра отображаемой карты.
-            //center: [50.535794,30.708816],
             center: coords,
-            // Масштаб.
             zoom: 5,
-            behaviors:['default', 'scrollZoom', 'multiTouch','routeEditor']
+            behaviors:['default', 'scrollZoom', 'multiTouch']
 
         }
     );
 	
+    var getState = function (point) {
+                    return clusterer.getObjectState(point);
+                }
+    
+    var openBalloon = function (point) {
+                    var state = getState(point),
+                        cluster = state.isClustered && state.cluster;
+
+                    if(cluster) {
+                        cluster.state.set('activeObject', point);
+                        cluster.balloon.open();
+                    }
+                    else {
+                        point.balloon.open();
+                    }
+                };
+                
+                
+    var Pan = function (point) {
+    
+                    myMap.panTo(point.geometry.getCoordinates(), {
+                        callback: function () {
+                            var state = getState(point),
+                                cluster = state.cluster;
+
+                            if(state.isShown && (point.getMap() || (cluster && cluster.getMap()))) {
+                                openBalloon(point);
+                            }
+                            else {
+                                clusterer.events.once('objectsaddtomap', function () {
+                                    openBalloon(point);
+                                });
+                                /*
+                                clusterer.events.add('objectsaddtomap', function onObjectsAddToMap() {
+                                    clusterer.events.remove('objectsaddtomap', onObjectsAddToMap);
+                                    openBalloon(point);
+                                });
+                                */
+                            }
+                        }
+                    });
+                }
+    
 	myMap.controls.add('zoomControl', { left: 5, top: 5 }).add('mapTools', { left: 35, top: 5 })
     var clusterer = new ymaps.Clusterer({preset: 'twirl#invertedLightblueClusterIcons'}) // 'twirl#lightblueClusterIcons'
 	
@@ -28,51 +68,43 @@ function init () {
     myMap.geoObjects.add(clusterer);
     
     var warehouse={
-            // Опции.
-            // Своё изображение иконки метки.
             iconImageHref: '/static/img/point_ware.png',
-            // Размеры метки.
             iconImageSize: [47, 57],
-            // Смещение левого верхнего угла иконки относительно
-            // её "ножки" (точки привязки).
-            iconImageOffset: [-3, -42],
-			hideIconOnBalloonOpen: false
+            iconImageOffset: [-14, -52],
+			hideIconOnBalloonOpen: false,
+            balloonOffset: [0,-26],
+            balloonShadow: false,
+            balloonMaxWidth: 300,
         }
     
     var shop={
-            // Опции.
-            // Своё изображение иконки метки.
             iconImageHref: '/static/img/point_shop.png',
-            // Размеры метки.
             iconImageSize: [47, 57],
-            // Смещение левого верхнего угла иконки относительно
-            // её "ножки" (точки привязки).
-            iconImageOffset: [-3, -42],
-			hideIconOnBalloonOpen: false
+            iconImageOffset: [-14, -52],
+			hideIconOnBalloonOpen: false,
+            balloonOffset: [0,-26],
+            balloonShadow: false,
+            balloonMaxWidth: 300,
         }
         
     var ishop={
-            // Опции.
-            // Своё изображение иконки метки.
             iconImageHref: '/static/img/point_ishop.png',
-            // Размеры метки.
             iconImageSize: [47, 57],
-            // Смещение левого верхнего угла иконки относительно
-            // её "ножки" (точки привязки).
-            iconImageOffset: [-3, -42],
-			hideIconOnBalloonOpen: false
+            iconImageOffset: [-14, -52],
+			hideIconOnBalloonOpen: false,
+            balloonOffset: [0,-26],
+            balloonShadow: false,
+            balloonMaxWidth: 300,
         }
 		
 	var office={
-            // Опции.
-            // Своё изображение иконки метки.
             iconImageHref: '/static/img/point_office.png',
-            // Размеры метки.
             iconImageSize: [47, 57],
-            // Смещение левого верхнего угла иконки относительно
-            // её "ножки" (точки привязки).
-            iconImageOffset: [-3, -42],
-			hideIconOnBalloonOpen: false
+            iconImageOffset: [-14, -52],
+			hideIconOnBalloonOpen: false,
+            balloonOffset: [0,-26],
+            balloonShadow: false,
+            balloonMaxWidth: 300,
         }	
         
     var placemarks = [];
@@ -95,7 +127,7 @@ function init () {
             hintContent: 'Собственный значок метки'
         }, shop);
     
-    placemarks.push(['#ancor',myPlacemark]);
+    placemarks.push(['#ancor0',myPlacemark]);
     
 	var myPlacemark1 = new ymaps.Placemark([50.535794,30.708816],  {
             // Свойства.
@@ -121,10 +153,9 @@ function init () {
 	var myPlacemark3 = new ymaps.Placemark([50.55,30.708816],  {
             // Свойства.
    
-			balloonContentHeader: 'заголовок',
-            balloonContentBody: 'текст адресса',
-			balloonContentFooter: '<b>футер</b>',
-            hintContent: 'Собственный значок метки'
+			balloonContentHeader: 'Киевский офис ООО "Укрхимпласт"',
+            balloonContentBody: 'г. Киев, ул. Народного Ополчения, 26-А (въезд с Воздухофлотского проспекта)',
+            hintContent: 'Киевский офис ООО "Укрхимпласт", г. Киев, ул. Народного Ополчения, 26-А (въезд с Воздухофлотского проспекта)',
         }, warehouse);
     
     placemarks.push(['#ancor3',myPlacemark3]);
@@ -132,30 +163,28 @@ function init () {
     
     clusterer.add(placemarks.map(function (item){return item[1]}));
 	
-	$('#ancor').click(
+    $('#ancor').click(
 				function (e) {
 					e.preventDefault();
 					$.scrollTo('#shops_and',{duration:300});
-					if ( myPlacemark3.balloon.isOpen()) {
-						 myPlacemark3.balloon.close();
-					} else {
-					// Плавно меняем центр карты на координаты метки.
-							
-							
-							myMap.panTo( myPlacemark3.geometry.getCoordinates(), {
-							delay: 300,
-							callback: function () {myMap.setZoom(12, { callback: function() {myPlacemark3.balloon.open();
-							}}) }});
-							
-					}})
-	//placemarks.forEach(function (item) {  $(item[0]).toggle(
-//			function () {
-	//			item[1].balloon.open();
-	//		},
-	//		function () {
-	//			item[1].balloon.close();
-	//		}) });
-//
+                    myMap.setZoom(12 , { callback: function() {Pan(myPlacemark3);} } )
+                    }
+                    )
+    
+    
+    
+	
+	placemarks.forEach(function (item) {  $(item[0]).click(
+				function (e) {
+					e.preventDefault();
+					$.scrollTo('#shops_and',{duration:300});
+                    //myMap.setZoom(12 , { callback: function() { Pan(item[1]) } } )
+                    myMap.setZoom(12)
+                    Pan(item[1])
+                    }
+                    )
+                    }
+                    )
 
     
 }

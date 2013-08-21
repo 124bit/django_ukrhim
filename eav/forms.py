@@ -30,7 +30,7 @@ from copy import deepcopy
 
 from django.forms import BooleanField, CharField, DateTimeField, FloatField, \
                          IntegerField, ModelForm, ChoiceField, ValidationError
-from django.contrib.admin.widgets import AdminSplitDateTime
+from django.contrib.admin.widgets import AdminSplitDateTime, AdminTextareaWidget
 from django.utils.translation import ugettext as _
 
 from os import listdir, path
@@ -39,6 +39,7 @@ from django.contrib.sites.models import Site
 from django.utils.translation import get_language
 from product_db.models import ProductType
 from urlparse import urljoin
+from django.forms.widgets import Textarea
 class BaseDynamicEntityForm(ModelForm):
     '''
     ModelForm for entity with support for EAV attributes. Form fields are
@@ -91,6 +92,9 @@ class BaseDynamicEntityForm(ModelForm):
 
             elif attribute.datatype == attribute.TYPE_DATE:
                 defaults.update({'widget': AdminSplitDateTime})
+            elif attribute.datatype == attribute.TYPE_TEXT:
+                if 'text_area' in attribute.options:
+                    defaults.update({'widget': AdminTextareaWidget})
             elif attribute.datatype == attribute.TYPE_OBJECT:
                 continue
             elif attribute.datatype==attribute.TYPE_IMAGE:

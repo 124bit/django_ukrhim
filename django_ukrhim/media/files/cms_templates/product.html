@@ -8,5 +8,5 @@
 {% elif type and type.template %}
 	{% render_text type.template %}
 {% else %}
-	{% ssi 'django_ukrhim/media/files/cms_templates/product_common.html' parsed %}
+	{% include 'product_common.html' %}
 {% endif %}

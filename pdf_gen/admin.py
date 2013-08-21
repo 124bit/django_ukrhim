@@ -14,7 +14,7 @@ class PriceTemplateForm(ModelForm):
     PRICE_FIELD_CHOICES=[]
     for attr in Attribute.objects.all():
             if 'price_field' in attr.options:
-                PRICE_FIELD_CHOICES.append((attr.slug, attr.name_en))
+                PRICE_FIELD_CHOICES.append((attr.slug, attr.name_en + ' (' + attr.units_en + ')'))
 
     SITE_CHOICES = [(site.pk, site.name) for site in Site.objects.all()]
     site = ChoiceField(label=_('Site'),choices=SITE_CHOICES,  initial='default', help_text=_("Select price field. Template would be filled by prices from this field.") )

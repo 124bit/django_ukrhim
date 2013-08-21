@@ -4,7 +4,7 @@
 	{% for language in languages %}
 			{% ifequal current_language language.0 %}
 				{% get_language_info for language.0 as lang %}
-				<div class="level1 language">{{ lang.name_local|upper |slice:":3" }}<i></i></div>
+				<div class="level1 language">{{ lang.name_local|upper|slice:":3" }}<i></i></div>
 			{% endifequal %}
 	{% endfor %}
 	
@@ -12,7 +12,7 @@
 	{% for language in languages %}
 		{% ifnotequal current_language language.0 %}
 			{% get_language_info for language.0 as lang %}
-			<div><a href="{% page_url request.current_page %}">{{ lang.name_local |slice:":3" }}</a></div>
+			<div><a href="{% page_url request.current_page %}">{{ lang.name_local|slice:":3" }}</a></div>
 		{% endifnotequal %}
 	{% endfor %}
 	</div>	

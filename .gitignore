@@ -1,4 +1,5 @@
 *.pyc
+*.wsgi
 .idea/
 django_ukrhim/static/
 django_ukrhim/media/CACHE

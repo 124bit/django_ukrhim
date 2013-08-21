@@ -11,20 +11,20 @@
 						<nav class="menu-left">
 							<ul>
 							
-						{% get_page request.GET.type as parent %}			
+								{% get_page request.GET.type as parent %}			
 								<li class="bold">{% page_attribute "menu_title" parent %}:</li>
 								{% for child in parent.get_children %}
 									{% assign name="menu_items" %}{% show_uncached_placeholder 'left menu items product' child %}{% endassign %}
 									{% if menu_items %}
 										{{ menu_items }}
 									{% else %}
-										<li><a href="{{ child.get_absolute_url }}" {% if request.GET.product_type == product_type %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
-										{% if request.GET.product_type == product_type %}
+										<li><a href="{{ child.get_absolute_url }}" {% if request.GET.product_category == child.reverse_id %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
+										{% if request.GET.product_category == child.reverse_id %}
 												{% get_type_and_addtnl_products product request.GET.product_type as products %}
 												{% if products %}
 													<ul>
 													{% for product in products %}
-														<li><a href="{{ child.get_absolute_url }}?type={{ request.GET.type }}&product={{ product.slug }}" >{{ product.name }}</a></li>
+														<li><a {% if product.slug == request.GET.product %}class="current-button"{% endif %} href="{% page_url "product_inner" %}?type={{ request.GET.type }}&product={{ product.slug }}&product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}" >{{ product.name }}</a></li>
 													{% endfor %}
 													</ul>
 												{% endif %}
@@ -49,24 +49,23 @@
 				<li>{% page_attribute "menu_title" request.GET.type %}</li><i></i>
 				{% get_placeholder 'left menu items active' request.GET.product_category as menu %}
 				{% if menu %}
-					<li><a href="{% page_url request.GET.product_category %}#request.GET.product_type">{% get_type_name request.GET.product_type %}</a></li><i></i>
+					<li><a href="{% page_url request.GET.product_category %}#{{ request.GET.product_type }}">{% get_type_name request.GET.product_type %}</a></li><i></i>
 				{% else %}
 					{% get_page request.GET.product_category as page %}
-					<li><a href="{% page_url request.GET.product_category %}">{% page_attribute "menu_title" page %}</a></li>
+					<li><a href="{% page_url request.GET.product_category %}">{% page_attribute "menu_title" page %}</a></li><i></i>
 				{% endif %}
 				<li> {{ product.name }}</li>
 				
 			</ul>
 			{% get_product_field product "product_type" as type %}
-			{% get_product_field product "descriprion" as descr %}
+			{% assign name="descr" %}{{ product.get_description }}{% endassign %}
 			<h1>{% block heading %} {{ product.name }} {% if type %}{{ type.name}}{% endif %} {% endblock %}</h1>
 			{% get_product_field product "photo" as photo %}
-			
-			<p class="about">{% if photo.url %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}{% block about %}{% if  descr %} {{ descr }}{% elif type.type_description %} {{ type.type_description }} {% endif %}{% endblock %}</p>
-			<h3 class="left">{% trans "characteristics" %}</h3>
+			<p class="about">{% if photo.url %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}{% block about %}{% if  descr %} {% parse_tmpl_cont descr %}{% elif type.type_description %} {% parse_tmpl_cont type.type_description %}{% endif %}{% endblock %}</p>
+			<h3 class="left">{% trans "Characteristics" %}</h3>
 			<ul class="features left">
 			{% block characteristics %}
-					{% with "length width height" as fields %}
+					{% with "v l w h d_n l_w m" as fields %}
 						{% with fields.split as field_list %}
 							{% for field in field_list %}
 								{% get_product_field product field as field_content %}
@@ -116,8 +115,8 @@
 						<div class="zoom-gallery">
 						{% for product_photo in list_photos %}
 							{% generateimage "photo_big" source=product_photo  as big_photo %}
-							<a href="{{ big_photo.url }}" class="gallery-product" >
-								{% generateimage "gallery_photo_small" source=product_photo  %}
+							<a href="{{ big_photo.url }}" class="gallery-product" title= '{{ product.name }} {{ product.product_type.name }}' >
+								{% generateimage "products_photo_small" source=product_photo  %}
 							</a>
 						{% endfor %}
 						</div>

@@ -39,6 +39,7 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
     form = ProductAdminForm
     resource_class = ProductResource
 
+    ordering= ('slug', )
     def get_list_display(self, request):
         if get_language()=='ru':
             self.list_display = ('name_ru', 'product_type')

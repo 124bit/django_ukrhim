@@ -6,7 +6,7 @@ from ..cachefiles import ImageCacheFile
 from ..registry import generator_registry
 from modifier.models import ImageSpecModel
 from django.conf import settings
-from django.utils.safestring import SafeText
+from django.utils.safestring import SafeText, SafeUnicode
 import platform
 from django.core.files.images import ImageFile
 from os.path import join, exists
@@ -21,14 +21,18 @@ def get_cachefile(context, generator_id, generator_kwargs, source=None):
     kwargs = dict((k, v.resolve(context)) for k, v in generator_kwargs.items())
 
     #changed
-    if type(kwargs['source'])==SafeText or type(kwargs['source'])==str or type(kwargs['source'])==unicode:
-
+    if type(kwargs['source'])==SafeText or type(kwargs['source'])==str or type(kwargs['source'])==unicode or type(kwargs['source'])==SafeUnicode:
+	kwargs['source']=str(kwargs['source']).strip()
         if platform.system() == 'Linux':
-            with open(join(settings.PROJECT_PATH, kwargs['source']),'rb') as f:
-                source=ImageFile(f)
+            f_path=settings.PROJECT_PATH+kwargs['source']
+            if exists(f_path):
+                with open(f_path,'rb') as f:
+                    source=ImageFile(f)
+            else:
+                with open(join(settings.PROJECT_PATH, kwargs['source']),'rb') as f:
+                    source=ImageFile(f)
         else:
             f_path=settings.PROJECT_PATH+kwargs['source'].replace('/','\\')
-            print f_path
             if exists(f_path):
                 with open(f_path,'rb') as f:
                     source=ImageFile(f)
@@ -262,6 +266,7 @@ def generateimage(parser, token):
 
 
 #@register.tag
+from django.template import FilterExpression
 def thumbnail(parser, token):
     """
     A convenient shortcut syntax for generating a thumbnail. The following::
@@ -306,9 +311,30 @@ def thumbnail(parser, token):
                 ' unnamed arguments: a generator id, the dimensions, and the'
                 ' source image.' % tag_name)
 
-    dimensions, source = args[-2:]
+    dimensions, presource = args[-2:]
     generator_id = args[0] if len(args) > 2 else None
-
+    if type(presource)==FilterExpression:
+		presource=presource.var
+    if type(presource)==SafeText or type(presource)==str or type(presource)==unicode or type(presource)==SafeUnicode:
+    		presource=str(presource)
+    		if platform.system() == 'Linux':
+    			f_path=settings.PROJECT_PATH+presource
+    			if exists(f_path):
+    				with open(f_path,'rb') as f:
+    					source=ImageFile(f)
+    			else:
+    				with open(join(settings.PROJECT_PATH, presource),'rb') as f:
+    					source=ImageFile(f)
+    		else:
+    			f_path=settings.PROJECT_PATH+presource.replace('/','\\')
+    			if exists(f_path):
+    				with open(f_path,'rb') as f:
+    					source=ImageFile(f)
+    			else:
+    				with open(join(settings.PROJECT_PATH, presource.replace('/','\\')),'rb') as f:
+    					source=ImageFile(f)
+    else:
+    	source=presource
     if varname:
         return ThumbnailAssignmentNode(varname, generator_id, dimensions,
                 source, kwargs)

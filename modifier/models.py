@@ -98,6 +98,16 @@ class ColorBg(object):
         im = background.convert('RGB')
         return im
 
+class png8(object):
+    def __init__(self):
+        pass
+    def process(self, im):
+        alpha = im.split()[-1]
+        im = im.convert('RGB').convert('P', palette=Image.ADAPTIVE, colors=256)
+
+        return im
+		
+		
 class ImageSpecModel(models.Model):
     name=EavSlugField(max_length=30, help_text=_("Image specifications profiles are used for automatic image generation in templates."), verbose_name=_("Profile name"))
     specs=JSONField(verbose_name=_("Options"), default="{}" , blank=True, help_text=_("Options of image convertation."))

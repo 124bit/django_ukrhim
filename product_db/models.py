@@ -145,6 +145,8 @@ class Product(models.Model):
         except AttributeError:
             return ''
 
+    def get_description(self):
+        return self.descr_m.replace('{}',self.product_type.type_description)
     #----for direct EAV attr access
     def __getattr__(self, attr):
         current_lang=get_language()
@@ -172,7 +174,20 @@ class Product(models.Model):
         #         return getattr(self.eav, lang_attr)
         if attr== '_position_in_list_cache':
             raise AttributeError
-        return getattr(self.eav, attr)
+        if attr[-2:]=='_m':
+        	lang_attr=attr[:-2]+'_'+current_lang
+        	try:
+        		return getattr(self.eav, lang_attr)
+        	except AttributeError:
+        		for lang in get_fallback_languages(current_lang):
+        			lang_attr=attr[:-2]+'_'+lang
+        			try:
+        				return getattr(self.eav, lang_attr)
+        			except AttributeError:
+        				pass
+        		return ''
+        else:
+        	return getattr(self.eav, attr)
 
 
 

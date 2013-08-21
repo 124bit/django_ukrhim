@@ -7,6 +7,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from ukrhim_gallery.models import Album
 from collections import OrderedDict
+import platform
+from django.conf import settings
 register = template.Library()
 @register.filter
 def get_item(dictionary, key):
@@ -36,9 +38,26 @@ def make_list(*args):
     return a
 register.assignment_tag()(make_list)
 
+def parse_tmpl_cont(context, templ):
+    return Template(templ).render(context)
+register.simple_tag(takes_context=True)(parse_tmpl_cont)
+
+def get_prod_templ_path():
+	return settings.ALLOWED_INCLUDE_ROOTS[0] + 'product_common.html'
+register.assignment_tag()(get_prod_templ_path)
+
 def make_dict(**kwargs):
     return kwargs
 register.assignment_tag()(make_dict)
+
+def get_some(names, products):
+    args=names.split(' ')
+    res=[]
+    for arg in args:
+        if arg in products:
+            res.append((arg, products[arg]))
+    return OrderedDict(res)
+register.assignment_tag()(get_some)
 
 def get_albums():
     return Album.objects.all()
@@ -51,6 +70,11 @@ def get_album_photos(slug):
             photos.append(photo)
     return photos
 register.assignment_tag()(get_album_photos)
+
+def get_album_name(slug):
+    return Album.objects.get(slug=slug).name()
+
+register.simple_tag()(get_album_name)
 
 def get_album_videos(slug):
     photos=[]
@@ -75,7 +99,7 @@ def add_to_item(products,slug,field, value):
     setattr(products[slug],field, str(old_value)+value)
 register.simple_tag(add_to_item)
 
-def get_type_and_addtnl_products(product, product_type_slug=None):
+def get_type_and_addtnl_products(product=None, product_type_slug=None):
     if product_type_slug:
         return ProductType.objects.get(slug=product_type_slug).get_products_of_type_and_accessoires()
     else:
@@ -94,9 +118,12 @@ def change_item(products,slug,field, value):
     else:
         new_value= value
     setattr(products[slug],field, new_value)
+    return ''
 register.simple_tag(change_item)
 
-def get_product(context):
+def get_product(context, slug=None):
+    if slug:
+        return Product.objects.get(slug=slug)
     return get_object_or_404(Product,slug=context['request'].GET['product'])
 register.assignment_tag(takes_context=True)(get_product)
 
