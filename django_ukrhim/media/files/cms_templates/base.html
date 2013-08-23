@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-{% load cms_tags sekizai_tags ukrhim_extras i18n menu_tags compress %}
+{% load cms_tags sekizai_tags ukrhim_extras i18n menu_tags compress imagekit %}
 {% get_current_language as LANGUAGE_CODE %}
 
 <html>
@@ -66,45 +66,92 @@
 					<ul class="menu collapsible">
 
 						{% for page in request.current_page.get_root.get_children %}
-							{% if forloop.counter == 1 %}
-								<li class="menu-item-{% cycle '1' '2' '3' '4' '5' '6' '7' '8' '9' as numbers %}">
-									<a href="" class="product-item">{% page_attribute "menu_title" page %}</a>
-									<div class="acitem">
-										<div class="arrow-top"></div>
-										{% show_placeholder "products menu" page %}
-										<br />
-									</div>		
-								</li>
-							{% elif not page.is_leaf_node %}
-								<li class="menu-item-{% cycle numbers %}">
-									<a href="">{% page_attribute "menu_title" page %}</a>
-									
-									<div class="acitem">
-										<ul>
-											{% for child in page.get_children %}
-												{% if child.in_navigation %}
-													<li><a href="{% page_url child %}">{% page_attribute "menu_title" child %}</a></li>
-												{% endif %}
-											{% endfor %}
-										</ul>
-									</div>
-									
-								</li>
-							{% elif page.in_navigation and page.reverse_id|slice:":10" == "redirect__" %}
-								<li class="menu-item-{% cycle numbers %}">
-									<a href="{% page_url page.reverse_id|slice:"10:" %}">{% page_attribute "menu_title" page %}</a>
-								</li>
-							{% elif page.in_navigation %}
-								<li class="menu-item-{% cycle numbers %}">
-									<a href="{% page_url page %}">{% page_attribute "menu_title" page %}</a>
-								</li>
-							{% endif %}
+                            <li class="menu-item-{% cycle '1' '2' '3' '4' '5' '6' '7' '8' '9' %}">
+                                {% if forloop.counter == 1 %}
+                                    
+                                    <a href="" class="product-item">{% page_attribute "menu_title" page %}</a>
+                                    <div class="acitem">
+                                        <div class="arrow-top"></div>
+                                            {% get_page  "products" as products_page %}
+                                            {% for page in products_page.get_children %}  
+                                                {% if page.reverse_id != "product_inner" and page.published %}
+                                                <ul class="left">
+                                                    <li class="item-title">{% page_attribute "page_title" page %}</li>
+                                                    {% for child in page.get_children %}
+                                                        {% if child.in_navigation %}
+                                                            
+                                                            {% get_placeholder 'menu items' child as menu_items_txt %}
+                                                            {% if menu_items_txt %}
+                                                                {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                                                            {% else %}
+                                                                {% get_page_attribute "menu_title" child as item_title %}
+                                                                {% make_dict name=item_title as item_dict%}
+                                                                {% make_list item_dict as menu_items %}
+                                                            {% endif %}
+                                                            
+                                                            {% for item in menu_items %}
+                                                                {% if 'img' in item %}
+                                                                    <li>
+                                                                        <a href="{% page_url child %}">{{ item.name }}</a>
+                                                                        <div>
+                                                                            {% generateimage "product_in_menu" source=item.img  %}
+                                                                            <a href="{% page_url child %}{% if 'product_type' in item %}#{{ item.product_type }}{% endif %}">{{ item.description }}</a>
+                                                                        </div>
+                                                                    </li>
+                                                                {% else %}
+                                                                    <li><a href="{% page_url child %}">{{ item.name }}</a></li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                 </ul>
+                                                    {% if not forloop.last and page.get_next_sibling.reverse_id != "product_inner" %}
+                                                        <img src="/static/img/separator-1.png" class="left"/>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                            {% endfor %}
+                                        <br />
+                                    </div>		
+                                    
+                                {% elif not page.is_leaf_node %}
+                                        <a href="">{% page_attribute "menu_title" page %}</a>
+                                        
+                                        <div class="acitem">
+                                            <ul>
+                                                {% for child in page.get_children %}
+                                                    {% if child.in_navigation %}
+                                                        <li><a href="{% page_url child %}">{% page_attribute "menu_title" child %}</a></li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+
+                                {% elif page.in_navigation and page.reverse_id|slice:":10" == "redirect__" %}
+                                        <a href="{% page_url page.reverse_id|slice:"10:" %}">{% page_attribute "menu_title" page %}</a>
+                                {% elif page.in_navigation %}
+                                        <a href="{% page_url page %}">{% page_attribute "menu_title" page %}</a>
+                                {% endif %}
+                            <li>
 						{% endfor %}
 						
 					</ul>
 					<div id="menu">
-						{% language_chooser "language_chooser.html" %}
-					
+                    
+                        {% get_current_language as cur_lang_code %}
+                        {% get_language_info for cur_lang_code as cur_lang_info %}
+                        
+                        <div class="level1 language">{{ cur_lang_info.name_local|upper|slice:":3" }}<i></i></div>
+                        
+                        {% get_available_languages as languages %}
+                        <div class="level2 language-list">
+                            {% for lang in languages %}
+                                {% ifnotequal cur_lang_code lang.0 %}
+                                    {% get_language_info for lang.0 as lang_info %}
+                                    <div><a href="{% replace_url_language_code lang.0 %}">{{ lang_info.name_local|slice:":3" }}</a></div>
+                                {% endifnotequal %}
+                            {% endfor %}
+                        </div>	
 				
 						<div class="level1 contry">{{ site.country|upper }}<i></i></div>
 						<div class="level2 contry-list">

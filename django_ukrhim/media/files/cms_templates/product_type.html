@@ -1,11 +1,92 @@
 {% extends "base.html" %}
-{% load cms_tags compress %}
+{% load cms_tags compress ukrhim_extras %}
 
 {% block middle %}
+<div class="middle background">
+    {% get_placeholder 'menu items' request.current_page as current_menu_items_txt %}  
+    {% if current_menu_items_txt %}
+        {% get_menu_items_from_txt current_menu_items_txt as current_menu_items %}
+    {% else %}
+        {% get_page_attribute "menu_title" request.current_page as item_title %}
+        {% make_dict name=item_title as item_dict%}
+        {% make_list item_dict as current_menu_items %}
+    {% endif %}
+    {% if current_menu_items|length > 1 %}	
+        <nav class="menu-left bs-docs-sidebar" id="sticker">
+            <ul class="nav nav-list affix product-page">
+                {% if not  request.current_page.reverse_id == "plastic_tanks" %}
+                    <li class="bold"><a href="start">{% page_attribute "menu_title" request.current_page.parent %}:</a></li>
+                {% endif %}
+                {% for child in request.current_page.parent.get_children %}
+                    {% if child.in_navigation %}
+                        
+                        {% if child.reverse_id == request.current_page.reverse_id %}
+                            <li class="bold"><a href="start">{% page_attribute "menu_title" child %}:</a></li>
+                            {% for item in current_menu_items %}  
+                                <li><a href="#{{ item.product_type }}">{{ item.name}}</a> </li>
+                            {% endfor %}
+                        
+                        {% else %}        
+                            {% get_placeholder 'menu items' child as menu_items_txt %} 
+                            {% if menu_items_txt %}
+                                {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                            {% else %}
+                                {% get_page_attribute "menu_title" child as item_title %}
+                                {% make_dict name=item_title as item_dict%}
+                                {% make_list item_dict as menu_items %}
+                            {% endif %}
+                            {% for item in menu_items %}
+                                <li><a href="{{ child.get_absolute_url }}{% if 'product_type' in item %}#{{ item.product_type }}{% endif %}">{{ item.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                        
+                {% endfor %}
+            </ul>
+            {% show_placeholder 'left block under menu' request.current_page %}
+        </nav>
+    {% else %}
+        <nav class="menu-left" id="sticker">
+            <ul class="product-menu">
+                 <li class="bold">{% page_attribute "menu_title" request.current_page.parent %}:</li>
+                {% for child in request.current_page.parent.get_children %}
+                   
+                    {% if child.in_navigation %}
+                        {% if child.reverse_id == request.current_page.reverse_id %}
+                           
+                            {% for item in current_menu_items %}
+                                <li><a class="current-button" href="{{ child.get_absolute_url }}">{{ item.name }}</a></li>
+                            {% endfor %}
+                        
+                        {% else %}        
+                            {% get_placeholder 'menu items' child as menu_items_txt %} 
+                            {% if menu_items_txt %}
+                                {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                            {% else %}
+                                {% get_page_attribute "menu_title" child as item_title %}
+                                {% make_dict name=item_title as item_dict%}
+                                {% make_list item_dict as menu_items %}
+                            {% endif %}
+                            {% for item in menu_items %}
+                                <li><a  href="{{ child.get_absolute_url }}{% if 'product_type' in item %}#{{ item.product_type }}{% endif %}">{{ item.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}                            
+                {% endfor %}
+
+        
+            </ul>
+            {% show_placeholder 'left block under menu' request.current_page %}
+        </nav>
+    {% endif %}
 	{% placeholder "content" %}
+    <br />		
+	</div>
+	<br />
 {% endblock %}
 
 {% block options %}
+    {% placeholder "menu items" %}
 	{% placeholder "nav menu items" %}
 	{% placeholder "left menu items active" %}
 	{% placeholder "left menu items product" %}

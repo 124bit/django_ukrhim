@@ -59,7 +59,7 @@ ELFINDER_CONNECTOR_OPTION_SETS = {
                 #thumbnails background color (hex #rrggbb or 'transparent')
                 #'tmbBgColor' : '#ffffff',
                 #on paste file -  if True - old file will be replaced with new one, if False new file get name - original_name-number.ext
-                #'copyOverwrite' : True,
+                'copyOverwrite' : False,
                 #if True - join new and old directories content on paste
                 #'copyJoin' : True,
                 #filter mime types to show

@@ -26,6 +26,7 @@ class ProductType(models.Model):
     count_products_of_type.short_description = _("Tagged producs")
 
 
+    
     def get_products_of_type_and_accessoires(self):
         accs_list=[]
         accesoires=Product.objects.filter(product_type__slug='accessoires')
@@ -36,7 +37,7 @@ class ProductType(models.Model):
             except AttributeError:
                 pass
         products=self.product_set.all()
-        return list(products)+accs_list
+        return products,accs_list
 
     def __unicode__(self):
         current_lang=get_language()

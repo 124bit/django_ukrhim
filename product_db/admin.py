@@ -35,16 +35,22 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
     prepopulated_fields = {'slug':("name_en",)}
     filter_horizontal=('additional_fields',)
     save_on_top=True
-
     form = ProductAdminForm
     resource_class = ProductResource
 
-    ordering= ('slug', )
+    
+    def get_ordering(self, request):
+        if get_language()=='ru':
+            self.ordering = ('name_ru', )
+        else:
+            self.ordeging = ('name_en', )
+        return self.ordering
+        
     def get_list_display(self, request):
         if get_language()=='ru':
-            self.list_display = ('name_ru', 'product_type')
+            self.list_display = ('name_ru', 'slug' , 'product_type')
         else:
-            self.list_display = ('name_en', 'product_type')
+            self.list_display = ('name_en', 'slug', 'product_type')
         price_func_slugs=[]
         for site in Site.objects.all():
             column_name=site.site_cutting
@@ -70,7 +76,9 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
 
 class ProductTypeAdmin(ModelAdmin):
     prepopulated_fields = {'slug': ('name_en',)}
-    list_display = ('name', 'count_products_of_type')
+    list_display = ('name','slug', 'count_products_of_type')
+    save_on_top=True
+    filter_horizontal = ('fields',)
     ordering = ['name']
 
     fieldsets = (

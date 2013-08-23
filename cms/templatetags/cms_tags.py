@@ -122,7 +122,7 @@ def get_page (context, page_lookup,site=None):
 register.assignment_tag(takes_context=True)(get_page)
 
 def get_placeholder(context, name, page_lookup, lang=None, site=None):
-    return _show_placeholder_for_page(context,name,page_lookup,lang,site)['content'].strip()
+    return mark_safe(_show_placeholder_for_page(context,name,page_lookup,lang,site)['content'].strip())
 register.assignment_tag(takes_context=True)(get_placeholder)
 
 def get_pl_parent(context, name, page_lookup):
@@ -387,11 +387,34 @@ class PageAttribute(AsTag):
             return ''
         if page and name in self.valid_attributes:
             func = getattr(page, "get_%s" % name)
-            return escape(func(language=lang, fallback=True))
+            return mark_safe(func(language=lang, fallback=True))
         return ''
 
 
 register.tag(PageAttribute)
+def get_page_attribute(context, name, page_lookup):
+        valid_attributes = [
+        "title",
+        "slug",
+        "meta_description",
+        "meta_keywords",
+        "page_title",
+        "menu_title"
+    ]
+        if not 'request' in context:
+            return ''
+        name = name.lower()
+        request = context['request']
+        lang = get_language_from_request(request)
+        page = _get_page_by_untyped_arg(page_lookup, request, get_site_id(None))
+        if page == "dummy":
+            return ''
+        if page and name in valid_attributes:
+            func = getattr(page, "get_%s" % name)
+            return mark_safe(func(language=lang, fallback=True))
+        return ''
+
+register.assignment_tag(takes_context=True)(get_page_attribute)
 
 
 class CleanAdminListFilter(InclusionTag):

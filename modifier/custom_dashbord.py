@@ -54,7 +54,7 @@ class CustomIndexDashboard(Dashboard):
         self.children += [
             modules.ModelList(
                title=_('Content managing'),
-               models=['cms.models.pagemodel.Page','product_db.models.Product','pdf_gen.models.Price', 'ukrhim_gallery.models.Album'],
+               models=['cms.models.pagemodel.Page','product_db.models.Product','product_db.models.ProductType','pdf_gen.models.Price', 'ukrhim_gallery.models.Album'],
                draggable=False,
                deletable=False,
                collapsible=False

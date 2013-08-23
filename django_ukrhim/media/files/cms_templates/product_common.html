@@ -1,40 +1,53 @@
 {% extends "base.html" %}
 {% load i18n ukrhim_extras cms_tags currency imagekit assign compress %}
-
-
 {% block middle %}
 
 {% get_product as product %}
 	<div class="middle background">
 		<nav class="menu-left" id="sticker">
 					{% if "type" in request.GET %}
-						<nav class="menu-left">
-							<ul>
-							
+							<ul class="product_inner">
 								{% get_page request.GET.type as parent %}			
 								<li class="bold">{% page_attribute "menu_title" parent %}:</li>
 								{% for child in parent.get_children %}
-									{% assign name="menu_items" %}{% show_uncached_placeholder 'left menu items product' child %}{% endassign %}
-									{% if menu_items %}
-										{{ menu_items }}
-									{% else %}
-										<li><a href="{{ child.get_absolute_url }}" {% if request.GET.product_category == child.reverse_id %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
-										{% if request.GET.product_category == child.reverse_id %}
-												{% get_type_and_addtnl_products product request.GET.product_type as products %}
-												{% if products %}
-													<ul>
-													{% for product in products %}
-														<li><a {% if product.slug == request.GET.product %}class="current-button"{% endif %} href="{% page_url "product_inner" %}?type={{ request.GET.type }}&product={{ product.slug }}&product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}" >{{ product.name }}</a></li>
-													{% endfor %}
-													</ul>
-												{% endif %}
-										{% endif %}
-										</li>
-									{% endif %}
+                                    {% if child.in_navigation %}
+                                    
+                                        {% get_placeholder 'menu items' child as menu_items_txt %}
+                                        {% if menu_items_txt %}
+                                            {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                                        {% else %}
+                                            {% get_page_attribute "menu_title" child as item_title %}
+                                            {% make_dict name=item_title as item_dict%}
+                                            {% make_list item_dict as menu_items %}
+                                        {% endif %}
+                                        
+                                        {% for item in menu_items %}
+                                            <li>
+
+                                                <a href="{{ child.get_absolute_url }}{% if 'product_type' in item %}#{{ item.product_type }}{% endif %}" {% if request.GET.product_type == item.product_type %} class="current-button" {% endif %}>{{ item.name }}</a>
+                                                {% if request.GET.product_type == item.product_type %}
+                                                    {% get_type_and_addtnl_products product request.GET.product_type as products %}
+                                                    {% if products.0 or products.1 %}
+                                                        <ul>
+                                                            {% for product in products.0 %}
+                                                                <li><a {% if product.slug == request.GET.product %}class="current-button"{% endif %} href="{% page_url "product_inner" %}?type={{ request.GET.type }}&product={{ product.slug }}&product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}" >{{ product.name }}</a></li>
+                                                            {% endfor %}
+                                                            {% if products.1 %}
+                                                                <li class="bold"> {% trans 'Accessoires:' %}<li>
+                                                                {% for product in products.1 %}
+                                                                    <li><a {% if product.slug == request.GET.product %}class="current-button"{% endif %} href="{% page_url "product_inner" %}?type={{ request.GET.type }}&product={{ product.slug }}&product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}" >{{ product.name }}</a></li>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                       
+                                                    {% endif %}
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
 								{% endfor %}
 						
-							</ul>
-						</nav>
+                            </ul>
 					{% endif %}
 		</nav>
 		<div class="main-block right">
@@ -46,14 +59,25 @@
 						<li>{% page_attribute "menu_title" ance %}</li> <i></i>
 					{% endif %}
 				{% endfor %}
-				<li>{% page_attribute "menu_title" request.GET.type %}</li><i></i>
-				{% get_placeholder 'left menu items active' request.GET.product_category as menu %}
-				{% if menu %}
-					<li><a href="{% page_url request.GET.product_category %}#{{ request.GET.product_type }}">{% get_type_name request.GET.product_type %}</a></li><i></i>
-				{% else %}
-					{% get_page request.GET.product_category as page %}
-					<li><a href="{% page_url request.GET.product_category %}">{% page_attribute "menu_title" page %}</a></li><i></i>
-				{% endif %}
+                
+				{% comment %}<li>{% page_attribute "menu_title" request.GET.type %}</li><i></i>{% endcomment %}
+                
+                {% get_placeholder 'menu items' request.GET.product_category as menu_items_txt %} 
+                {% if menu_items_txt %}
+                    {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                {% else %}
+                    {% make_dict name=item_title as item_dict%}
+                    {% make_list item_dict as menu_items %}
+                {% endif %}
+                
+                {% if menu_items|length > 1 %}
+                    {% get_page request.GET.product_category as page %}
+                    <li><a href="{% page_url request.GET.product_category %}">{% page_attribute "menu_title" page %}</a></li><i></i>
+                    <li><a href="{% page_url request.GET.product_category %}#{{ request.GET.product_type }}">{% get_type_name request.GET.product_type %}</a></li><i></i>
+                {% else %}
+                    {% get_page request.GET.product_category as page %}
+                    <li><a href="{% page_url request.GET.product_category %}">{% page_attribute "menu_title" page %}</a></li><i></i>
+                {% endif %}
 				<li> {{ product.name }}</li>
 				
 			</ul>
@@ -61,7 +85,7 @@
 			{% assign name="descr" %}{{ product.get_description }}{% endassign %}
 			<h1>{% block heading %} {{ product.name }} {% if type %}{{ type.name}}{% endif %} {% endblock %}</h1>
 			{% get_product_field product "photo" as photo %}
-			<p class="about">{% if photo.url %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}{% block about %}{% if  descr %} {% parse_tmpl_cont descr %}{% elif type.type_description %} {% parse_tmpl_cont type.type_description %}{% endif %}{% endblock %}</p>
+			<p class="about"><a id="pr_photo_link" href="#">{% if photo.url %}{% generateimage "face_in_products" source=photo.url -- class="foto-product right" %}{% endif %}</a>{% block about %}{% if  descr %} {% parse_tmpl_cont descr %}{% elif type.type_description %} {% parse_tmpl_cont type.type_description %}{% endif %}{% endblock %}</p>
 			<h3 class="left">{% trans "Characteristics" %}</h3>
 			<ul class="features left">
 			{% block characteristics %}
@@ -86,11 +110,11 @@
 			{% get_product_field product "list_photos" as list_photos %}
 			<nav id="tabs" class="category">
 				<ul>
-					{% if sketch.url %}<li><a href="#tab1">Чертежи</a></li> {% endif %}
-					{% if animation_3d.url %}<li><a href="#tab2">3D модель</a></li>{% endif %}
-					{% if list_photos.0 %}<li><a href="#tab3">Фото</a></li>{% endif %}
+					{% if sketch.url %}<li><a href="#sketch">Чертежи</a></li> {% endif %}
+					{% if animation_3d.url %}<li><a href="#3d">3D модель</a></li>{% endif %}
+					{% if list_photos.0 %}<li><a id='photo_tab' href="#photo_tab">Фото</a></li>{% endif %}
 					{% assign name="sert" %}{% placeholder "sert and instr" request.GET.type %}{% endassign %}
-					{% if sert %}<li><a href="#tab3">Сертификаты и Инструкция</a></li>{% endif %}
+					{% if sert %}<li><a href="#sert">Сертификаты и Инструкция</a></li>{% endif %}
 
 					
 				</ul>
@@ -113,9 +137,10 @@
 					{% if list_photos.0 %}
 					<div class="panel" style="display: none;">
 						<div class="zoom-gallery">
+                        {% get_child_photo_url photo.url as child_url %}
 						{% for product_photo in list_photos %}
 							{% generateimage "photo_big" source=product_photo  as big_photo %}
-							<a href="{{ big_photo.url }}" class="gallery-product" title= '{{ product.name }} {{ product.product_type.name }}' >
+							<a {% if child_url == product_photo %} id="child_photo" {% endif %} href="{{ big_photo.url }}" class="gallery-product" title= '{{ product.name }} {{ product.product_type.name }}' >
 								{% generateimage "products_photo_small" source=product_photo  %}
 							</a>
 						{% endfor %}
@@ -130,6 +155,10 @@
 					
 				</div>
 			</div>	
+            <script>   
+                $('#pr_photo_link').click(function (e) { e.preventDefault(); $('#photo_tab').click(); setTimeout("$('#child_photo').click()",500) })
+            </script>
+	
 			{% endblock %}
 
 
@@ -146,7 +175,7 @@
 	{% include 'gall_js.html' %}
 	{% include 'scroll_js.html' %}
 	{% include 'scroll_move_js.html' %}
-	{% compress js %}
+	
 		<script src="/static/js/jquery.address-1.4.min.js"></script>
 		<script>
 			$(document).ready(function(){
@@ -203,7 +232,7 @@
 			QTABS.init();
 		});
 		</script>
-	{% endcompress %}
+
 {% endblock %}
 
 {% block css %}

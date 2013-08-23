@@ -195,7 +195,6 @@ INSTALLED_APPS = (
      'templateaddons',
      'modeltranslation',
     'inline_ordering',
-    'generic_positions',
     'compressor',
      'jsonfield',
      #------not important
@@ -269,7 +268,13 @@ LOGGING = {
     }
 }
 
+import logging
 
+
+logging.basicConfig(
+    level = logging.INFO,
+    format = '%(asctime)s %(levelname)s %(message)s',
+    filename = 'djangoLog.log',)
 
 STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 
@@ -392,3 +397,12 @@ COMPRESS_ENABLED= True
 # else:
 	# ALLOWED_INCLUDE_ROOTS=('django_ukrhim/media/files/cms_templates/',)
 # print ALLOWED_INCLUDE_ROOTS
+
+#----memcached
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
