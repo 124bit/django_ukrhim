@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load cms_tags compress %}
+
+{% block middle %}
+	{% placeholder "middle" %}
+{% endblock %}
+{% block options %}
+	{% placeholder "search id" %}
+{% endblock %}
+{% block js %}
+	{{ block.super }}
+    {% compress js %}
+		<script src="/static/js/purl.js"></script>
+    {% endcompress %}
+{% endblock %}

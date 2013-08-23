@@ -57,11 +57,14 @@
 			<header>
 				<a href="{% page_url 'main' %}" class="logo"><img src="{% show_placeholder 'logo' 'main' %}" /></a>
 				<div class="slogan">{% show_placeholder "slogan" "main" %}</div>
-				<form id="search" method="get" action="">
-					<input type="search" value="{% trans 'search on site' %}" class="search-text" onfocus="{if (this.value == '{% trans 'search on site' %}')this.value = '';this.setAttribute('class','search-text')}" onblur="if (this.value == ''){this.value = ''{% trans 'search on site' %}'';this.setAttribute('class','search-text')}" />
+                {% get_page 'site_search' as site_search_page %}
+				<form id="search" method="get" action="{% page_url site_search_page %}">
+					<input type="search" name="text" value="{% trans 'search on site' %}" class="search-text" onfocus="{if (this.value == '{% trans 'search on site' %}')this.value = '';this.setAttribute('class','search-text')}" onblur="if (this.value == ''){this.value = ''{% trans 'search on site' %}'';this.setAttribute('class','search-text')}" />
 					<input class="search-button" type="submit" title="'{% trans 'search on site' %}'" />
+                    {% get_placeholder 'search id' site_search_page as search_id %}
+                    <input type="hidden" name='searchid' value='{{ search_id|slice:':-1' }}'>
+                    <input type="hidden" name='web' value='0'>
 				</form>	
-				
 				<nav class="menu-block">
 					<ul class="menu collapsible">
 

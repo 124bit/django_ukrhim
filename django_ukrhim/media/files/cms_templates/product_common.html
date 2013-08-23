@@ -175,7 +175,7 @@
 	{% include 'gall_js.html' %}
 	{% include 'scroll_js.html' %}
 	{% include 'scroll_move_js.html' %}
-	
+	{% compress js %}
 		<script src="/static/js/jquery.address-1.4.min.js"></script>
 		<script>
 			$(document).ready(function(){
@@ -232,6 +232,7 @@
 			QTABS.init();
 		});
 		</script>
+    {% endcompress %}
 
 {% endblock %}
 

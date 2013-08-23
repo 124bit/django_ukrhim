@@ -1,0 +1,11 @@
+{% load cms_tags imagekit %}
+
+
+<li><a href="{% page_url page_id %}#{{ product_type}}">{{ name }}</a>
+    <div>
+            {% if pic %}
+                {% generateimage "product_in_menu" source=pic  %}
+                <a href="{% page_url page_id %}#{{ product_type}}">{{ long_name }}</a>
+            {% endif %}
+    </div>
+</li>
