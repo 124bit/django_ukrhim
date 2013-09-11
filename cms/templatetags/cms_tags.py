@@ -125,10 +125,46 @@ def get_placeholder(context, name, page_lookup, lang=None, site=None):
     return mark_safe(_show_placeholder_for_page(context,name,page_lookup,lang,site)['content'].strip())
 register.assignment_tag(takes_context=True)(get_placeholder)
 
+#maybe don WORK
 def get_pl_parent(context, name, page_lookup):
      return _get_placeholder(page_lookup, page_lookup, context, name).page_getter()
 register.assignment_tag(takes_context=True)(get_pl_parent)
 
+
+
+class PageUrlws(InclusionTag):
+    template = 'cms/content.html'
+    name = 'page_urlws'
+
+    options = Options(
+        Argument('page_lookup'),
+        Argument('lang', required=False, default=None),
+        Argument('site', required=False, default=None),
+    )
+
+    def get_context(self, context, page_lookup, lang, site):
+        site_id = get_site_id(site)
+        request = context.get('request', False)
+        if not request:
+            return {'content': ''}
+
+        if request.current_page == "dummy":
+            return {'content': ''}
+        if lang is None:
+            lang = get_language_from_request(request)
+        cache_key = _get_cache_key('page_urlws', page_lookup, lang, site_id) + '_type:absolute_url'
+        url = cache.get(cache_key)
+        if not url:
+            page = _get_page_by_untyped_arg(page_lookup, request, site_id)
+            if page:
+                url = page.get_absolute_url(language=lang)
+                cache.set(cache_key, url, get_cms_setting('CACHE_DURATIONS')['content'])
+        if url:
+            return {'content': url[:-1]}
+        return {'content': ''}
+
+
+register.tag(PageUrlws)
 
 
 

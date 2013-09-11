@@ -1,6 +1,6 @@
 {% load compress %}
 {% compress js %}
-		<script src="/static/js/jquery.magnific-popup.min.js"></script>
+		<script src="{{ STATIC_URL }}catalog/js/jquery.magnific-popup.min.js"></script>
 		<script type="text/javascript">
 		  $(document).ready(function() {
 			$('.zoom-gallery').magnificPopup({
@@ -24,7 +24,50 @@
 				opener: function(element) {
 				  return element.find('img');
 				}
+			  },
+              preload:[0,1]
+			});
+		  });
+          
+          
+          $(document).ready(function() {
+			$('.zoom').magnificPopup({
+			  delegate: 'a',
+			  type: 'image',
+			  closeOnContentClick: false,
+			  closeBtnInside: false,
+			  mainClass: 'mfp-with-zoom mfp-img-mobile',
+			  image: {
+				verticalFit: true,
+				titleSrc: function(item) {
+				  return item.el.attr('title') + '  ';
+				}
+			  },
+			  zoom: {
+				enabled: true,
+				duration: 300, // don't foget to change the duration also in CSS
+				opener: function(element) {
+				  return element.find('img');
+				}
+			  },
+              preload:[0,0]
+			});
+		  });
+          
+          $(document).ready(function() {
+			$('.pzoom').magnificPopup({
+			  delegate: 'a',
+			  type: 'image',
+			  closeOnContentClick: false,
+			  closeBtnInside: false,
+			  mainClass: 'mfp-img-mobile',
+			  image: {
+				verticalFit: true,
+				titleSrc: function(item) {
+				  return item.el.attr('title') + '  ';
+				}
 			  }
+			  
 			});
 		  });
 		</script>

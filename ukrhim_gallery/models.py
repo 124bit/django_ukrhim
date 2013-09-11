@@ -10,14 +10,14 @@ from urlparse import urljoin
 from modifier.help_functions import url_to_path
 from django.utils.translation import get_language
 from django.contrib.contenttypes import generic
-from positions import PositionField
+
 class Album(models.Model):
     name_en=models.CharField(max_length=70,verbose_name=_("Album name (en)"),null=True,blank=True)
     name_ru=models.CharField(max_length=70,verbose_name=_("Album name (ru)"),null=True,blank=True)
     slug=EavSlugField(max_length=30,verbose_name=_("album slug"),help_text=_("Short unique label."), unique=True)
     show=models.BooleanField(verbose_name=_("Show album"),default=True)
     face_photo=ElfinderField(help_text=_("Choose photo"))
-    position = PositionField(verbose_name=_('Position in list'))
+    position = models.IntegerField(verbose_name=_('Position in list'))
     class Meta:
         ordering = ['position']
         verbose_name = _('Album')
@@ -54,8 +54,8 @@ class Album(models.Model):
 
 class Media(Orderable):
     slug=models.CharField(max_length=255,verbose_name=_("name/url"))
-    descr_en=models.CharField(max_length=250,verbose_name=_("Photo description (en)"),null=True,blank=True)
-    descr_ru=models.CharField(max_length=250,verbose_name=_("Photo description (ru)"),null=True,blank=True)
+    descr_en=models.CharField(max_length=240,verbose_name=_("Photo description (en)"),null=True,blank=True)
+    descr_ru=models.CharField(max_length=240,verbose_name=_("Photo description (ru)"),null=True,blank=True)
     show=models.BooleanField(verbose_name=_("Show photo"),default=True)
     album=models.ForeignKey(Album)
     def __unicode__(self):

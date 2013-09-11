@@ -6,9 +6,10 @@ admin.autodiscover()
 import object_tools
 from cms.sitemaps import CMSSitemap
 from django.conf.urls.i18n import i18n_patterns
+from solid_i18n.urls import solid_i18n_patterns
 import platform
 object_tools.autodiscover()
-urlpatterns = i18n_patterns('',
+urlpatterns = solid_i18n_patterns('',
                        url(r'^admin_tools/', include('admin_tools.urls')),
                        (r'^admin/', include(admin.site.urls)),
 
@@ -24,24 +25,24 @@ urlpatterns = i18n_patterns('',
                        )
 
 
-if settings.DEBUG:
-    urlpatterns = patterns('',
-                           url(r'^rosetta/', include('rosetta.urls')),
+#if settings.DEBUG:
+ #   urlpatterns = patterns('',
+#                           url(r'^rosetta/', include('rosetta.urls')),
 
-                           url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
-                               {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-                           url(r'', include('django.contrib.staticfiles.urls')),
+ #                          url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+ #                             {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+ #                          url(r'', include('django.contrib.staticfiles.urls')),
+#
+  #                         ) + urlpatterns
 
-                           ) + urlpatterns
+#if settings.PROFILE and  platform.system() == 'Linux':
+#    urlpatterns=patterns('',url(r'^profiler/', include('profiler.urls'))) + urlpatterns
 
-if settings.PROFILE and  platform.system() == 'Linux':
-    urlpatterns=patterns('',url(r'^profiler/', include('profiler.urls'))) + urlpatterns
-
-if not settings.DEBUG:
-    urlpatterns=patterns('',
-         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
-         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-                    )+ urlpatterns
+#if not settings.DEBUG:
+#    urlpatterns=patterns('',
+#         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+#         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+#                    )+ urlpatterns
 
 
 

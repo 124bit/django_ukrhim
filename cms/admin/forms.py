@@ -25,7 +25,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _, get_language
 from menus.menu_pool import menu_pool
 
-
+from django.db import models
 
 
 def get_permission_acessor(obj):
@@ -58,9 +58,9 @@ def save_permissions(data, obj):
                 permission_acessor.remove(permission)
 
 class PageAddForm(forms.ModelForm):
-    title = forms.CharField(label=_("Title"), widget=forms.TextInput(),
+    title = forms.CharField(label=_("Title"), widget=forms.TextInput(attrs={'size':'40'}),
         help_text=_('The default title'))
-    slug = forms.CharField(label=_("Slug"), widget=forms.TextInput(),
+    slug = forms.CharField(label=_("Slug"), widget=forms.TextInput(attrs={'size':'40'}),
         help_text=_('The part of the title that is used in the URL'))
     language = forms.ChoiceField(label=_("Language"), choices=get_language_tuple(),
         help_text=_('The current language of the content fields.'))
@@ -153,21 +153,20 @@ class DialogForm(forms.Form):
 
     
 class PageForm(PageAddForm):
-    menu_title = forms.CharField(label=_("Menu Title"), widget=forms.TextInput(),
+    menu_title = forms.CharField(label=_("Menu Title"), widget=forms.TextInput(attrs={'size':'40'}),
         help_text=_('Overwrite what is displayed in the menu'), required=False)
-    page_title = forms.CharField(label=_("Page Title"), widget=forms.TextInput(),
+    page_title = forms.CharField(label=_("Page Title"), widget=forms.Textarea(),
         help_text=_('Overwrites what is displayed at the top of your browser or in bookmarks'), required=False)
     application_urls = forms.ChoiceField(label=_('Application'), 
         choices=(), required=False,  
         help_text=_('Hook application to this page.'))
-    overwrite_url = forms.CharField(label=_('Overwrite URL'), max_length=255, required=False,
-        help_text=_('Keep this field empty if standard path should be used.'))
+    overwrite_url = forms.CharField(label=_('Overwrite URL'), max_length=255, required=False, widget=forms.TextInput(attrs={'size':'40'}), help_text=_('Keep this field empty if standard path should be used.'))
 
     redirect = forms.CharField(label=_('Redirect'), max_length=255, required=False,
-        help_text=_('Redirects to this URL.'))
+        help_text=_('Redirects to this URL.'), widget=forms.TextInput(attrs={'size':'40'}))
     meta_description = forms.CharField(label='Description meta tag', required=False, widget=forms.Textarea,
         help_text=_('A description of the page sometimes used by search engines.'))
-    meta_keywords = forms.CharField(label='Keywords meta tag', max_length=255, required=False,
+    meta_keywords = forms.CharField(label='Keywords meta tag', max_length=255, required=False,  widget=forms.Textarea,
         help_text=_('A list of comma seperated keywords sometimes used by search engines.'))
     
     def __init__(self, *args, **kwargs):

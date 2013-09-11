@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load ukrhim_extras cms_tags imagekit compress i18n %}
+
+{% block middle %}
+	
+    <div class="middle background">
+		<nav class="menu-left" id="sticker">
+			<ul class="gallery_menu">
+				{% for child in request.current_page.parent.get_children %}
+						<li>
+							<a href="{{ child.get_absolute_url }}" {% if child.reverse_id == request.current_page.reverse_id %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
+							{% if child.reverse_id == request.current_page.reverse_id %}
+								<ul>
+									{% get_albums as albums %}
+									{% for album in albums %}
+										<li><a href="{{ child.get_absolute_url }}?album={{ album.slug }}" {% if 'album' in request.GET and request.GET.album == album.slug %} class="current-button" {% endif %}>{{ album.name }}</a></li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+						</li>
+				{% endfor %}
+			</ul>
+		</nav>
+		<div class="main-block right">
+			<ul class="bread-crumbs">
+				{% for ance in request.current_page.get_ancestors %} 
+                    {% if ance.in_navigation %}
+                		<li><a href="{% page_url ance %}">{% page_attribute "menu_title" ance %}</a></li> <i></i>
+                	{% else %}
+                		<li>{% page_attribute "menu_title" ance %}</li> <i></i>
+                	{% endif %}
+                {% endfor %}
+                {% if 'album' in request.GET %}
+                    <li><a href="{% page_url request.current_page %}" >{% page_attribute "menu_title" %}</a></li><i></i>
+                    <li>{% trans "Album" %} {% get_album_name request.GET.album %}</li>
+                {% else %}
+                    <li>{% page_attribute "menu_title" %}</li>
+                {% endif %}
+			</ul>
+            {% if 'album' in request.GET %} 
+                 <h1>{% get_album_name request.GET.album %}</h1>
+            {% else %}
+			    <h1>{% page_attribute "title" request.current_page %}</h1>
+            {% endif %}
+			{% if 'album' in request.GET %} 
+				{% get_album_photos request.GET.album as photos %}
+				<div class="zoom-gallery">
+				{% for photo in photos %}
+					{% generateimage 'photo_big' source=photo.slug as photo_big %}
+					<a href="{{ photo_big.url }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}" title='{{ photo.descr|unicodify|safe }}' >{% generateimage 'gallery_photo_small' source=photo.slug as img %}<img src="{{ img.url }}">{{ photo.descr|unicodify|safe }}</a>
+					{% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
+				
+				{% endfor %}
+				</div>
+				
+				{% get_album_videos request.GET.album as videos %}
+				<div class="video">
+				{% for video in videos %}
+					<p class="green">{% trans "Videos" %}</p>
+					<a class="show_popup gallery-item-block" rel="video-1" href="#">
+						<img src="{{ STATIC_URL }}catalog/img/demo/pic-29.jpg" class="different" />
+						{{ video.descr|unicodify|safe }}
+						<div class="play-arrow"></div>
+					</a>
+					<div class="popup video-1">
+						<a class="close" href="#">Close</a>
+						<iframe width="640" height="360" src="{{ video.slug }}" frameborder="0" allowfullscreen></iframe>
+					</div>			
+				{% endfor %}
+				</div>
+				{% compress js %}
+				<script>
+							$('a.show_popup').click(function () {
+							$('div.'+$(this).attr("rel")).fadeIn(500);
+							$("body").append("<div id='overlay'></div>");
+							$('#overlay').show().css({'filter' : 'alpha(opacity=80)'});
+							return false;				
+						});	
+						$('a.close').click(function () {
+							$(this).parent().fadeOut(100);
+							$('#overlay').remove('#overlay');
+							return false;
+						});
+				</script>
+				{% endcompress %}
+				{% include 'gall_css.html' %}
+				{% include 'gall_js.html' %}
+			{% else %}
+				{% get_albums as albums %}
+				
+					
+				<div class="zoom-gallery">
+					{% for album in albums %}
+						<a href="{{ request.current_page.get_absolute_url }}?album={{ album.slug }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}">{% generateimage 'gallery_photo_small' source=album.face_photo.url as img  %}<img src="{{ img.url }}">{{ album.name }}</a>
+						{% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}
+			
+		</div>
+	<br />		
+	</div>
+	<br />
+
+{% include 'scroll_move_js.html' %}
+{% endblock %}

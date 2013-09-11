@@ -1,0 +1,213 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-23 20:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin.py:107
+msgid "Change datatype to string"
+msgstr ""
+
+#: admin.py:119
+msgid "To text without zeros"
+msgstr ""
+
+#: admin.py:133
+msgid "Additional options"
+msgstr ""
+
+#: fields.py:56
+msgid "Must be all lower case, "
+msgstr ""
+
+#: forms.py:155
+msgid "<br>Error in field options!"
+msgstr ""
+
+#: forms.py:169
+#, python-format
+msgid "The %s could not be saved because the data"
+msgstr ""
+
+#: models.py:104
+msgid "attribute"
+msgstr ""
+
+#: models.py:105
+msgid "Attributes"
+msgstr ""
+
+#: models.py:120
+msgid "Text"
+msgstr ""
+
+#: models.py:121
+msgid "Float"
+msgstr ""
+
+#: models.py:122
+msgid "Integer"
+msgstr ""
+
+#: models.py:123
+msgid "Date"
+msgstr ""
+
+#: models.py:124
+msgid "True / False"
+msgstr ""
+
+#: models.py:125
+msgid "Choice"
+msgstr ""
+
+#: models.py:126
+msgid "File"
+msgstr ""
+
+#: models.py:127
+msgid "Image"
+msgstr ""
+
+#: models.py:128
+msgid "List"
+msgstr ""
+
+#: models.py:155
+msgid "Name"
+msgstr ""
+
+#: models.py:156
+msgid "User-friendly data field name."
+msgstr ""
+
+#: models.py:158
+msgid "Attribute slug"
+msgstr ""
+
+#: models.py:159
+msgid "Short unique data field label."
+msgstr ""
+
+#: models.py:162
+msgid "Data type"
+msgstr ""
+
+#: models.py:163
+msgid "Select type of data."
+msgstr ""
+
+#: models.py:166
+msgid "Description (ru)"
+msgstr ""
+
+#: models.py:168
+msgid "Short description for russian users."
+msgstr ""
+
+#: models.py:170
+msgid "Description (en)"
+msgstr ""
+
+#: models.py:172
+msgid "Short description for english users."
+msgstr ""
+
+#: models.py:174
+msgid "Units of field"
+msgstr ""
+
+#: models.py:176
+msgid "Units of field."
+msgstr ""
+
+#: models.py:179
+msgid "Importance"
+msgstr ""
+
+#: models.py:181
+msgid "Affect on attribute position when edit."
+msgstr ""
+
+#: models.py:194 models.py:320
+msgid "Created"
+msgstr ""
+
+#: models.py:195 models.py:321
+msgid "Modified"
+msgstr ""
+
+#: models.py:197
+msgid "Specific options"
+msgstr ""
+
+#: models.py:197
+msgid "Additional options for field in JSON format."
+msgstr ""
+
+#: models.py:324
+msgid "Attribute"
+msgstr ""
+
+#: models.py:393
+msgid " EAV field doesen't exist "
+msgstr ""
+
+#: models.py:400
+#, python-format
+msgid "%(obj)s hasn't no EAV attribute named "
+msgstr ""
+
+#: models.py:459
+#, python-format
+msgid "%(attr)s EAV field %(err)s"
+msgstr ""
+
+#: validators.py:49
+msgid "Must be str or unicode"
+msgstr ""
+
+#: validators.py:59
+msgid "Must be a float"
+msgstr ""
+
+#: validators.py:69
+msgid "Must be an integer"
+msgstr ""
+
+#: validators.py:78
+msgid "Must be a date or datetime"
+msgstr ""
+
+#: validators.py:86
+msgid "Must be a boolean"
+msgstr ""
+
+#: validators.py:95
+msgid "Must be a django model object instance"
+msgstr ""
+
+#: validators.py:97
+msgid "Model has not been saved yet"
+msgstr ""
+
+#: validators.py:106
+msgid "Must be an unicode object instance"
+msgstr ""
+
+#: validators.py:108
+msgid "Must be maximum 30 symbols"
+msgstr ""

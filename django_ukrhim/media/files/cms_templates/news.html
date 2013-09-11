@@ -1,14 +1,21 @@
 {% extends "news_list.html" %}
-{% load cms_tags %}
+{% load cms_tags imagekit %}
 
 {% block content %}
-	<h1>{% page_attribute "page_title" %}</h1>
-	
-	{% placeholder "picture" %}
+	<h1>{% page_attribute "title" %}</h1>
+	{% get_placeholder "picture" request.current_page as pic %}
+    {% if pic %}
+        {% if pic|slice:"-3:"|lower == "png" or pic|slice:"-3:"|lower == "gif" %}
+            {% generateimage "news_big_pic_png" source=pic -- class="f_right news_page_pic" %}
+        {% else %}
+            {% generateimage "news_big_pic" source=pic -- class="f_right news_page_pic border-img" %}
+        {% endif %}
+    {% endif %}
 	{% placeholder "text" %}
 
 {% endblock %}
 
 {% block options %}
+    {% placeholder "picture" %}
 	{% placeholder "list heading text" %}
 {% endblock %}

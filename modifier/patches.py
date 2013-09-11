@@ -6,6 +6,7 @@ from eav.fields import EavSlugField
 from django.db.models import CharField
 from django.contrib.sites.admin import SiteAdmin
 from django.conf import settings
+
 def monkeypatch_method(cls):
     '''
         @monkeypatch_method(class_to_patch)
@@ -40,6 +41,11 @@ Site.add_to_class('site_cutting', EavSlugField(_('Site cutting'),help_text=_("Sh
 Site.add_to_class('price_field_slugs', CharField(_('Price field attrs'),help_text=_("Attributes of price fields for this site, separated with comma-space."), max_length=200))
 Site.add_to_class('company', CharField(_('Site company'),help_text=_('Site company will show in header country-company selection'),max_length=70))
 Site.add_to_class('country', CharField(_('Site country'),help_text=_('Site country will show in header country-company selection'),max_length=70))
+
+#add cache info for pages
+from modifier import help_functions
+help_functions.cache_start_values()
+
 
 #prints time of start
 #TODO put in log?

@@ -7,9 +7,13 @@ from django import forms
 from os import listdir
 from django.utils.translation import ugettext as _
 from django.utils.translation import get_language
+from django.db import models
 class MediaInline(OrderableStackedInline):
     model = Media
     extra = 0
+    formfield_overrides = {
+        models.CharField: {'widget': forms.TextInput(attrs={'size':'180'})}
+    }
     #def get_readonly_fields(self, request, obj=None):
     #    '''
     #    Override to make certain fields readonly if this is a change request

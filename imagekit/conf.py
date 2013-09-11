@@ -3,9 +3,9 @@ from django.conf import settings
 
 
 class ImageKitConf(AppConf):
-    CACHEFILE_NAMER = 'imagekit.cachefiles.namers.hash'
-    SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_as_path'
-    CACHEFILE_DIR = 'CACHE/images'
+    CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_dot_hash'
+    SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.source_name_dot_hash'
+    CACHEFILE_DIR = 'files/images_cache'
     DEFAULT_CACHEFILE_BACKEND = 'imagekit.cachefiles.backends.Simple'
     DEFAULT_CACHEFILE_STRATEGY = 'imagekit.cachefiles.strategies.JustInTime'
 

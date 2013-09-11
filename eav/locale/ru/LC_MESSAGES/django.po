@@ -8,213 +8,231 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 20:17+0300\n"
-"PO-Revision-Date: 2013-06-10 20:20+0300\n"
+"POT-Creation-Date: 2013-08-23 20:18+0200\n"
+"PO-Revision-Date: 2013-08-28 12:45+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Translated-Using: django-rosetta 0.7.2\n"
 
-#: .\admin.py:104
+#: admin.py:107
+msgid "Change datatype to string"
+msgstr "Пооменять тип поля на строку"
+
+#: admin.py:119
+msgid "To text without zeros"
+msgstr ""
+"Убрать незначащие нули в данных поля (для цифер переконвертированных в "
+"строки)"
+
+#: admin.py:133
 msgid "Additional options"
 msgstr "Дополнительно"
 
-#: .\fields.py:55
-msgid ""
-"Must be all lower case, start with a letter, and contain only letters, "
-"numbers, or underscores. Must not contain '__'"
-msgstr ""
-"Данные должны быть введены латински буквами, начианться с маленькой буквы и "
-"не содержать тире и пробелы."
+#: fields.py:56
+msgid "Must be all lower case, "
+msgstr "Должно быть в нижнем регистре"
 
-#: .\forms.py:150
+#: forms.py:155
 msgid "<br>Error in field options!"
 msgstr "<br>Ошибка в дополнительных опциях поля"
 
-#: .\forms.py:164
+#: forms.py:169
 #, python-format
-msgid "The %s could not be saved because the datadidn't validate."
-msgstr ""
+msgid "The %s could not be saved because the data"
+msgstr "%s не может быть сохранено"
 
-#: .\models.py:104
+#: models.py:104
 msgid "attribute"
 msgstr "поле данных"
 
-#: .\models.py:105
+#: models.py:105
 msgid "Attributes"
 msgstr "Поля данных"
 
-#: .\models.py:120
+#: models.py:120
 msgid "Text"
 msgstr "Текст"
 
-#: .\models.py:121
+#: models.py:121
 msgid "Float"
 msgstr "Десятичное"
 
-#: .\models.py:122
+#: models.py:122
 msgid "Integer"
 msgstr "Целое"
 
-#: .\models.py:123
+#: models.py:123
 msgid "Date"
 msgstr "Дата"
 
-#: .\models.py:124
+#: models.py:124
 msgid "True / False"
 msgstr "Да/Нет"
 
-#: .\models.py:125
+#: models.py:125
 msgid "Choice"
 msgstr "Выпадаюший выбор"
 
-#: .\models.py:126
+#: models.py:126
 msgid "File"
 msgstr "Файл любого типа"
 
-#: .\models.py:127
+#: models.py:127
 msgid "Image"
 msgstr "Изображение"
 
-#: .\models.py:128
+#: models.py:128
 msgid "List"
 msgstr "Список"
 
-#: .\models.py:155
-msgid "Name (ru)"
-msgstr "Название (русское)"
+#: models.py:155
+msgid "Name"
+msgstr "Название"
 
-#: .\models.py:156
-msgid "User-friendly data field name. For russian users."
+#: models.py:156
+msgid "User-friendly data field name."
 msgstr ""
 "Название поля данных. Поля данных создаются для того, чтобы вводить данные "
 "об изделиях."
 
-#: .\models.py:158
-msgid "Name (en)"
-msgstr "Название (английское)"
-
-#: .\models.py:159
-msgid "User-friendly data field name. For english users."
-msgstr ""
-"Название поля данных. Поля данных создаются для того, чтобы вводить данные "
-"об изделиях."
-
-#: .\models.py:162
+#: models.py:158
 msgid "Attribute slug"
 msgstr "Аттрибут"
 
-#: .\models.py:163
+#: models.py:159
 msgid "Short unique data field label."
 msgstr ""
 "Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
 
-#: .\models.py:166
+#: models.py:162
 msgid "Data type"
 msgstr "Тип данных"
 
-#: .\models.py:167
+#: models.py:163
 msgid "Select type of data."
 msgstr "Выберите тип данных поля."
 
-#: .\models.py:170
+#: models.py:166
 msgid "Description (ru)"
 msgstr "Описание (русское)"
 
-#: .\models.py:172
+#: models.py:168
 msgid "Short description for russian users."
 msgstr "Короткое описание предназначения поля."
 
-#: .\models.py:174
+#: models.py:170
 msgid "Description (en)"
 msgstr "Описание (английское)"
 
-#: .\models.py:176
+#: models.py:172
 msgid "Short description for english users."
 msgstr "Короткое описание предназначения поля."
 
-#: .\models.py:180
+#: models.py:174
+msgid "Units of field"
+msgstr "Единицы измерения"
+
+#: models.py:176
+msgid "Units of field."
+msgstr "Единицы измерения"
+
+#: models.py:179
 msgid "Importance"
 msgstr "Важность"
 
-#: .\models.py:182
+#: models.py:181
 msgid "Affect on attribute position when edit."
 msgstr "Влияет на позицию поля данных в списке полей при вводе."
 
-#: .\models.py:195
-msgid "Сreated"
-msgstr "Дата создания"
-
-#: .\models.py:196 .\models.py:325
-msgid "Modified"
-msgstr "Дата изменения"
-
-#: .\models.py:198
-msgid "Specific options"
-msgstr "Дополнительные опции"
-
-#: .\models.py:198
-msgid "Additional options for field in JSON format."
-msgstr "Дополнительные настройки поля (формат JSON)."
-
-#: .\models.py:324
+#: models.py:194 models.py:320
 msgid "Created"
 msgstr "Дата создания"
 
-#: .\models.py:328
+#: models.py:195 models.py:321
+msgid "Modified"
+msgstr "Дата изменения"
+
+#: models.py:197
+msgid "Specific options"
+msgstr "Дополнительные опции"
+
+#: models.py:197
+msgid "Additional options for field in JSON format."
+msgstr "Дополнительные настройки поля (формат JSON)."
+
+#: models.py:324
 msgid "Attribute"
 msgstr "Поле данных"
 
-#: .\models.py:397
-#, python-format
-msgid " EAV attribute doesen't exist '%(attr)s'"
+#: models.py:393
+msgid " EAV field doesen't exist "
 msgstr ""
 
-#: .\models.py:404
+#: models.py:400
 #, python-format
-msgid "%(obj)s hasn't no EAV attribute named '%(attr)s'"
+msgid "%(obj)s hasn't no EAV attribute named "
 msgstr ""
 
-#: .\models.py:463
+#: models.py:459
 #, python-format
 msgid "%(attr)s EAV field %(err)s"
 msgstr ""
 
-#: .\validators.py:49
+#: validators.py:49
 msgid "Must be str or unicode"
-msgstr ""
+msgstr "Должно быть строкой или юникодом"
 
-#: .\validators.py:59
+#: validators.py:59
 msgid "Must be a float"
 msgstr ""
 
-#: .\validators.py:69
+#: validators.py:69
 msgid "Must be an integer"
 msgstr ""
 
-#: .\validators.py:78
+#: validators.py:78
 msgid "Must be a date or datetime"
 msgstr ""
 
-#: .\validators.py:86
+#: validators.py:86
 msgid "Must be a boolean"
 msgstr ""
 
-#: .\validators.py:95
+#: validators.py:95
 msgid "Must be a django model object instance"
 msgstr ""
 
-#: .\validators.py:97
+#: validators.py:97
 msgid "Model has not been saved yet"
 msgstr ""
 
-#: .\validators.py:106
+#: validators.py:106
 msgid "Must be an unicode object instance"
 msgstr ""
 
-#: .\validators.py:108
+#: validators.py:108
 msgid "Must be maximum 30 symbols"
 msgstr "Длина должна быть меньше 30 символов."
+
+#~ msgid ""
+#~ "Must be all lower case, start with a letter, and contain only letters, "
+#~ "numbers, or underscores. Must not contain '__'"
+#~ msgstr ""
+#~ "Данные должны быть введены латински буквами, начианться с маленькой буквы и "
+#~ "не содержать тире и пробелы."
+
+#~ msgid "Name (en)"
+#~ msgstr "Название (английское)"
+
+#~ msgid "User-friendly data field name. For english users."
+#~ msgstr ""
+#~ "Название поля данных. Поля данных создаются для того, чтобы вводить данные "
+#~ "об изделиях."
+
+#~ msgid "Сreated"
+#~ msgstr "Дата создания"

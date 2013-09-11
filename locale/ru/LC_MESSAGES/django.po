@@ -1,2 +1,0 @@
-msgid "dlr"
-msgstr "ЮСД"

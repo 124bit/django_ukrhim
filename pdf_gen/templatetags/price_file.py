@@ -23,13 +23,14 @@ def price_file(name, site=None,lang=None):
         lang='_'+lang
 
     name_with_lang=name+site+lang+'.pdf'
-    prices_folder=urljoin(settings.MEDIA_URL, "files/generated_prices/")
+    prices_folder=settings.MEDIA_ROOT + "/files/generated_prices/"
+    prices_url=urljoin(settings.MEDIA_URL, "files/generated_prices/")
     print path.join(Price.prices_path,name_with_lang)
     if path.isfile(path.join(Price.prices_path,name_with_lang)):
-        return urljoin(prices_folder,name_with_lang), os.path.getsize(path.join(Price.prices_path,name_with_lang))/1024
+        return urljoin(prices_url,name_with_lang), os.path.getsize(path.join(Price.prices_path,name_with_lang))/1024
     else:
-        #todo all returns of no files links - normal 404
-        return "404"
+
+        return "404",'0'
 
 
 

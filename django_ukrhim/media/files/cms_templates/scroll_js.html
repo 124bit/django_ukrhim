@@ -1,7 +1,7 @@
 {% load compress %}
 {% compress js %}
-		<script type="text/javascript" src="/static/js/jquery.scrollTo-min.js"></script>
-		<script type="text/javascript" src="/static/js/jquery.localscroll-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery.scrollTo-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery.localscroll-min.js"></script>
 		<script>
 			$().ready(function () {
 				$.localScroll({

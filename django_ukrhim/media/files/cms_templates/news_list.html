@@ -6,21 +6,24 @@
 {% endblock %}
 
 {% block middle %}
-
+    {% get_page "news_list" as news_list %}
 	<div class="middle background">
 		<nav class="menu-left" id="sticker">
-			{% show_placeholder "menu" "about_us" %}
+            <ul class="about_us_menu">
+                {% show_placeholder "menu" "about_us" %}
+            </ul>
 			<p class="green">{% trans "Archive" %}</p>
 			<ul>{% assign name="now_year" %}{% now "Y" %}{% endassign %}
-				{% get_placeholder "news start year" "news_list" as first_year %}
+				{% get_placeholder "news start year" news_list as first_year %}
 				{% mkrange first_year|intify|add:"-1" now_year as year_range %} 
 				{% for year in year_range %} 
-					<li><a {% if "year" in request.GET and request.GET.year == year|slugify %} class="archive-button"  {% endif %} href="{% page_url "news_list" %}?year={{ year }}">{{ year }}</a></li>
+					<li><a {% if "year" in request.GET and request.GET.year == year|slugify %} class="archive-button"  {% endif %} href="{% page_url news_list %}?year={{ year }}">{{ year }}</a></li>
 				{% endfor %}
 			</ul>
 		</nav>
 		
-		<div class="right-block">
+		<div class="right-block">  
+                
 				{% for share in request.current_page.get_children %}
 							{% if share.in_navigation and share.template == 'share.html' %}
 								{% show_placeholder 'list heading block' share %}
@@ -33,7 +36,7 @@
 				{% bread_crumbs %}
 			</ul>
 			{% block content %}
-			<h1>{% page_attribute "page_title" request.current_page %}</h1>
+			<h1>{% page_attribute "title" request.current_page %}</h1>
 			
 				{% if "year" in request.GET %}
 					{% for news in request.current_page.get_children %}
@@ -67,4 +70,9 @@
 		<br />
 	</div>
 	<br />
+{% endblock %}
+
+{% block js %}
+	{{ block.super }}
+	{% include 'scroll_move_js.html' %}
 {% endblock %}

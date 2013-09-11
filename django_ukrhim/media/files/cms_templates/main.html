@@ -18,23 +18,22 @@
 	<br />
 	<div class="middle">
 		<div class="slider">
-			
-				{% placeholder "slider slides" %}
-				
-				<a href="#" class="slidesjs-previous slidesjs-navigation arrow-left"></a>
-				<a href="#" class="slidesjs-next slidesjs-navigation arrow-right"></a>
-			</div>
+            <div id="slides">
+                {% placeholder "slider slides" %}
+                <a href="#" class="slidesjs-previous slidesjs-navigation arrow-left"></a>
+                <a href="#" class="slidesjs-next slidesjs-navigation arrow-right"></a>
+            </div>
 		</div>
 	</div>
 	<div class="directions">
 		<h1>{% placeholder "work directions header" %}</h1>
 		<div class="middle">
 			{% placeholder "work direction 1" %}
-			<img src="/static/img/separator.png" />
+			<img src="{{ STATIC_URL }}catalog/img/separator.png" />
 			{% placeholder "work direction 2" %}
-			<img src="/static/img/separator.png" />
+			<img src="{{ STATIC_URL }}catalog/img/separator.png" />
 			{% placeholder "work direction 3" %}
-			<img src="/static/img/separator.png" />
+			<img src="{{ STATIC_URL }}catalog/img/separator.png" />
 			{% placeholder "work direction 4" %}		
 		</div>
 	</div>
@@ -49,7 +48,7 @@
 {% block js %}
 	{{ block.super}}
 	{% compress js %}
-		<script src="/static/js/jquery.slides.min.js"></script>
+		<script src="{{ STATIC_URL }}catalog/js/jquery.slides.min.js"></script>
 		<script>
 			$(function() {
 			  $('#slides').slidesjs({
@@ -59,5 +58,8 @@
 			  });
 			});
 		</script>
+        <script>
+            $('#look_products').click(function(e) { e.preventDefault(); $('#products_button').click()})
+        </script>
 	{% endcompress %}
 {% endblock %}	

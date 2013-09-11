@@ -322,14 +322,16 @@
 		/* Site Selector */
 		$('#site-select').change(function(event){
 			var id = this.value;
-			var url = window.location.href;
 
+            window.location.replace('http://'+$('#opt'+id).attr('data_slug')+'/admin/cms/page/?site__exact='+id);
+            var url = window.location.href;
 			if(action=="copy"){
 				//url = insert_into_url(url, "copy", selected_page);
 				url = CMS.API.Helpers.setUrl(document.location, {
 					'addParam': "copy=" + selected_page,
 					'removeParam': "copy"
-				});
+				}); window.location.href = url;
+                
 			}else{
 				//url = remove_from_url(url, "copy");
 				url = CMS.API.Helpers.setUrl(document.location, {
@@ -343,7 +345,7 @@
 				'removeParam': "site__exact"
 			});
 
-			window.location.href = url;
+			
 		});
 		var copy_splits = window.location.href.split("copy=");
 		if(copy_splits.length > 1){

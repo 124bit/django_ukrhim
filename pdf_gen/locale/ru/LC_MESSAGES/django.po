@@ -8,47 +8,52 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 20:14+0300\n"
-"PO-Revision-Date: 2013-06-10 20:16+0300\n"
+"POT-Creation-Date: 2013-08-23 20:19+0200\n"
+"PO-Revision-Date: 2013-08-23 21:52+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Translated-Using: django-rosetta 0.7.2\n"
 
-#: .\admin.py:18 .\admin.py:19
+#: admin.py:20
 msgid "Site"
 msgstr "Сайт"
 
-#: .\admin.py:18
+#: admin.py:20
 msgid ""
 "Select price field. Template would be filled by prices from this field."
 msgstr ""
 "Выберите поля цены. Шаблон будет заполнен данными из этого поля продукта."
 
-#: .\admin.py:19
+#: admin.py:21
+msgid "Price field"
+msgstr "Прайс"
+
+#: admin.py:21
 msgid "Choose site of document."
 msgstr "Выберите сайт документа."
 
-#: .\admin.py:27
+#: admin.py:29
 msgid "Template"
 msgstr "Шаблон"
 
-#: .\admin.py:28
+#: admin.py:30
 msgid "Price odt templates"
 msgstr "Odt шаблоны прайсов"
 
-#: .\admin.py:36
+#: admin.py:44
 msgid "Update prices info"
 msgstr "Обновить прайсы"
 
-#: .\models.py:18
+#: models.py:21
 msgid "Document name"
 msgstr "Название документа"
 
-#: .\models.py:18
+#: models.py:21
 msgid ""
 "Use this name like '{% load price_file %} {% price_file site='auto' "
 "lang='auto' %}'."
@@ -56,31 +61,31 @@ msgstr ""
 "Используйте это название в шаблонах {% load price_file %} {% price_file "
 "site='auto' lang='auto' %}."
 
-#: .\models.py:20
+#: models.py:23
 msgid "Last document update"
 msgstr "Последнее обновление прайсов"
 
-#: .\models.py:26
+#: models.py:29
 msgid "price list never generated"
 msgstr "Прайс еще не сгенерирован. Обновите его."
 
-#: .\models.py:29
+#: models.py:32
 msgid "Update time"
 msgstr "Время последнего обновления"
 
-#: .\models.py:39
+#: models.py:54
 msgid "price list"
 msgstr "прайс"
 
-#: .\models.py:40
+#: models.py:55
 msgid "Price lists"
 msgstr "Прайсы"
 
-#: .\models.py:54
+#: models.py:69
 msgid "Template language"
 msgstr "Язык шаблона"
 
-#: .\models.py:54
+#: models.py:69
 msgid ""
 "Choose language of document. If it is on default or universal language - "
 "choose default."
@@ -88,15 +93,15 @@ msgstr ""
 "Выберите язык документа. Если документ универсальный - выберите \"по-"
 "умолчанию\"."
 
-#: .\models.py:59
+#: models.py:74
 msgid "Choose ODT price list template."
 msgstr "Выберите файл ODT шаблона прайса."
 
-#: .\models.py:62
+#: models.py:77
 msgid "price template"
 msgstr "Odt шаблоны прайсов"
 
-#: .\models.py:63
+#: models.py:78
 msgid "Price templates"
 msgstr "Odt шаблоны прайсов"
 

@@ -12,6 +12,8 @@ from django.utils.translation import get_language
 from import_export.admin import ImportExportModelAdmin
 from django.conf import settings
 from inline_ordering.admin import OrderableStackedInline
+from django_ace import AceWidget
+from django.db import models
 class ProductAdminForm(BaseDynamicEntityForm):
     model = Product
 
@@ -75,6 +77,9 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
 
 
 class ProductTypeAdmin(ModelAdmin):
+    formfield_overrides = {
+            models.TextField: {'widget': AceWidget(mode='html', wordwrap=True, theme='eclipse') }
+        }
     prepopulated_fields = {'slug': ('name_en',)}
     list_display = ('name','slug', 'count_products_of_type')
     save_on_top=True

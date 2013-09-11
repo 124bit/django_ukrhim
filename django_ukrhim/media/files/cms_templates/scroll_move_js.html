@@ -1,9 +1,9 @@
 	{% load compress %}
 	{% compress js %}
-		<script type="text/javascript" src="/static/js/jquery.sticky.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery.sticky.js"></script>
 		<script>
 		$(window).load(function(){
-		  $("#sticker").sticky({ topSpacing: 10, bottomSpacing: 200 });
+		  $("#sticker").sticky({ topSpacing: 40, bottomSpacing: 200 });
 		});
 		</script>
 	{% endcompress %}

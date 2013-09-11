@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
-
+from modifier.cache_values import CacheValue
 from cms import constants
 from cms.utils.conf import get_cms_setting
 from django.core.exceptions import PermissionDenied
@@ -23,7 +23,8 @@ from django.utils.translation import get_language, ugettext_lazy as _
 from menus.menu_pool import menu_pool
 from mptt.models import MPTTModel
 from os.path import join
-
+from datetime import datetime
+import modifier
 
 class Page(MPTTModel):
     """
@@ -60,7 +61,11 @@ class Page(MPTTModel):
         "An unique identifier that is used with the page_url templatetag for linking to this page"))
     navigation_extenders = models.CharField(_("attached menu"), max_length=80, db_index=True, blank=True, null=True)
     published = models.BooleanField(_("is published"), blank=True)
-
+    
+    #changed
+    last_publish_date = models.DateTimeField(auto_now_add=True)
+    child_last_publish_date = models.DateTimeField(auto_now_add=True)
+    
     template = models.CharField(_("template"), max_length=100, choices=template_choices,
                                 help_text=_('The template used to render the content.'))
     site = models.ForeignKey(Site, help_text=_('The site the page is accessible at.'), verbose_name=_("site"))
@@ -421,6 +426,16 @@ class Page(MPTTModel):
             # Ensure that the page is in the right position and save it
             public_page = self._publisher_save_public(public_page)
             public_page.published = (public_page.parent_id is None or public_page.parent.published)
+            public_page.last_publish_date=datetime.now()
+            public_page.child_last_publish_date=datetime.now()
+            if public_page.parent:
+                public_page.parent.child_last_publish_date=datetime.now()
+                if public_page.parent.published:
+                    public_page.parent.save()
+                    #public_page.parent.publish()
+                else:
+                    public_page.parent.save()
+            modifier.help_functions.set_last_publish_date(self.site,datetime.now())
             public_page.save()
 
             # The target page now has a pk, so can be used as a target
@@ -451,6 +466,17 @@ class Page(MPTTModel):
 
         self.published = True
         self._publisher_keep_state = True
+        #changed
+        self.last_publish_date=datetime.now()
+        self.child_last_publish_date=datetime.now()
+        if self.parent:
+            self.parent.child_last_publish_date=datetime.now()
+            if self.parent.published:
+                self.parent.save()
+                self.parent.publish()
+            else:
+                self.parent.save()
+        modifier.help_functions.set_last_publish_date(self.site,datetime.now())
         self.save()
         # If we are publishing, this page might have become a "home" which
         # would change the path
@@ -484,7 +510,8 @@ class Page(MPTTModel):
 
         # fire signal after publishing is done
         import cms.signals as cms_signals
-
+        
+        
         cms_signals.post_publish.send(sender=Page, instance=self)
 
         return published

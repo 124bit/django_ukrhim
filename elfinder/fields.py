@@ -121,7 +121,7 @@ class ElfinderField(models.Field):
         self.start_path = start_path
 
         if not 'max_length' in kwargs:
-            kwargs['max_length'] = 250 #default field length
+            kwargs['max_length'] = 600 #default field length
 
         super(ElfinderField, self).__init__(*args, **kwargs)
         

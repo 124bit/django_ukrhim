@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-28 11:32+0200\n"
+"PO-Revision-Date: 2013-08-24 01:38+0300\n"
+"Last-Translator:   <124bit@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.7.2\n"
+
+#: settings.py:293
+msgid "Base template"
+msgstr ""
+
+#: settings.py:294
+msgid "Base page template with clean middle plchldr"
+msgstr ""
+
+#: settings.py:295
+msgid "Base page template with middle plchldr on background"
+msgstr ""
+
+#: settings.py:296
+msgid "\"Main\" page template"
+msgstr ""
+
+#: settings.py:297
+msgid "\"Gallery\" page template"
+msgstr ""
+
+#: settings.py:298
+msgid "\"News list\" page template"
+msgstr ""
+
+#: settings.py:299
+msgid "\"News\" page template"
+msgstr ""
+
+#: settings.py:300
+msgid "\"Share and sale\" page template"
+msgstr ""
+
+#: settings.py:301
+msgid "Products (empty) template"
+msgstr ""
+
+#: settings.py:302
+msgid "Product category (empty) template"
+msgstr ""
+
+#: settings.py:303
+msgid "\"Product type\" page template"
+msgstr ""
+
+#: settings.py:304
+msgid "Auto \"Product page\" template"
+msgstr ""
+
+#: settings.py:305
+msgid "\"Where to buy\" page template"
+msgstr ""
+
+#: settings.py:306
+msgid "\"About us\" (menu options) template"
+msgstr ""
+
+#: settings.py:307
+msgid "Development (menu options) template"
+msgstr ""
+
+#: settings.py:308
+msgid "\"Development with us\" page template"
+msgstr ""
+
+#: settings.py:309
+msgid "\"Contacts\" page template"
+msgstr ""
+
+#: settings.py:310
+msgid "\"Search\" page template"
+msgstr ""
+
+#: settings.py:311
+msgid "\"Certificate\" or \"Instructions\" page template"
+msgstr ""
+
+#: settings.py:337 settings.py:355
+msgid "English"
+msgstr "English"
+
+#: settings.py:345 settings.py:363 settings.py:373
+msgid "Russian"
+msgstr "Russian"
+
+#: media/files/cms_templates/base.html:59
+#: media/files/cms_templates/base.html:60
+msgid "search on site"
+msgstr "search on site"
+
+#: media/files/cms_templates/base.html:176
+msgid "Site map"
+msgstr "Site map"
+
+#: media/files/cms_templates/base.html:177
+msgid "Contact Us"
+msgstr "Contact Us"
+
+#: media/files/cms_templates/base.html:190
+msgid "Site created by"
+msgstr "Design created by"
+
+#: media/files/cms_templates/base.html:190
+msgid "Studio March"
+msgstr "Studio March"
+
+#: media/files/cms_templates/gallery.html:35
+msgid "Album"
+msgstr ""
+
+#: media/files/cms_templates/gallery.html:59
+msgid "Videos"
+msgstr ""
+
+#: media/files/cms_templates/news_list.html:15
+msgid "Archive"
+msgstr "Archive"
+
+#: media/files/cms_templates/product_common.html:36
+msgid "Accessoires:"
+msgstr "Accessoires:"
+
+#: media/files/cms_templates/product_common.html:90
+msgid "Characteristics"
+msgstr "Characteristics"
+
+#: media/files/cms_templates/product_common.html:105
+msgid "Price"
+msgstr "Price"
+
+#: media/files/cms_templates/product_common.html:117
+msgid "Sketch"
+msgstr ""
+
+#: media/files/cms_templates/product_common.html:118
+msgid "3D"
+msgstr ""
+
+#: media/files/cms_templates/product_common.html:119
+msgid "Photos"
+msgstr ""
+
+#: media/files/cms_templates/product_common.html:120
+msgid "Instructions"
+msgstr ""
+
+#: media/files/cms_templates/product_common.html:121
+msgid "Certificates"
+msgstr ""
+
+#: media/files/cms_templates/product_common.html:122
+msgid "Shares"
+msgstr ""

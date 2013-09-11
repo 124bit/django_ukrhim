@@ -128,6 +128,7 @@ class Resource(object):
     def save_instance(self, instance, dry_run=False):
         self.before_save_instance(instance, dry_run)
         if not dry_run:
+
             instance.save()
         self.after_save_instance(instance, dry_run)
 
@@ -211,11 +212,7 @@ class Resource(object):
         for field in self.get_fields():
             v1 = self.export_field(field, original) if original else ""
             v2 = self.export_field(field, current) if current else ""
-            try:
-                v2=float(v2)
-            except ValueError:
-                pass
-            print v1
+
             if v1==_("no field"):
                 v2=_("no field")
             diff = dmp.diff_main(unicode(v1), unicode(v2))
@@ -282,6 +279,7 @@ class Resource(object):
                                 real_dry_run)
                 else:
                     self.import_obj(instance, row)
+
                     self.save_instance(instance, real_dry_run)
                     self.save_m2m(instance, row, real_dry_run)
                     row_result.diff = self.get_diff(original, instance,

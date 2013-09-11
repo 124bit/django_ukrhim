@@ -114,7 +114,7 @@ def to_int_text(modeladmin, request, queryset):
                 value_obj.value_text=str(int_val)
                 value_obj.save()
             except Exception,e:
-                raise e
+                pass
 
 to_int_text.short_description = _("To text without zeros")
 

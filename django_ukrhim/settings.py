@@ -74,9 +74,9 @@ TIME_ZONE = 'Europe/Kiev'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'ru'
 
-SITE_ID = 1
+SITE_ID = 2
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -87,7 +87,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -135,24 +135,32 @@ SECRET_KEY = '(^b_707imhz9f&amp;v)wt19l5c&amp;djxv9t+7*bu$w(x!yyf1*l^1c&amp;'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-     'django.template.loaders.eggs.Loader',
+#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
+    'johnny.middleware.LocalStoreClearMiddleware',
+   # 'django.middleware.cache.UpdateCacheMiddleware',    
     'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
+    'johnny.middleware.QueryCacheMiddleware',
    # 'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'cached_auth.Middleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    #'django.middleware.locale.LocaleMiddleware',
+    'solid_i18n.middleware.SolidLocaleMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.middleware.common.CommonMiddleware',
+    
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.language.LanguageCookieMiddleware',
     'reversion.middleware.RevisionMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware',
 
 
 )
@@ -169,7 +177,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
-    'modifier.context_processors.add_sites'
+    'modifier.context_processors.add_sites',
+    'modifier.context_processors.add_for_cache_info'
+    
 )
 
 ROOT_URLCONF = 'django_ukrhim.urls'
@@ -194,16 +204,16 @@ INSTALLED_APPS = (
      'admin_tools.dashboard',
      'templateaddons',
      'modeltranslation',
-    'inline_ordering',
-    'compressor',
+     'inline_ordering',
+     'compressor',
      'jsonfield',
      #------not important
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
     'rosetta',
     #'htmlmin',
     'django_reset',
-    'profiler',
-    'positions',
+   # 'profiler',
+    'adv_cache_tag',
     #----django
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -223,6 +233,7 @@ INSTALLED_APPS = (
     #'cms.plugins.text',
     'cms.plugins.inherit',
     'cmsplugin_plaintext',
+    'cmsplugin_htmlsitemap',
     'django_ace',
     #'polymorphic',
     'reversion',
@@ -274,23 +285,32 @@ import logging
 logging.basicConfig(
     level = logging.INFO,
     format = '%(asctime)s %(levelname)s %(message)s',
-    filename = 'djangoLog.log',)
+    filename = PROJECT_PATH+'/djangoLog.log',)
 
+    
+import logging
+logging.info(PROJECT_PATH)
+logging.info(str(DATABASES))
+  
 STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 
 #------CMS SETTINGS
-TEMPLATE_DIRS = (
-    "django_ukrhim/media/files/cms_templates",
-    "django_ukrhim/media/files/products_media"
+TEMPLATE_DIRS = ( MEDIA_ROOT+"/files/cms_templates",
+    MEDIA_ROOT+"/files/products_media"
 )
 
 CMS_TEMPLATES = (
+    
     ('base.html', gettext('Base template')),
-    ('main.html', gettext('Main page template')),
+    ('blank.html', gettext('Fully blank tmpl with plchd')),
+    ('standard.html', gettext('Base page template with clean middle plchldr')),
+    ('standard_with_bg.html', gettext('Base page template with middle plchldr on background')),
+    ('main.html', gettext('"Main" page template')),
+    ('gallery.html', gettext('"Gallery" page template')),
     ('news_list.html', gettext('"News list" page template')),
     ('news.html', gettext('"News" page template')),
     ('share.html', gettext('"Share and sale" page template')),
-    ('products.html', gettext('Products (menu options) template')),
+    ('products.html', gettext('Products (empty) template')),
     ('product_category.html', gettext('Product category (empty) template')),
     ('product_type.html', gettext('"Product type" page template')),
     ('product.html', gettext('Auto "Product page" template')),
@@ -300,7 +320,7 @@ CMS_TEMPLATES = (
     ('development_with_us.html', gettext('"Development with us" page template')),
     ('contacts.html', gettext('"Contacts" page template')),
     ('search.html', gettext('"Search" page template')),
-    ('standard.html', gettext('Base page template with middle plchldr'))
+    ('cert_or_instr.html', gettext('"Certificate" or "Instructions" page template'))
 )
 
 
@@ -314,12 +334,15 @@ CMS_PLUGIN_PROCESSORS = (
 )
 
 APPEND_SLASH=True
+SOLID_I18N_USE_REDIRECTS=False
 CMS_MENU_TITLE_OVERWRITE=True
 CMS_REDIRECTS=True
 #CMS_SOFTROOT=True
-
-
-
+PLACEHOLDER_FRONTEND_EDITING=True
+CMS_CACHE_DURATIONS = {}
+CMS_CACHE_DURATIONS['content']=0
+CMS_CACHE_DURATIONS['menus']=0
+CMS_CACHE_DURATIONS['permissions']=0
 
 CMS_SEO_FIELDS=True
 CMS_LANGUAGES = {
@@ -389,6 +412,7 @@ ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 COMPRESS_OFFLINE= False
 COMPRESS_ENABLED= True
 
+
 #--SSI
 # if platform.system() == 'Linux':
 	# if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
@@ -400,10 +424,46 @@ COMPRESS_ENABLED= True
 # print ALLOWED_INCLUDE_ROOTS
 
 #----memcached
+# CACHES = {
+    # 'default': {
+        # 'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        # 'LOCATION': '127.0.0.1:11211',
+    # }
+# }
+#CACHE_MIDDLEWARE_SECONDS=1
+# cache
+
+USE_ETAGS=True
+ADV_CACHE_VERSIONING=True
+#----johnycache
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
+    'default' : dict(
+        BACKEND = 'johnny.backends.memcached.MemcachedCache',
+        LOCATION = ['127.0.0.1:11211'],
+        JOHNNY_CACHE = True,
+    )
 }
+
+if platform.system() == 'Linux':
+    if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
+        JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_dev_'
+        PAGES_DATES_PREFIX='dates_ukrhim_dev_'
+        KEY_PREFIX='ukrhim_dev_'
+        ADV_CACHE_VERSION='ukrhimadv_dev_'
+        CMS_CACHE_PREFIX='ukrhim_dev_'
+    else:
+        JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_'
+        PAGES_DATES_PREFIX='dates_ukrhim_'
+        KEY_PREFIX='ukrhim_'
+        ADV_CACHE_VERSION='ukrhimadv_'
+        CMS_CACHE_PREFIX='ukrhim_'
+else:
+    JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_dev_'
+    PAGES_DATES_PREFIX='dates_ukrhim_dev_' 
+    KEY_PREFIX='ukrhim_dev_'
+    ADV_CACHE_VERSION='ukrhimadv_dev_'
+    CMS_CACHE_PREFIX='ukrhim_dev_'
+
+#--------locale
+LOCALE_PATHS = ( PROJECT_PATH+"/locale",)
 

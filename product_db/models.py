@@ -8,15 +8,16 @@ from elfinder.fields import ElfinderField
 from inline_ordering.models import Orderable
 from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
-from positions import PositionField
-
+from django.utils.safestring import mark_safe
+from datetime import datetime
 class ProductType(models.Model):
     name=models.CharField(max_length=30,verbose_name=_("Type name"))
     slug=EavSlugField(max_length=30,verbose_name=_("Type slug"),help_text=_("Short unique type label."), unique=True)
     fields=models.ManyToManyField(Attribute, verbose_name=_("Fields of type"), help_text=_("Data fields always assigned to products of this type."), blank=True)
     type_description=models.TextField(null=True, blank=True ,verbose_name=_("Product description"), help_text=_("Common description for products of this type."))
     template=models.TextField(null=True, blank=True ,verbose_name=_("Template"), help_text=_("Common template to render product on its page."))
-
+    changed=models.DateTimeField(auto_now=True)
+    
     class Meta:
         verbose_name = _('product type')
         verbose_name_plural = _('Product types')
@@ -79,11 +80,11 @@ class Product(models.Model):
     name_ru = models.CharField(max_length=50, verbose_name=_('Name (ru)'),unique=True)
     name_en = models.CharField(max_length=50, verbose_name=_('Name (en)'),unique=True)
     slug = EavSlugField(max_length=60, verbose_name=_('Slug'),help_text=_("Short unique product label."), unique=True)
-    product_type=models.ForeignKey(ProductType, verbose_name=_("Product type"),help_text=_("Product type assigns some data fields to products."), blank=True, null=True)
+    product_type=models.ForeignKey(ProductType, verbose_name=_("Product type"),help_text=_("Product type assigns some data fields to products."), null=True)
     additional_fields=models.ManyToManyField(Attribute, verbose_name=_("Additional fields"), blank=True)
     product_tags=models.ManyToManyField(ProductTag, verbose_name=_("Product tags"),help_text=_("Tags are used for quick searching for products."), blank=True)
     active = models.BooleanField(default=True, verbose_name=_('Active'),help_text=_("If product is deactivated - it doesn't shown anywhere."))
-    position_in_list = PositionField(verbose_name=_('Position in type'), collection='product_type')
+    position_in_list = models.IntegerField(verbose_name=_('Position in type'))
     date_added = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_('Date added'))
     last_modified = models.DateTimeField(auto_now=True,
@@ -105,7 +106,24 @@ class Product(models.Model):
         verbose_name = _('product')
         verbose_name_plural = _('Products')
         ordering = ['position_in_list']
+        
 
+    def save(self,*args, **kwargs):
+        super(Product, self).save(*args, **kwargs)
+        self.product_type.changed=datetime.now()
+        self.product_type.save()
+        if self.product_type.slug == "accessoires":
+            try:
+                for pk in self.type_accessoires:
+                    try:
+                        type=ProductType.objects.get(pk=pk)
+                        type.changed=datetime.now()
+                        type.save()
+                    except:
+                        pass
+            except TypeError:
+                pass
+        
     def __unicode__(self):
         current_lang=get_language()
         if current_lang=='ru':
@@ -146,8 +164,15 @@ class Product(models.Model):
         except AttributeError:
             return ''
 
-    def get_description(self):
-        return self.descr_m.replace('{}',self.product_type.type_description)
+    def get_description(self, product_type=None):
+        if product_type:
+           return mark_safe(self.descr_m.replace('{}',unicode(product_type.type_description)))
+        return mark_safe(self.descr_m.replace('{}',unicode(self.product_type.type_description)))
+        
+    def get_description_left(self, product_type=None):
+        if product_type:
+            return mark_safe(self.descr_left_m.replace('{}',unicode(product_type.type_description_left)))
+        return mark_safe(self.descr_left_m.replace('{}',unicode(self.product_type.type_description_left)))
     #----for direct EAV attr access
     def __getattr__(self, attr):
         current_lang=get_language()
@@ -173,7 +198,7 @@ class Product(models.Model):
         #     lang_attr=attr+'_'+lang
         #     if lang_attr in secondary_attrs:
         #         return getattr(self.eav, lang_attr)
-        if attr== '_position_in_list_cache':
+        if attr== '_position_in_list_cache': #for position field
             raise AttributeError
         if attr[-2:]=='_m':
         	lang_attr=attr[:-2]+'_'+current_lang

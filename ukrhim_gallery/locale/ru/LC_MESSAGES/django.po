@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-23 20:20+0200\n"
+"PO-Revision-Date: 2013-08-23 22:01+0300\n"
+"Last-Translator:   <124bit@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Translated-Using: django-rosetta 0.7.2\n"
+
+#: admin.py:31
+msgid "Delete deleted photos"
+msgstr "Удалить из албома фотографии, чьи файлы были удалены"
+
+#: models.py:15
+msgid "Album name (en)"
+msgstr "Название альбома (англ.)"
+
+#: models.py:16
+msgid "Album name (ru)"
+msgstr "Название альбома (рус.)"
+
+#: models.py:17
+msgid "album slug"
+msgstr "Аттрибут"
+
+#: models.py:17
+msgid "Short unique label."
+msgstr ""
+"Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
+
+#: models.py:18
+msgid "Show album"
+msgstr "Показывать альбом"
+
+#: models.py:19
+msgid "Choose photo"
+msgstr "Выберите фото"
+
+#: models.py:20
+msgid "Position in list"
+msgstr "Позиция в списке альбомов"
+
+#: models.py:23
+msgid "Album"
+msgstr "Альбом"
+
+#: models.py:24
+msgid "Albums"
+msgstr "Альбомы"
+
+#: models.py:56
+msgid "name/url"
+msgstr "название/ссылка"
+
+#: models.py:57
+msgid "Photo description (en)"
+msgstr "Описание фото (англ.)"
+
+#: models.py:58
+msgid "Photo description (ru)"
+msgstr "Описание фото (рус.)"
+
+#: models.py:59
+msgid "Show photo"
+msgstr "Показывать фото"

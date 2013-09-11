@@ -16,7 +16,8 @@ import platform
 
 
 class Price(models.Model):
-    prices_path=path.join('django_ukrhim/media/files','generated_prices')
+    prices_path=settings.MEDIA_ROOT+'/files/generated_prices'
+
 
     name=EavSlugField(_("Document name"), max_length=50, help_text=_("Use this name like '{% load price_file %} {% price_file site='auto' lang='auto' %}'." ),
                    unique=True)
@@ -81,7 +82,7 @@ class PriceTemplate(models.Model):
         res_path=path.join(folder, self.get_price_name())
         context=self.get_template_context()
         if platform.system() == 'Linux':
-            template='django_ukrhim/'+self.template_file.url
+            template=settings.PROJECT_PATH+self.template_file.url
 
             renderer = Renderer(template, context, res_path,  overwriteExisting=True)
             renderer.run()

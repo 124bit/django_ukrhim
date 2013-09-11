@@ -9,7 +9,9 @@
 {% endblock %}
 {% block js %}
 	{{ block.super }}
+    {% include 'scroll_move_js.html' %}
     {% compress js %}
-		<script src="/static/js/purl.js"></script>
+		<script src="{{ STATIC_URL }}catalog/js/purl.js"></script>
+        <script> $(document).ready(function () { $('input[name="text"]').attr('value',$.url().param('text')) }) </script>
     {% endcompress %}
 {% endblock %}
