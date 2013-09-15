@@ -87,6 +87,7 @@ def get_page_queryset_from_path(path, preview=False, draft=False, site=None):
 
     # title_set__path=path should be clear, get the pages where the path of the
     # title object is equal to our path.
+
     return pages.filter(title_set__path=path).distinct()
 
 

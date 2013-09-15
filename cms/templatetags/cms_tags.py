@@ -493,6 +493,7 @@ def _show_placeholder_for_page(context, placeholder_name, page_lookup, lang=None
     See _get_page_by_untyped_arg() for detailed information on the allowed types
     and their interpretation for the page_lookup argument.
     """
+    cache_result=False
     validate_placeholder_name(placeholder_name)
 
     request = context.get('request', False)

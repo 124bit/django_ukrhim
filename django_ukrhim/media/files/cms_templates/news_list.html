@@ -22,7 +22,7 @@
 			</ul>
 		</nav>
 		
-		<div class="right-block">  
+		<div class="right-block will_fade">  
                 
 				{% for share in request.current_page.get_children %}
 							{% if share.in_navigation and share.template == 'share.html' %}
@@ -31,7 +31,7 @@
 				{% endfor %}
 		</div>
 		
-		<div class="center-block">
+		<div class="center-block will_fade">
 			<ul class="bread-crumbs">
 				{% bread_crumbs %}
 			</ul>

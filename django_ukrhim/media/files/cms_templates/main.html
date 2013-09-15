@@ -12,54 +12,234 @@
 	{% placeholder "site twitter" %}
 	{% placeholder "site vk" %}
 	{% placeholder "site fb" %}
+    {% placeholder "google analitycs" %}
+    {% placeholder "yandex metric" %}
 {% endblock %}
 
+{% block css %}
+     <style>body, html { height: 100%; }</style>
+    {{ block.super }}
+{% endblock %}
+
+{% block header %}
+    <div class="header_and_middle">
+    {{ block.super }}
+{% endblock %}
+
+
 {% block middle %}
-	<br />
-	<div class="middle">
-		<div class="slider">
-            <div id="slides">
-                {% placeholder "slider slides" %}
-                <a href="#" class="slidesjs-previous slidesjs-navigation arrow-left"></a>
-                <a href="#" class="slidesjs-next slidesjs-navigation arrow-right"></a>
+        <br />
+        <div class="middle">
+            <div id='slider_bg_fade' style="display:none"><img src="{{ STATIC_URL }}catalog/img/fon-slider.jpg"></div>
+            <div class="slider" id="will_fade_slider">
+                <div id="slides">
+                    {% placeholder "slider slides" %}
+                    <a href="#" class="slidesjs-previous slidesjs-navigation arrow-left"></a>
+                    <a href="#" class="slidesjs-next slidesjs-navigation arrow-right"></a>
+                </div>
             </div>
-		</div>
-	</div>
-	<div class="directions">
-		<h1>{% placeholder "work directions header" %}</h1>
-		<div class="middle">
-			{% placeholder "work direction 1" %}
-			<img src="{{ STATIC_URL }}catalog/img/separator.png" />
-			{% placeholder "work direction 2" %}
-			<img src="{{ STATIC_URL }}catalog/img/separator.png" />
-			{% placeholder "work direction 3" %}
-			<img src="{{ STATIC_URL }}catalog/img/separator.png" />
-			{% placeholder "work direction 4" %}		
-		</div>
-	</div>
+        </div>
+        <div class="push"></div>
+    </div>
+        
+
 {% endblock %}
 
 {% block footer %}
-	<div class="main-footer">
-		{{ block.super }} 
-	</div>
+    <div class="footer-sticky">
+        <div class="directions">
+                <h1><span class='will_fade'>{% placeholder "work directions header" %}</span></h1>
+                <div class="middle will_fade">
+                    {% placeholder "work direction 1" %}
+                    <img src="{{ STATIC_URL }}catalog/img/separator.png" />
+                    {% placeholder "work direction 2" %}
+                    <img src="{{ STATIC_URL }}catalog/img/separator.png" />
+                    {% placeholder "work direction 3" %}
+                    <img src="{{ STATIC_URL }}catalog/img/separator.png" />
+                    {% placeholder "work direction 4" %}		
+                </div>
+        </div>
+        <div class="main-footer">
+            {{ block.super }} 
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
-	{{ block.super}}
+	{{ block.super }}
 	{% compress js %}
 		<script src="{{ STATIC_URL }}catalog/js/jquery.slides.min.js"></script>
 		<script>
-			$(function() {
-			  $('#slides').slidesjs({
-				width: 940,
-				height: 528,
-				navigation: false
-			  });
+			$(function() { 
+                $('#slides').slidesjs({
+                    width: 940,
+                    height: 528,
+                    navigation: false,
+                    play: {
+                      active: false,
+                        // [boolean] Generate the play and stop buttons.
+                        // You cannot use your own buttons. Sorry.
+                      effect: "slide",
+                        // [string] Can be either "slide" or "fade".
+                      interval: 13000,
+                        // [number] Time spent on each slide in milliseconds.
+                      auto: true,
+                        // [boolean] Start playing the slideshow on load.
+                      swap: false,
+                        // [boolean] show/hide stop and play buttons
+                      pauseOnHover: false,
+                        // [boolean] pause a playing slideshow on hover
+                      restartDelay: 2500
+                        // [number] restart delay on inactive slideshow
+                    },
+                    effect: {
+                          slide: {
+                            // Slide effect settings.
+                            speed: 1200
+                              // [number] Speed in milliseconds of the slide animation.
+                          }
+                      }
+                    });
+            
 			});
-		</script>
-        <script>
-            $('#look_products').click(function(e) { e.preventDefault(); $('#products_button').click()})
+            
+           $(function() {  $('#look_products').click(function(e) { e.preventDefault(); $('#products_button').click()}) })
+           
+           
+           
+           $(function() {
+               function show_all_slow()
+                        {
+                            imagesLoaded('#will_fade_logo', function() {  
+                       
+                                $('#will_fade_logo').css('visibility','visible').hide().fadeIn(1200,'linear');  
+                            
+                            } );
+                            
+                            setTimeout( function() {
+                                $('.will_fade').css('visibility','visible').hide().fadeIn(2000,'linear');  
+                                $('.menu-block').css('transition', 'width 1.2s linear')
+                                $('.menu-block').css('width', '1005px');
+                                time=200
+                                $('.menu-item-1').delay(time).fadeIn('slow')
+                                time=time+240
+                                $('.menu-item-2').delay(time).fadeIn('slow')
+                                time=time+240
+                                $('.menu-item-3').delay(time).fadeIn('slow')
+                                time=time+220
+                                $('.menu-item-4').delay(time).fadeIn('slow')
+                                time=time+200
+                                $('.menu-item-5').delay(time).fadeIn('slow')
+                                time=time+200
+                                $('.menu-item-6').delay(time).fadeIn('slow')
+                                time=time+200
+                                $('.menu-item-7').delay(time).fadeIn('slow')
+                            }, 2000)
+                            
+                            setTimeout( function() {
+                                imagesLoaded('#slider_bg_fade', function() {
+                                   $('#will_fade_slider').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                                imagesLoaded('#wf-1', function() {
+                                   $('#wf-1').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                                imagesLoaded('#wf-2', function() {
+                                   $('#wf-2').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                                imagesLoaded('#wf-3', function() {
+                                   $('#wf-3').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                                imagesLoaded('#wf-4', function() {
+                                   $('#wf-4').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                                imagesLoaded('#wf-5', function() {
+                                   $('#wf-5').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                                imagesLoaded('#wf-6', function() {
+                                   $('#wf-6').css('visibility','visible').hide().fadeIn(2000,'linear'); 
+                                } );
+                            }, 2000)
+
+                            
+                            
+                            
+                        }
+                        
+                        function show_all_fast()
+                        {
+                            
+                            
+                              
+                            
+                            imagesLoaded('#will_fade_logo',function() {  
+                       
+                                $('#will_fade_logo').css('visibility','visible').hide().fadeIn(1000,'linear');  
+                            
+                            } );
+                            
+                            $('.menu-block').css('transition', 'width 1.2s linear')
+                            
+                            $('.will_fade').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            
+                            $('.menu-block').css('width', '1005px');
+                            
+                            time=400
+                            $('.menu-item-1').delay(time).fadeIn('slow')
+                            time=time+200
+                            $('.menu-item-2').delay(time).fadeIn('slow')
+                            time=time+200
+                            $('.menu-item-3').delay(time).fadeIn('slow')
+                            time=time+200
+                            $('.menu-item-4').delay(time).fadeIn('slow')
+                            time=time+200
+                            $('.menu-item-5').delay(time).fadeIn('slow')
+                            time=time+200
+                            $('.menu-item-6').delay(time).fadeIn('slow')
+                            time=time+200
+                            $('.menu-item-7').delay(time).fadeIn('slow')
+                            
+                            imagesLoaded('#slider_bg_fade', function() {
+                               $('#will_fade_slider').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            imagesLoaded('#wf-1', function() {
+                               $('#wf-1').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            imagesLoaded('#wf-2', function() {
+                               $('#wf-2').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            imagesLoaded('#wf-3', function() {
+                               $('#wf-3').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            imagesLoaded('#wf-4', function() {
+                               $('#wf-4').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            imagesLoaded('#wf-5', function() {
+                               $('#wf-5').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            imagesLoaded('#wf-6', function() {
+                               $('#wf-6').css('visibility','visible').hide().fadeIn(1000,'linear'); 
+                            } );
+                            
+                           
+                            
+                           
+                            
+                            
+                            
+                        }
+                        
+                        
+                        if (visit_num<2)
+                        {
+                            show_all_slow()
+                        }
+                        else
+                        {
+                            show_all_fast()
+                        }
+                })
+                
+                
         </script>
 	{% endcompress %}
 {% endblock %}	

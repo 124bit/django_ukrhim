@@ -53,6 +53,11 @@ jQuery.fn.initMenu = function() {
         $('li a', this).click(
             function(e) {
                 e.stopImmediatePropagation();
+                
+                if ($(this).attr('id') == 'products_button' && $(this).hasClass('active')  != true)
+                {   
+                    $.scrollTo( $('.menu-block'), 600,  {offset:-20} );
+                }
                 var theElement = $(this).next();
                 var parent = this.parentNode.parentNode;
                 if($(parent).hasClass('noaccordion')) {
@@ -72,11 +77,9 @@ jQuery.fn.initMenu = function() {
                 else {
                     if(theElement.hasClass('acitem') && theElement.is(':visible')) {
                         if($(parent).hasClass('collapsible')) {
-                            $('.acitem:visible', parent).first().slideUp('normal', 
-                            function() {
-                                $(this).prev().removeClass('active');
-                            }
-                        );
+                                                        
+                            alert($('.acitem:visible', parent).html())
+                            $('.acitem:visible', parent).first().slideUp('normal');
                         return false;  
                     }
                     return false;

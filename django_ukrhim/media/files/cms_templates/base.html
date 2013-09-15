@@ -5,6 +5,9 @@
 
 <html>
 	<head>        
+        <style>
+            * { margin:0; padding:0;}
+        </style>
 		{% block meta %}
 			<meta charset="utf-8">
             {% page_attribute "meta_description" as meta_descr %}
@@ -25,206 +28,275 @@
 		<link rel="shortcut icon" href="{% show_placeholder 'favicon' 'main' %}" type="image/x-icon">
 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
 
-		
-		{% compress js %}
-            <script async type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery-1.7.2.min.js" ></script>
-            <script async src="{{ STATIC_URL }}catalog/js/menu.js" type="text/javascript"></script>
-            <script>
-                $(document).ready(function(){
-                 $(".level1").click(function(){
-                       var cssD = $(this).next('.level2').css('display');
-                        if( cssD == "none"){
-                             $(this).next('.level2').slideDown(400);
-                       }
-                       else{
-                            $(this).next('.level2').slideUp(400);
-                       }
-                }
-                )                   
-                 });
-            </script>
-		{% endcompress %}
-
-        
-        {% block css %}
-            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}catalog/style.css" />
-            <link rel="stylesheet" type="text/css" href="/media/files/site_static/catalog/user_media.css" />
-            {% get_site_media_css as site_media_css %}
-            {% if site_media_css %}
-                <link rel="stylesheet" type="text/css" href="/media/files/site_static/catalog/user_media_{{ site_cutting }}.css" />
-            {% endif %}
-            
+		{% block css %}
+            {% compress css %}
+                <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}catalog/style.css" />
+                <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}catalog/user_media.css" />
+                {% get_site_media_css as site_media_css %}
+                {% if site_media_css %}
+                    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}catalog/user_media_{{ site_cutting }}.css" />
+                {% endif %}
+            {% endcompress %}
             <!--[if lte IE 9]>
-                <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}catalog/ie9.css" />
+                {% compress css %}
+                    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}catalog/ie9.css" />
+                {% endcompress %}    
             <![endif]-->
 		{% endblock %}
-	  
+		
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        
+        {% compress js %}            
+            {% include 'scroll_js.html' %}
+            <script src="{{ STATIC_URL }}catalog/js/menu.js" type="text/javascript"></script>
+            <script src="{{ STATIC_URL }}catalog/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+            <script src="{{ STATIC_URL }}catalog/js/jquery.cookie.js" type="text/javascript"></script>
+         
+            
+            <script>
+                $(document).ready(function(){
+                                    
+                    
+                    if (! $.cookie("{{ site.site_cutting }}_first_visit")){
+                       $.cookie("{{ site.site_cutting }}_first_visit", "firstSet", {"expires" : 30})
+                       
+                       
+                       imagesLoaded('#bg_img', function() {
+                          $('#bg_fade').css('background', 'rgba(255, 255, 255, 0)');
+                        } );
+                    }
+                    
+                    visit_num=parseInt($.cookie("{{ site.site_cutting }}_visit_num"))
+                    if (! visit_num){
+                        visit_num=1
+                        $.cookie("{{ site.site_cutting }}_visit_num", visit_num, {"expires" : 7})
+                        
+                    }
+                    else
+                    {
+                        $.cookie("{{ site.site_cutting }}_visit_num", visit_num+1 , {"expires" : 7})
+                    }
+                
+                    $(".level1").click(function(){
+                           var cssD = $(this).next('.level2').css('display');
+                            if( cssD == "none"){
+                                 $(this).next('.level2').slideDown(400);
+                           }
+                           else{
+                                $(this).next('.level2').slideUp(400);
+                           }
+                    }
+                    )   
+                   
+                })
+                
+                $(function() { 
+                        if (!("ontouchstart" in document.documentElement)) {
+                            $('.menu-item-1 .acitem li').hover( function(){ $(this).children('.menu-item-1 .acitem a').addClass('heigh-a ')}, function(){ $(this).children('.menu-item-1 .acitem a').removeClass('heigh-a ')})
+                            }
+                        else
+                            {
+                            $('.menu-item-1 .acitem li').hover( function(){ $(this).children('.menu-item-1 .acitem a').addClass('low-a ')}, function(){ $(this).children('.menu-item-1 .acitem a').removeClass('low-a ')})
+                            }
+                    })
+            </script>
+        {% endcompress %}
+        
+        {% if request.current_page.reverse_id != 'main' %}
+            {% compress js inline %}
+                <script>
+                $(document).ready(function(){
+                        $('.will_fade').css('visibility','visible').hide().fadeIn(400,'swing'); 
+                      })
+                </script>
+            {% endcompress %}
+        {% endif %}
+        
+ 
 	</head>
 	
-	<body data-spy="scroll" >
-		
-		{% block header %}
-			<header>
-				<a href="{% page_url 'main' %}" class="logo"><img src="{% show_placeholder 'logo' 'main' %}" /></a>
-				<div class="slogan">{% show_placeholder "slogan" "main" %}</div>
-                {% get_page 'site_search' as site_search_page %}
-				<form id="search" method="get" action="{% page_url site_search_page %}">
-					<input type="search" name="text" value="{% trans 'search on site' %}" class="search-text" onfocus="{if (this.value == '{% trans 'search on site' %}')this.value = '';this.setAttribute('class','search-text');}" onblur="if (this.value == ''){this.value = '{% trans 'search on site' %}';this.setAttribute('class','search-text');}" />
-					<input class="search-button" type="submit" title="'{% trans 'search on site' %}'" />
-                    {% get_placeholder 'search id' site_search_page as search_id %}
-                    <input type="hidden" name='searchid' value='{{ search_id|slice:':-1' }}'>
-                    <input type="hidden" name='web' value='0'>
-				</form>	
+	<body data-spy="scroll">
+        {% first_time as first_time %}
+        {% if first_time %}<div id="bg_fade">{% endif %}
+            {% block header %}
+                <header class="">
+                    <div class="container header_top" >
+                    <a href="{% page_url 'main' %}" class="logo" {% if request.current_page.reverse_id == 'main' %}id="will_fade_logo"{% endif %} ><img height=98 width=331 src="{% show_placeholder 'logo' 'main' %}" /></a>
+                    <div class=" {% if request.current_page.reverse_id == 'main' %}will_fade{% endif %} slogan">{% show_placeholder "slogan" "main" %}</div>
+                    {% get_page 'site_search' as site_search_page %}
+                    <form class=" {% if request.current_page.reverse_id == 'main' %}will_fade{% endif %}" id="search" method="get" action="{% page_url site_search_page %}">
+                        <input type="search" name="text" value="{% trans 'search on site' %}" class="search-text" onfocus="{if (this.value == '{% trans 'search on site' %}')this.value = '';this.setAttribute('class','search-text');}" onblur="if (this.value == ''){this.value = '{% trans 'search on site' %}';this.setAttribute('class','search-text');}" />
+                        <input class="search-button" type="submit" title="'{% trans 'search on site' %}'" />
+                        {% get_placeholder 'search id' site_search_page as search_id %}
+                        <input type="hidden" name='searchid' value='{{ search_id|slice:':-1' }}'>
+                        <input type="hidden" name='web' value='0'>
+                    </form>	
 
-                
-                <nav class="menu-block">
-                
-                    {% is_draft as cdraft %}
-                    {% cache_version last_publish_date_all_pages as cversion %}
-                    
-                    {% cache 0 nav_menu site.pk LANGUAGE_CODE cdraft cversion %}
-                        <ul class="menu collapsible">
+                    <div style="display:none" id="bg_img"><img src="{{ STATIC_URL }}catalog/img/fon.jpg" ><img id="img_fade" src="{{ STATIC_URL }}catalog/img/fon.png" ></div>
+                    </div>
+                    <nav class="menu-block  {% if request.current_page.reverse_id == 'main' %} menu-block-short  will_fade  {% endif %} ">
                         
-                            {% for page in request.current_page.get_root.get_children %}
-                                <li class="menu-item-{% cycle '1' '2' '3' '4' '5' '6' '7' '8' '9' %}">
-                                    {% if forloop.counter == 1 %}
-                                        
-                                        <a href="" id="products_button" class="product-item">{% page_attribute "menu_title" page %}</a>
-                                        <div class="acitem">
-                                            <div class="arrow-top"></div>
-                                                {% get_page  "products" as products_page %}
-                                                {% for page in products_page.get_children %}  
-                                                    {% if forloop.counter0 == 2 %}
-                                                        <br />
-                                                    {% endif %}
-                                                    {% if page.reverse_id != "product_inner" and page.published %}
-                                                    <ul class="left">
-                                                        <li class="item-title">{% page_attribute "menu_title" page %}</li>
+                        {% is_draft as cdraft %}
+                        {% cache_version last_publish_date_all_pages as cversion %}
+                        {% if_main as if_main %} 
+                        {% cache 0 nav_menu site.pk LANGUAGE_CODE if_main cdraft cversion %}
+                            <ul class="menu collapsible">
+                            
+                                {% for page in request.current_page.get_root.get_children %}
+                                    <li class="{% if request.current_page.reverse_id == 'main' %}nav-item{%endif%} menu-item-{% cycle '1' '2' '3' '4' '5' '6' '7' '8' '9' %}">
+                                        {% if forloop.counter == 1 %}
+                                            
+                                            <a href="#" id="products_button" class="product-item">{% page_attribute "menu_title" page %}<div class="menu-item-1-h"></div></a>
+                                            
+                                            <div class="acitem">
+                                                <div class="arrow-top"></div>
+                                                    {% get_page  "products" as products_page %}
+                                                    {% for page in products_page.get_children %}
+                                                        {% if page.reverse_id != "product_inner" and page.published %}
+                                                        <ul class="left {% if forloop.counter > 2 %}s-nav-ul{% endif %}">
+                                                            <li class="item-title">{% page_attribute "menu_title" page %}</li>
+                                                            {% for child in page.get_children %}
+                                                                {% if child.in_navigation %}
+                                                                    
+                                                                    {% get_placeholder 'menu items' child as menu_items_txt %}
+                                                                    {% if menu_items_txt %}
+                                                                        {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                                                                    {% else %}
+                                                                        {% get_page_attribute "menu_title" child as item_title %}
+                                                                        {% make_dict name=item_title as item_dict%}
+                                                                        {% make_dict long_name=item_title as item_dict%}
+                                                                        {% make_list item_dict as menu_items %}
+                                                                    {% endif %}
+                                                                    
+                                                                    {% for item in menu_items %}
+                                                                        {% assign name='product_page_url' %}{% if child.reverse_id|slice:":10" != "redirect__" %}{% page_url child %}{% else %}{% page_url child.reverse_id|slice:"10:" %}{% endif %}{% if 'page_section' in item %}#{{ item.page_section }}{% endif %}{% endassign %}
+                                                                        
+                                                                        {% if 'img' in item %}
+                                                                            <li>
+                                                                                <a href="{{ product_page_url }}">{% if child.reverse_id != "plastic_tanks" %} {{ item.long_name }} {% else %} {{ item.name }} {% endif %}</a>
+                                                                                <div>
+                                                                                    {% generateimage "product_in_menu" source=item.img  %}
+                                                                                    <a href="{{ product_page_url }}">{{ item.long_name }}</a>
+                                                                                    <span>{{ item.description }}</span>
+                                                                               
+                                                                                </div>
+                                                                            </li>
+                                                                        {% else %}
+                                                                            <li><a href="{{ product_page_url }}">{{ item.long_name }}</a></li>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                                 
+                                                            {% endfor %}
+                                                         </ul>
+                                                            {% if not forloop.last and page.get_next_sibling.reverse_id != "product_inner" %}
+                                                                {% if forloop.counter <= 2 %}
+                                                                    <img src="{{ STATIC_URL }}catalog/img/separator-1.png" class="left"/>
+                                                                {% elif forloop.counter > 2 %}
+                                                                    <img src="{{ STATIC_URL }}catalog/img/separator-1-1.png" style="margin-top: -20px; margin-left:-5px;" class="left"/>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            
+                                                            {% if forloop.counter == 2 %}
+                                                                    <img src="{{ STATIC_URL }}catalog/img/separator-2.png" class="separator-gorizontal"/>
+                                                            {% endif %}
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                <div class="stopper">
+                                                    <img src="{{ STATIC_URL }}catalog/img/stopper-logo.png">
+                                                </div>
+                                                <br>
+                                            </div>		
+
+                                        {% elif not page.is_leaf_node %}
+                                                <a class="dropdown"  href="">{% page_attribute "menu_title" page %}</a>
+                                                
+                                                <div class="acitem {% if request.current_page.reverse_id == "main" %} acitem_main  {% endif %}">
+                                                    <ul>
                                                         {% for child in page.get_children %}
                                                             {% if child.in_navigation %}
-                                                                
-                                                                {% get_placeholder 'menu items' child as menu_items_txt %}
-                                                                {% if menu_items_txt %}
-                                                                    {% get_menu_items_from_txt menu_items_txt as menu_items %}
-                                                                {% else %}
-                                                                    {% get_page_attribute "menu_title" child as item_title %}
-                                                                    {% make_dict name=item_title as item_dict%}
-                                                                    {% make_dict long_name=item_title as item_dict%}
-                                                                    {% make_list item_dict as menu_items %}
-                                                                {% endif %}
-                                                                
-                                                                {% for item in menu_items %}
-                                                                    {% assign name='product_page_url' %}{% if child.reverse_id|slice:":10" != "redirect__" %}{% page_url child %}{% else %}{% page_url child.reverse_id|slice:"10:" %}{% endif %}{% if 'page_section' in item %}#{{ item.page_section }}{% endif %}{% endassign %}
-                                                                    
-                                                                    {% if 'img' in item %}
-                                                                        <li>
-                                                                            <a href="{{ product_page_url }}">{% if child.reverse_id != "plastic_tanks" %} {{ item.long_name }} {% else %} {{ item.name }} {% endif %}</a>
-                                                                            <div>
-                                                                                {% generateimage "product_in_menu" source=item.img  %}
-                                                                                <a href="{{ product_page_url }}">{{ item.description }}</a>
-                                                                            </div>
-                                                                        </li>
-                                                                    {% else %}
-                                                                        <li><a href="{{ product_page_url }}">{{ item.long_name }}</a></li>
-                                                                    {% endif %}
-                                                                {% endfor %}
+                                                                 <li {% if forloop.first %} class='first' {% elif forloop.last %} class='last' {% endif %} ><a href="{% page_url child %}">{% page_attribute "menu_title" child %}</a></li>
                                                             {% endif %}
                                                         {% endfor %}
-                                                     </ul>
-                                                        {% if not forloop.last and page.get_next_sibling.reverse_id != "product_inner" %}
-                                                            <img src="{{ STATIC_URL }}catalog/img/separator-1.png" class="left"/>
-                                                        {% endif %}
-                                                    {% endif %}
+                                                    </ul>
+                                                </div>
 
-                                                {% endfor %}
-                                            <br />
-                                        </div>		
-                                        
-                                    {% elif not page.is_leaf_node %}
-                                            <a href="">{% page_attribute "menu_title" page %}</a>
-                                            
-                                            <div class="acitem {% if request.current_page.reverse_id == "main" %} acitem_main  {% endif %}">
-                                                <ul>
-                                                    {% for child in page.get_children %}
-                                                        {% if child.in_navigation %}
-                                                             <li {% if forloop.first %} class='first' {% elif forloop.last %} class='last' {% endif %} ><a href="{% page_url child %}">{% page_attribute "menu_title" child %}</a></li>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-
-                                    {% elif page.in_navigation and page.reverse_id|slice:":10" == "redirect__" %}
-                                            <a href="{% page_url page.reverse_id|slice:"10:" %}">{% page_attribute "menu_title" page %}</a>
-                                    {% elif page.in_navigation %}
-                                            <a href="{% page_url page %}">{% page_attribute "menu_title" page %}</a>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                            
-                        </ul>
-                    {% endcache %} 
-                    
-                        <div id="menu">
-                            {% cache_version request.current_page.last_publish_date as zversion %}
-                            {% cache 0 language_panel site.pk request.current_page.pk LANGUAGE_CODE cdraft zversion %}
-                                {% get_current_language as cur_lang_code %}
-                                <div class="level1 language">&nbsp;&nbsp;{{ cur_lang_code|upper }}<i></i></div>
+                                        {% elif page.in_navigation and page.reverse_id|slice:":10" == "redirect__" %}
+                                                <a href="{% page_url page.reverse_id|slice:"10:" %}">{% page_attribute "menu_title" page %}</a>
+                                        {% elif page.in_navigation %}
+                                                <a href="{% page_url page %}">{% page_attribute "menu_title" page %}</a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
                                 
-                                {% get_available_languages as languages %}
-                                <div class="level2 language-list">
-                                    {% for lang in languages %}
-                                        {% ifnotequal cur_lang_code lang.0 %}
-                                            <div><a href="{% replace_url_language_code lang.0 %}">&nbsp;&nbsp;{{ lang.0|upper }}</a></div>
-                                        {% endifnotequal %}
-                                    {% endfor %}
-                                </div>	
-                            {% endcache %}
-                            
-                            {% cache 0 company_panel site.pk LANGUAGE_CODE cdraft cversion %}
-                                <div class="level1 contry">{{ site.country|upper }}<i></i></div>
-                                {% get_sites as sites %}
-                                {% get_default_lang as default_lang %}
-                                <div class="level2 contry-list">
-                                    {% for site in sites %}
-                                        <div><a href="http://{{ site.domain }}{% if LANGUAGE_CODE != default_lang %}/{{LANGUAGE_CODE}}/{% endif %}">{{ site.country_en }} - {{ site.company_en }}</a></div>
-                                    {% endfor %}
-                                </div>
-                            {% endcache %}
-                        </div>
+                            </ul>
+                        {% endcache %} 
+                        
+                            <div id="menu">
+                                {% cache_version request.current_page.last_publish_date as zversion %}
+                                {% cache 0 language_panel site.pk request.current_page.pk LANGUAGE_CODE cdraft zversion %}
+                                    {% get_current_language as cur_lang_code %}
+                                    <div class="level1 language">&nbsp;&nbsp;{{ cur_lang_code|upper }}<i></i></div>
+                                    
+                                    {% get_available_languages as languages %}
+                                    <div class="level2 language-list">
+                                        {% for lang in languages %}
+                                            {% ifnotequal cur_lang_code lang.0 %}
+                                                <div><a href="{% replace_url_language_code lang.0 %}">&nbsp;&nbsp;{{ lang.0|upper }}</a></div>
+                                            {% endifnotequal %}
+                                        {% endfor %}
+                                    </div>	
+                                {% endcache %}
+                                
+                                {% cache 0 company_panel site.pk LANGUAGE_CODE cdraft cversion %}
+                                    <div class="level1 contry">{{ site.country|upper }}<i></i></div>
+                                    {% get_sites as sites %}
+                                    {% get_default_lang as default_lang %}
+                                    <div class="level2 contry-list">
+                                        {% for site in sites %}
+                                            <div><a href="http://{{ site.domain }}{% if LANGUAGE_CODE != default_lang %}/{{LANGUAGE_CODE}}/{% endif %}">{{ site.country_en }} - {{ site.company_en }}</a></div>
+                                        {% endfor %}
+                                    </div>
+                                {% endcache %}
+                            </div>
+                        
+                    </nav>
+                        
                     
-                </nav>
+                </header>
+            {% endblock %}
+            
+            {% block middle %}
+            {% endblock %}
+            
+            {% block footer %}
+                <footer {% if request.current_page.reverse_id == "main" %} class="will_fade"  {% endif %} >
+                    <div class="left">
+                        <p>{% show_placeholder "site company" "main" %}</p>
+                        <a href="{% page_url 'sitemap' %}">{% trans "Site map" %}</a>
+                        <a href="{% page_url 'contacts' %}" class="contact-info">{% trans "Contact Us" %}</a>
+                    </div>
+                    <div >
+                        <ul>
+                            <li>E-mail: {% show_placeholder 'site emeil' "main" %}</li>
+                            <li>Skype: {% show_placeholder 'site skype' "main" %}</li>
+                            <li>Телефон: {% show_placeholder 'site phone' "main" %}</li>
+                        </ul>
+                    </div>
+                    <div >
+                        <a href="{% show_placeholder 'site twitter' request.current_page.get_root %}" class="twitter"></a>
+                        <a href="{% show_placeholder 'site vk' request.current_page.get_root %}" class="vk"></a>
+                        <a href="{% show_placeholder 'site fb' request.current_page.get_root %}" class="fb"></a>
+                        <p><a href="http://www.mart.com.ua/{% if LANGUAGE_CODE == 'en' %}en/{% endif %}">{% trans "Site created by" %}</a> — {% trans "Studio March" %}<p>
+                    </div>
+                </footer>
+            {% endblock %}
+            {% block js %}
                     
-                
-			</header>
-		{% endblock %}
-		
-		{% block middle %}
-		{% endblock %}
-		
-		{% block footer %}
-			<footer>
-				<div class="left">
-					<p>{% show_placeholder "site company" "main" %}</p>
-					<a href="{% page_url 'sitemap' %}">{% trans "Site map" %}</a>
-					<a href="{% page_url 'contacts' %}" class="contact-info">{% trans "Contact Us" %}</a>
-				</div>
-				<div>
-					<ul>
-						<li>E-mail: {% show_placeholder 'site emeil' "main" %}</li>
-						<li>Skype: {% show_placeholder 'site skype' "main" %}</li>
-						<li>Телефон: {% show_placeholder 'site phone' "main" %}</li>
-					</ul>
-				</div>
-				<div class="right">
-					<a href="{% show_placeholder 'site twitter' request.current_page.get_root %}" class="twitter"></a>
-					<a href="{% show_placeholder 'site vk' request.current_page.get_root %}" class="vk"></a>
-					<a href="{% show_placeholder 'site fb' request.current_page.get_root %}" class="fb"></a>
-					<p><a href="http://www.mart.com.ua/{% if LANGUAGE_CODE == 'en' %}en/{% endif %}">{% trans "Site created by" %}</a> — {% trans "Studio March" %}<p>
-				</div>
-			</footer>
-		{% endblock %}
-		{% block js %}
-			
-		{% endblock %}
+                    {% show_placeholder 'google analitycs' 'main' %}
+                    {% show_placeholder 'yandex metric' 'main' %}   
+            {% endblock %}
+       {% if first_time %} </div> {% endif %}
 	</body>
 </html>

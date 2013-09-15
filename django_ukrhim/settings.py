@@ -411,7 +411,7 @@ ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
 #--------------------compressors and minifiers settings
 COMPRESS_OFFLINE= False
 COMPRESS_ENABLED= True
-
+COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 
 #--SSI
 # if platform.system() == 'Linux':

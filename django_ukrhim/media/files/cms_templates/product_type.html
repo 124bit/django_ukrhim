@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block middle %}
-<div class="middle background">
+<div class="middle background  container" >
     {% get_placeholder 'menu items' request.current_page as current_menu_items_txt %}  
     {% if current_menu_items_txt %}
         {% get_menu_items_from_txt current_menu_items_txt as current_menu_items %}
@@ -108,7 +108,7 @@
             </nav>
         {% endif %}
     {% endcache %}
-    <div class="main-block right">
+    <div class="main-block right will_fade">
         <ul class="bread-crumbs">
             {% include 'breadcrumb.html' %}
         </ul>
@@ -122,9 +122,11 @@
         {% endcache %}
         
     </div>
-    <br />		
+    <br />
+   
 	</div>
 	<br />
+  
 {% endblock %}
 
 {% block options %}
@@ -134,7 +136,6 @@
 
 {% block js %}
 	{{ block.super }}
-	{% include 'scroll_js.html' %}
 	{% include 'scroll_move_js.html' %}
 	{% compress js %}
 		<script src="{{ STATIC_URL }}catalog/js/bootstrap-scrollspy.js"></script>

@@ -44,6 +44,7 @@ def pname_foramtter(name):
 def make_dict(key, val):
     return {key:val}
 
+    
 @register.filter
 def del_style(val):
     pos1=val.find('<style')
@@ -80,6 +81,9 @@ def intify(key):
     return int(key)
 
 
+def count_min_height(html, h, offset):
+    return(html.count('li')/2*int(h)+offset)
+register.assignment_tag()(count_min_height)           
 
 
 
@@ -111,12 +115,29 @@ register.assignment_tag(make_template)
 
 
 
+
+
 def is_draft(context):
     if 'draft' in context['request'].GET and context['request'].GET['draft']:
         return 1
     else:
         return 0
 register.assignment_tag(takes_context=True)(is_draft)
+
+def first_time(context):
+    if context['site_cutting']+'_first_visit' in context['request'].COOKIES:
+        return False
+    else:
+        return True
+register.assignment_tag(takes_context=True)(first_time)
+
+def if_main(context):
+    if context['request'].current_page.reverse_id == "main":
+        return True
+    else:
+        return False
+register.assignment_tag(takes_context=True)(if_main)
+
 
 def cache_version(context, version):
     if 'draft' in context['request'].GET and context['request'].GET['draft']:

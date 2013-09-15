@@ -1,1 +1,4 @@
-<link href="{{ STATIC_URL }}catalog/gal.css" rel="stylesheet">
+{% load compress %}
+{% compress css %}
+    <link href="{{ STATIC_URL }}catalog/gal.css" rel="stylesheet">
+{% endcompress %}
