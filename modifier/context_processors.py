@@ -7,6 +7,8 @@ def add_sites(request):
     context_extras['site_cutting'] = site.site_cutting
     
     return context_extras
+    
+#not used    
 def add_for_cache_info(request):
     context_extras = {}
     

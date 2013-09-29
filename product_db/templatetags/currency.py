@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext as _
 register = template.Library()
 @register.simple_tag
-def currency(site=None, price_index=None,price_slug=None):
+def currency(site=None, price_index=None,price_slug=None, upper = False, lang=None):
     '''receive currency of current site price field by tag  {{ currency }}'''
     if not price_slug:
             if site:
@@ -23,8 +23,15 @@ def currency(site=None, price_index=None,price_slug=None):
     #todo check for safety return this and all
     try:
         price_field=Attribute.objects.get(slug=price_slug)
-        curr=price_field.units
-        return curr
+        if lang and lang!='default':
+            units_slug='units_'+lang
+        else:
+            units_slug='units'
+        curr=getattr(price_field, units_slug) 
+        if upper:
+            return curr.upper()
+        else:
+            return curr
     except KeyError:
         return ''
     except ObjectDoesNotExist:

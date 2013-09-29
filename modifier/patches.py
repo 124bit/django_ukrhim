@@ -43,8 +43,8 @@ Site.add_to_class('company', CharField(_('Site company'),help_text=_('Site compa
 Site.add_to_class('country', CharField(_('Site country'),help_text=_('Site country will show in header country-company selection'),max_length=70))
 
 #add cache info for pages
-from modifier import help_functions
-help_functions.cache_start_values()
+#from modifier import help_functions
+#help_functions.cache_start_values()
 
 
 #prints time of start

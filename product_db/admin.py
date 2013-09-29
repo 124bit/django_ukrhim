@@ -58,19 +58,20 @@ class ProductAdmin(BaseEntityAdmin, ImportExportModelAdmin):
             column_name=site.site_cutting
             attr_slugs=site.price_field_slugs.split(', ')
             for attr_slug in attr_slugs:
-                currency=Attribute.objects.get(slug=attr_slug).units
-                func_name='getter_'+attr_slug
-                price_func_slugs.append(func_name)
-                if func_name not in Product.__dict__:
-                    def get_price_generator(slug):
-                        def get_price(self):
-                            try:
-                                return getattr(self,slug)
-                            except AttributeError:
-                                return ''
-                        get_price.short_description = _(column_name)+', '+currency
-                        return  get_price
-                    setattr(Product,func_name,get_price_generator(attr_slug))
+                if 'dependent' not in Attribute.objects.get(slug=attr_slug).options['price_field']:
+                    currency=Attribute.objects.get(slug=attr_slug).units
+                    func_name='getter_'+attr_slug
+                    price_func_slugs.append(func_name)
+                    if func_name not in Product.__dict__:
+                        def get_price_generator(slug):
+                            def get_price(self):
+                                try:
+                                    return self.price(price_slug=slug)
+                                except AttributeError:
+                                    return ''
+                            get_price.short_description = _(column_name)+', '+currency
+                            return  get_price
+                        setattr(Product,func_name,get_price_generator(attr_slug))
         return  list(self.list_display)+price_func_slugs+['active']
 
 

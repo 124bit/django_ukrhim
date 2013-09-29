@@ -13,7 +13,8 @@ from eav.models import Attribute
 from eav.fields import EavSlugField
 from django.contrib.admin.models import LogEntry, CHANGE
 import platform
-
+import re
+from product_db.templatetags.currency import currency
 
 class Price(models.Model):
     prices_path=settings.MEDIA_ROOT+'/files/generated_prices'
@@ -65,6 +66,7 @@ class PriceTemplate(models.Model):
     LANG_CHOICES = settings.LANGUAGES  + [('default','default')]
 
     price_field= CharField(max_length=40, blank=True, null=True)
+    price_field2= CharField(max_length=40, blank=True, null=True)
     price= ForeignKey(Price, blank=True, null=True)
     site = CharField(max_length=15)
     language =  CharField(_("Template language"),max_length=15, choices=LANG_CHOICES, default='default', help_text=_("Choose language of document. If it is on default or universal language - choose default.") )
@@ -96,21 +98,55 @@ class PriceTemplate(models.Model):
     def get_template_context(self):
         all_products=Product.objects.filter(active=True)
         template_context={}
+
+        template_context['cur'] = currency(price_slug=self.price_field, lang=self.language)
+        template_context['cur_up'] = currency(price_slug=self.price_field, upper=True, lang=self.language)
+        if self.price_field2 != 'none':
+            template_context['cur2']=currency(price_slug=self.price_field2, lang=self.language)
+            template_context['cur2_up'] = currency(price_slug=self.price_field2, upper=True, lang=self.language)
+            
         for product in all_products:
-            price_string=product.price(price_slug=self.price_field)
-            try:
-                template_context[product.slug+'__price']=str(int(price_string))+',00'
-            except:
-                template_context[product.slug+'__price']=price_string
-            template_context[product.slug+'__name_ru']=product.name_ru
-            template_context[product.slug+'__name_en']=product.name_en
+            price_string=product.price(price_slug=self.price_field,lang=self.language)
+            template_context[product.slug+'__price']=self.format_price_str(price_string)
+            if self.price_field2 != 'none':
+                price_string2=product.price(price_slug=self.price_field2, lang=self.language)
+                template_context[product.slug+'__price2']=self.format_price_str(price_string2)
+            template_context[product.slug+'__name_ru']=self.pname_foramtter(product.name_ru)
+            template_context[product.slug+'__name_en']=self.pname_foramtter(product.name_en)
+            if self.language!='default':
+                template_context[product.slug+'__name']=self.pname_foramtter(getattr(product,'name'+'_'+self.language))
+            else:
+                template_context[product.slug+'__name']=self.pname_foramtter(getattr(product,'name'))
             for field in product.get_secondary_attributes():
                 if field.datatype==Attribute.TYPE_TEXT or field.datatype==Attribute.TYPE_FLOAT or field.datatype==Attribute.TYPE_DATE:
                     template_context[product.slug+'__'+field.slug]=getattr(product,field.slug)
 
         return template_context
 
+        
+    def format_price_str(self,price_str):
+    
+    
+        try:
+            price_str="%0.2f" % round(float(price_str),2)
+            price_str=self.thous(price_str)
+            price_str=price_str.replace('.',',')
+            return price_str
+            
+        except: #i dont now why it puts elfinder so no exc
+            return price_str
 
+    def pname_foramtter(self, name):
+        name.replace('-', ' - ',1)
+        return name.replace('-', ' - ',1)
+    
+    def thous(sel, x, sep=' ', dot='.'):
+        num, _, frac = str(x).partition(dot)
+        num = re.sub(r'(\d{3})(?=\d)', r'\1'+sep, num[::-1])[::-1]
+        if frac:
+            num += dot + frac
+        return num
+        
     def get_price_name(self):
 
 

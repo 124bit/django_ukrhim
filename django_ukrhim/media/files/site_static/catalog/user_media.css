@@ -409,22 +409,22 @@ min-height: 260px!important;
 }
 
 
-.menu > li.nav-item > .dropdown:hover
+.menu > li > .dropdown:hover
 {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2)!important ;
 }
-.menu > li.nav-item > .active
+.menu > li > .active
 {
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2)!important;
 }
 
-.menu > li.nav-item > a.product-item, a.product-item.active:hover
+.menu > li > a.product-item, a.product-item.active:hover
 {
     box-shadow: none!important;
     background: none;
 }
 
-.menu-block li a.heigh-a
+.menu-block li a.heigh-a:hover
 {
 color:#252525!important;
 border-radius:5px;
@@ -437,12 +437,11 @@ background: -o-linear-gradient(top, #b3b3b3, #dadada)!important;
 box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
-.menu-block li a.low-a {
+.menu-block li a.low-a:hover {
 border: 1px dashed black;
 text-decoration:underline!important;
-
 }
-
+  
 #YMapsID
 {
 background:#ffffff; background-image: url(img/ajax-loader.gif) ;background-repeat:no-repeat; background-position: center center;
@@ -459,4 +458,16 @@ background:#ffffff; background-image: url(img/ajax-loader.gif) ;background-repea
 .slider
 {
 background-color: rgba(190, 230, 240);
+}
+
+.vat
+{
+float: right;
+font-size: 17px;
+margin-right: 15px;
+}
+
+.logo
+{
+    transition: transform 1s;
 }

@@ -1,6 +1,7 @@
 {% load cms_tags adv_cache ukrhim_extras %}
 {% is_draft as cdraft %}
-{% cache_version last_publish_date_all_pages as cversion %}
+{% get_page "main" as main %}
+{% cache_version main.last_publish_date as cversion %}
 {% cache 0 breadcrumbs site.pk request.current_page.pk LANGUAGE_CODE cdraft cversion %}
     {% for ance in request.current_page.get_ancestors %} 
         {% if ance.in_navigation %}

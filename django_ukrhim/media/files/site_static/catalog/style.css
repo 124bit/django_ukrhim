@@ -1,6 +1,6 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700&subset=latin,cyrillic);
 *{margin:0;padding:0;}
-@font-face {font-family: PT Sans;src: url(fonts/PTS55F.ttf);}
-
+a { color: #0182B2;}
 header, footer, .middle {margin:auto; width:1005px;}	
 body{background:url(img/fon.png) repeat-x, url(img/fon.jpg) repeat; font-family: 'PT Sans', Myriad Pro, sans-serif;min-width:1005px;
 background-color: rgb(147, 207, 243);
@@ -17,7 +17,7 @@ h1 {color:#0182b2;font-size:26px;font-weight:normal;}
 ul {list-style:none;}
 
 i, form#search .search-button, .contry i, .language i, .twitter, .vk , .fb, .arrow-left, .arrow-right, .popup a.close, .play-arrow, .map-icon i {background:url(img/icons.png);vertical-align:middle;display:inline-block;text-align:center;text-decoration:none;}
-
+  
 .left {float:left;}
 .right {float:right;}
 

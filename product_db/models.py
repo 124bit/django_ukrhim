@@ -1,4 +1,4 @@
-from django.db import models
+﻿from django.db import models
 from django.utils.translation import ugettext as _
 from eav.models import Attribute
 from eav.fields import EavSlugField
@@ -146,8 +146,9 @@ class Product(models.Model):
 
 
     # if site - sites prices, no site - auto, if indexes - index price, if no - index 0, if price slug - then price slug
-    def price(self, site=None, price_index=None, price_slug=None):
+    def price(self, site=None, price_index=None, price_slug=None, lang=None):
         ''' get price field depending on site options and lang'''
+        res=''
         if not price_slug:
             if site:
                 if price_index:
@@ -159,8 +160,39 @@ class Product(models.Model):
                     price_slug=Site.objects.get_current().price_field_slugs.split(', ')[price_index]
                 else:
                     price_slug=Site.objects.get_current().price_field_slugs.split(', ')[0]
+        
+                 
         try:
-            return getattr(self, price_slug)
+            field=Attribute.objects.get(slug=price_slug) 
+            try:
+                if 'price_field' in field.options and 'dependent' in field.options['price_field']:
+                    res= getattr(self, str(field.options['price_field']['dependent']))
+                    try:
+                        res=round(float(res)/float(field.options['price_field']['rate']),2)
+                        if abs(res-round(res)) < 0.001:
+                            res=int(res)
+                    except ValueError:
+                        pass
+                    res= unicode(res)
+                    if res.lower() == u'ожидается' or res.lower() == u'на стадии разработки':
+                        res= 'in developed'
+                    elif res.lower() == u'цену уточняйте':
+                        res= 'ask for price'
+                    
+            except TypeError:
+                pass
+            if not res:   
+                res=unicode(getattr(self, price_slug))
+            
+            if lang=='en':
+                if res.strip().lower() == u'ожидается' or res.lower() == u'на стадии разработки':
+                    res = 'in developed'
+                        
+                if res.strip().lower() == u'цену уточняйте':
+                    res = 'ask for price'
+            
+            return res   
+            
         except AttributeError:
             return ''
 

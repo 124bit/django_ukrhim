@@ -9,6 +9,10 @@ from django.conf.urls.i18n import i18n_patterns
 from solid_i18n.urls import solid_i18n_patterns
 import platform
 object_tools.autodiscover()
+
+handler404 = 'site_utils.handler404'
+
+
 urlpatterns = solid_i18n_patterns('',
                        url(r'^admin_tools/', include('admin_tools.urls')),
                        (r'^admin/', include(admin.site.urls)),

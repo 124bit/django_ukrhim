@@ -8,6 +8,7 @@ choices.
 from django.conf import settings
 import os
 from ..utils import format_to_extension, suggest_extension
+import hashlib
 
 
 def source_name_as_path(generator):
@@ -26,6 +27,7 @@ def source_name_as_path(generator):
     """
     source_filename = getattr(generator.source, 'name', None)
 
+    
     if source_filename is None or os.path.isabs(source_filename):
         # Generally, we put the file right in the cache file directory.
         dir = settings.IMAGEKIT_CACHEFILE_DIR
@@ -55,7 +57,7 @@ def source_name_dot_hash(generator):
 
     """
     source_filename = getattr(generator.source, 'name', None)
-
+    md5sum = hashlib.md5(open(source_filename,'rb').read(100)).hexdigest()
     if source_filename is None or os.path.isabs(source_filename):
         # Generally, we put the file right in the cache file directory.
         dir = settings.IMAGEKIT_CACHEFILE_DIR
@@ -67,8 +69,8 @@ def source_name_dot_hash(generator):
 
     ext = suggest_extension(source_filename or '', generator.format)
     basename = os.path.basename(source_filename)
-    return os.path.normpath(os.path.join(dir, '%s.%s%s' % (
-            os.path.splitext(basename)[0], generator.get_hash()[:12], ext)))
+    return os.path.normpath(os.path.join(dir, '%s.%s%s%s' % (
+            os.path.splitext(basename)[0], generator.get_hash()[:12],md5sum, ext)))
 
 
 def hash(generator):

@@ -435,7 +435,6 @@ class Page(MPTTModel):
                     #public_page.parent.publish()
                 else:
                     public_page.parent.save()
-            modifier.help_functions.set_last_publish_date(self.site,datetime.now())
             public_page.save()
 
             # The target page now has a pk, so can be used as a target
@@ -476,8 +475,26 @@ class Page(MPTTModel):
                 self.parent.publish()
             else:
                 self.parent.save()
-        modifier.help_functions.set_last_publish_date(self.site,datetime.now())
         self.save()
+        if self.site.site_cutting=="ukrhim":
+            republished=Page.objects.filter(reverse_id=self.reverse_id, published=True)
+            for page in republished:
+                if page.site.site_cutting!='ukrhim':
+                    page.last_publish_date=datetime.now()
+                    page._publisher_keep_state = True
+                    page.save()
+                    ancestors=page.get_ancestors()
+                    if page.parent:
+                        page.parent.child_last_publish_date=datetime.now()
+                        page.parent._publisher_keep_state = True
+                        page.parent.save()
+                        for anc in ancestors:
+                            if anc.published==True:
+                                anc.last_publish_date=datetime.now()
+                                anc._publisher_keep_state = True
+                                anc.save()  
+        
+        
         # If we are publishing, this page might have become a "home" which
         # would change the path
         if self.is_home():

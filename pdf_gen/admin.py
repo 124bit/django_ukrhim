@@ -19,7 +19,7 @@ class PriceTemplateForm(ModelForm):
     SITE_CHOICES = [(site.pk, site.name) for site in Site.objects.all()]
     site = ChoiceField(label=_('Site'),choices=SITE_CHOICES,  initial='default', help_text=_("Select price field. Template would be filled by prices from this field.") )
     price_field= ChoiceField(label=_('Price field'),choices=PRICE_FIELD_CHOICES,  initial='default', help_text=_("Choose site of document."))
-
+    price_field2= ChoiceField(label=_('Price field 2'),choices=[('none','none')]+PRICE_FIELD_CHOICES,  initial='none', help_text=_("Choose site of document."))
     class Meta:
             model = PriceTemplate
 

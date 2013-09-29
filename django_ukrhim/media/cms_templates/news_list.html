@@ -10,7 +10,13 @@
 	<div class="middle background">
 		<nav class="menu-left" id="sticker">
             <ul class="about_us_menu">
-                {% show_placeholder "menu" "about_us" %}
+                {% get_page "about_us" as about_us_page %}        
+                 {% for child in about_us_page.get_children %}
+                    {% if child.in_navigation %}
+                        {% page_attribute "menu_title" child  as menu_title %}
+					    <li><a href="{% page_url child %}" class="{% if child.reverse_id == 'news_list' %}current-button{% endif %} {% if menu_title|length|intify > 21 %} two-row {% endif %}">{{ menu_title }}</a></li>
+                    {% endif %}
+				{% endfor %}
             </ul>
 			<p class="green">{% trans "Archive" %}</p>
 			<ul>{% assign name="now_year" %}{% now "Y" %}{% endassign %}

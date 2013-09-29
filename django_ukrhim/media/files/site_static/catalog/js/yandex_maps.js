@@ -177,7 +177,114 @@ function init () {
             hintContent: 'Региональный склад Укрхимпласт: ЧП «Тихомиров В.П.», г. Донецк',
         }, warehouse);
     placemarks.push(['#doneck_tihomirov',myPlacemark]);
+	
+	 var myPlacemark = new ymaps.Placemark([53.838616,27.683872],  {   
+			balloonContentHeader: 'Магазин "ОМА Шабаны"',
+            balloonContentBody: 'г.Минск, пер.Промышленный, 12А',
+            hintContent: 'Магазин "ОМА Шабаны", г. Минск',
+        }, shop);
+    placemarks.push(['#shabanu',myPlacemark]);
+	
+	var myPlacemark = new ymaps.Placemark([53.842397,27.477690],  {   
+			balloonContentHeader: 'Магазин "ОМА Брилевичи"',
+            balloonContentBody: 'г.Минск, ул.Н.Орды, 6',
+            hintContent: 'Магазин "ОМА Брилевичи", г. Минск',
+        }, shop);
+    placemarks.push(['#brilevichi',myPlacemark]);
+	
+		var myPlacemark = new ymaps.Placemark([52.461408,30.933368],  {   
+			balloonContentHeader: 'Магазин "ОМА Гомель"',
+            balloonContentBody: 'г.Гомель, ул. Могилевская, 1А',
+            hintContent: 'Магазин "ОМА Гомель", г.Гомель',
+        }, shop);
+    placemarks.push(['#gomel',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([52.903900,30.017066],  {   
+			balloonContentHeader: 'Магазин "ОМА Жлобин"',
+            balloonContentBody: 'г.Жлобин, ул. Козлова, 17А/1',
+            hintContent: 'Магазин "ОМА Жлобин", г.Жлобин',
+        }, shop);
+    placemarks.push(['#globin',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.872152,30.363218],  {   
+			balloonContentHeader: 'Магазин "ОМА Могилев"',
+            balloonContentBody: 'г.Могилев, ул. Габровская, 43',
+            hintContent: 'Магазин "ОМА Могилев", г.Могилев',
+        }, shop);
+    placemarks.push(['#mogilev',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.866084,27.521155],  {   
+			balloonContentHeader: 'Магазин "Мебельстройматериалы"',
+            balloonContentBody: 'г.Минск, ул.Казинца, 6А',
+            hintContent: 'Магазин "Мебельстройматериалы", г.Минск',
+        }, shop);
+    placemarks.push(['#mebelstroymaterialu',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.905516,27.433468],  {   
+			balloonContentHeader: 'Магазин "МАТЕРИК"',
+            balloonContentBody: 'г.Минск, ул.Притыцкого, 101',
+            hintContent: 'Магазин "МАТЕРИК", г.Минск',
+        }, shop);
+    placemarks.push(['#materik',myPlacemark]);
     
+			var myPlacemark = new ymaps.Placemark([53.960421,27.633248],  {   
+			balloonContentHeader: 'Магазин "Новоселкин"',
+            balloonContentBody: 'г.Минск, Боровая, 1',
+            hintContent: 'Магазин "Новоселкин", г.Минск',
+        }, shop);
+    placemarks.push(['#novoselkin',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.844378,27.470297],  {   
+			balloonContentHeader: 'Магазин "UC СЦ-2"',
+            balloonContentBody: 'г.Минск, пр-т Держинского, 132',
+            hintContent: 'Магазин "UC СЦ-2", г.Минск',
+        }, shop);
+    placemarks.push(['#us_sc2',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.959662,27.629492],  {   
+			balloonContentHeader: 'Магазин "UC СЦ-3"',
+            balloonContentBody: 'г.Минск, Логойский тракт., 46',
+            hintContent: 'Магазин "UC СЦ-3", г.Минск',
+        }, shop);
+    placemarks.push(['#us_sc3',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.852331,27.695494],  {   
+			balloonContentHeader: 'Магазин "UC СЦ-7"',
+            balloonContentBody: 'г.Минск, пр-т Партизанский, 178А',
+            hintContent: 'Магазин "UC СЦ-7", г.Минск',
+        }, shop);
+    placemarks.push(['#us_sc7',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.020732,27.561083],  {   
+			balloonContentHeader: 'Магазин "UC Слуцк"',
+            balloonContentBody: 'пр-т. М. Богдановича, 2, АЗК №4',
+            hintContent: 'Магазин "UC Слуцк", г.Слуцк',
+        }, shop);
+    placemarks.push(['#us_sluck',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([53.677424,23.846287],  {   
+			balloonContentHeader: 'Магазин "ГЕММА"',
+            balloonContentBody: 'г.Гродно, пр-т Космонавтов, 2А',
+            hintContent: 'Магазин "ГЕММА", г.Гродно',
+        }, shop);
+    placemarks.push(['#gemma',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([54.194999,28.500313],  {   
+			balloonContentHeader: 'Магазин "Практик"',
+            balloonContentBody: 'г.Борисов, ул.Демина, 39',
+            hintContent: 'Магазин "Практик", г.Борисов',
+        }, shop);
+    placemarks.push(['#praktick',myPlacemark]);
+	
+			var myPlacemark = new ymaps.Placemark([55.174160,30.235762],  {   
+			balloonContentHeader: 'Магазин "ЕвроЛюкс Витебск"',
+            balloonContentBody: 'г.Витебск, пр-т Московский, 45Б',
+            hintContent: 'Магазин "ЕвроЛюкс Витебск", г.Витебск',
+        }, shop);
+    placemarks.push(['#evrolux_vitebsk',myPlacemark]);
+	
+	
+  
     clusterer.add(placemarks.map(function (item){return item[1]}));
 	
     $('#ancor').click(

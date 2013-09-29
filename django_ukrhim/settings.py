@@ -14,7 +14,10 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 #--------- DJANGO SETTINGS for django_ukrhim project.
 if platform.system() == 'Linux':
-    DEBUG = True
+    if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
+        DEBUG = True
+    else:
+        DEBUG = False
 else:
     DEBUG = True
 PROFILE = False
@@ -178,7 +181,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
     'modifier.context_processors.add_sites',
-    'modifier.context_processors.add_for_cache_info'
+    #'modifier.context_processors.add_for_cache_info'
     
 )
 
@@ -295,8 +298,7 @@ logging.info(str(DATABASES))
 STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 
 #------CMS SETTINGS
-TEMPLATE_DIRS = ( MEDIA_ROOT+"/files/cms_templates",
-    MEDIA_ROOT+"/files/products_media"
+TEMPLATE_DIRS = ( MEDIA_ROOT+"/cms_templates",
 )
 
 CMS_TEMPLATES = (
@@ -436,14 +438,32 @@ COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 USE_ETAGS=True
 ADV_CACHE_VERSIONING=True
 #----johnycache
-CACHES = {
-    'default' : dict(
-        BACKEND = 'johnny.backends.memcached.MemcachedCache',
-        LOCATION = ['127.0.0.1:11211'],
-        JOHNNY_CACHE = True,
-    )
-}
-
+if platform.system() == 'Linux':
+    if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
+        CACHES = {
+            'default' : dict(
+                BACKEND = 'johnny.backends.memcached.MemcachedCache',
+                LOCATION = ['127.0.0.1:11211'],
+                JOHNNY_CACHE = True,
+            )
+        }
+    else:
+        CACHES = {
+            'default' : dict(
+                BACKEND = 'johnny.backends.memcached.MemcachedCache',
+                LOCATION = ['127.0.0.1:11211'],
+                JOHNNY_CACHE = True,
+            )
+        }
+else:
+    CACHES = {
+            'default' : dict(
+                BACKEND = 'johnny.backends.memcached.MemcachedCache',
+                LOCATION = ['127.0.0.1:11211'],
+                JOHNNY_CACHE = True,
+            )
+        }
+    
 if platform.system() == 'Linux':
     if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
         JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_dev_'

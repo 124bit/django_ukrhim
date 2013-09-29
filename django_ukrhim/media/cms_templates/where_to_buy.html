@@ -15,9 +15,9 @@
 
 	
 	<script src="http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU" type="text/javascript"></script>
-    
-    <script src='{{ STATIC_URL }}catalog/js/yandex_maps.js' type="text/javascript"></script>	
-
+    {% compress js %}
+        <script src='{{ STATIC_URL }}catalog/js/yandex_maps.js' type="text/javascript"></script>	
+    {% endcompress %}
 	
 	{% include 'scroll_move_js.html' %}
 	

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% load ukrhim_extras cms_tags imagekit compress i18n %}
+{% load ukrhim_extras cms_tags imagekit compress i18n assign %}
 
 {% block middle %}
-	
-    <div class="middle background">
-		<nav class="menu-left" id="sticker">
+	{% assign name="left_menu" %}
+        <nav class="menu-left">
 			<ul class="gallery_menu">
+            
 				{% for child in request.current_page.parent.get_children %}
 						<li>
 							<a href="{{ child.get_absolute_url }}" {% if child.reverse_id == request.current_page.reverse_id %} class="current-button" {% endif %}>{% page_attribute "menu_title" child %}</a>
@@ -13,7 +13,9 @@
 								<ul>
 									{% get_albums as albums %}
 									{% for album in albums %}
-										<li><a href="{{ child.get_absolute_url }}?album={{ album.slug }}" {% if 'album' in request.GET and request.GET.album == album.slug %} class="current-button" {% endif %}>{{ album.name }}</a></li>
+                                        {% if album.show %}
+                                            <li><a href="{{ child.get_absolute_url }}?album={{ album.slug }}" {% if 'album' in request.GET and request.GET.album == album.slug %} class="current-button" {% endif %}>{{ album.name }}</a></li>
+                                        {% endif %}
 									{% endfor %}
 								</ul>
 							{% endif %}
@@ -21,6 +23,10 @@
 				{% endfor %}
 			</ul>
 		</nav>
+    {% endassign %}
+    {% count_min_height left_menu 25 170 as min_height %}
+    <div class="middle background" style="min-height: {{ min_height }}px;">
+        {{ left_menu }}		
 		<div class="main-block right will_fade">
 			<ul class="bread-crumbs">
 				{% for ance in request.current_page.get_ancestors %} 
@@ -46,26 +52,29 @@
 				{% get_album_photos request.GET.album as photos %}
 				<div class="zoom-gallery">
 				{% for photo in photos %}
-					{% generateimage 'photo_big' source=photo.slug as photo_big %}
-					<a href="{{ photo_big.url }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}" title='{{ photo.descr|unicodify|safe }}' >{% generateimage 'gallery_photo_small' source=photo.slug as img %}<img src="{{ img.url }}">{{ photo.descr|unicodify|safe }}</a>
-					{% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
-				
+                    {% if photo.show %}
+                        {% generateimage 'photo_big' source=photo.slug as photo_big %}
+                        <a href="{{ photo_big.url }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}" title='{{ photo.descr|unicodify|safe }}' >{% generateimage 'gallery_photo_small' source=photo.slug as img %}<img src="{{ img.url }}">{{ photo.descr|unicodify|safe }}</a>
+                        {% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
+                    {% endif %}
 				{% endfor %}
 				</div>
 				
 				{% get_album_videos request.GET.album as videos %}
 				<div class="video">
 				{% for video in videos %}
-					<p class="green">{% trans "Videos" %}</p>
-					<a class="show_popup gallery-item-block" rel="video-1" href="#">
-						<img src="{{ STATIC_URL }}catalog/img/demo/pic-29.jpg" class="different" />
-						{{ video.descr|unicodify|safe }}
-						<div class="play-arrow"></div>
-					</a>
-					<div class="popup video-1">
-						<a class="close" href="#">Close</a>
-						<iframe width="640" height="360" src="{{ video.slug }}" frameborder="0" allowfullscreen></iframe>
-					</div>			
+                    {% if video.show %}
+                        <p class="green">{% trans "Videos" %}</p>
+                        <a class="show_popup gallery-item-block" rel="video-1" href="#">
+                            <img src="{{ STATIC_URL }}catalog/img/demo/pic-29.jpg" class="different" />
+                            {{ video.descr|unicodify|safe }}
+                            <div class="play-arrow"></div>
+                        </a>
+                        <div class="popup video-1">
+                            <a class="close" href="#">Close</a>
+                            <iframe width="640" height="360" src="{{ video.slug }}" frameborder="0" allowfullscreen></iframe>
+                        </div>			
+                    {% endif %}
 				{% endfor %}
 				</div>
 				{% compress js %}

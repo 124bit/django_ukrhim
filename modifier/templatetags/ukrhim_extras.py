@@ -80,6 +80,23 @@ def unicodify(key):
 def intify(key):
     return int(key)
 
+def thous(x, sep=' ', dot='.'):
+    num, _, frac = str(x).partition(dot)
+    num = re.sub(r'(\d{3})(?=\d)', r'\1'+sep, num[::-1])[::-1]
+    if frac:
+        num += dot + frac
+    return num    
+    
+@register.filter
+def format_price_str(price_str):
+    try:
+        price_str=thous(price_str)
+        return price_str
+        
+    except: #i dont now why it puts elfinder so no exc
+        return price_str
+
+
 
 def count_min_height(html, h, offset):
     return(html.count('li')/2*int(h)+offset)
@@ -227,6 +244,14 @@ def get_field_units(field_slug):
         return ''
 register.simple_tag(get_field_units)
 
+
+def product_first_price(context, product):
+    return product.price(price_index=0, lang=context['LANGUAGE_CODE'])
+register.assignment_tag(takes_context=True)(product_first_price)
+
+def product_second_price(context, product):
+    return product.price(price_index=1, lang=context['LANGUAGE_CODE'])
+register.assignment_tag(takes_context=True)(product_second_price)
 
 
 
