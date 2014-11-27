@@ -116,20 +116,56 @@
  
 </div>
 <span class="plugin-submit-row"{% if is_popup %} style="overflow: auto;"{% endif %}>
-	<input type="submit" style="float:none;" name="_save" class="default" value="{% trans "Save" %}" {{ onclick_attrib }}/>
-
-    <script src="http://malsup.github.com/jquery.form.js"></script> 
+	<!--<input type="submit" style="float:none;" name="_save" class="default" value="{% trans "Save" %}" {{ onclick_attrib }}/>
+-->
+    <script src="{{ STATIC_URL }}catalog/js/jquery.form.js"></script> 
     <script>
         $(document).ready(function() { 
             $('#cont_but').click( function (e) { e.preventDefault()
 			var date = new Date
             $('#{{ opts.module_name }}_form').ajaxSubmit({ success: function(resp,stat,xhr,elem){ $('#res').html('Saved '+date.toLocaleString()); } });}) 
         }); 
+        $(document).ready(function() { 
+            var win_g=false
+            
+            function draft_fc()
+            {
+                    if (win_g)
+                  {
+                    win_g.close()
+                    win_g=window.open("../../preview/?language={{ language }}", '_blank');
+                  }
+                  else
+                  {
+                    win_g=window.open("../../preview/?language={{ language }}", '_blank');
+                
+                  }
+            }
+            
+            $('#view_but').click( function (e) { e.preventDefault()
+            var date = new Date
+                    $('#{{ opts.module_name }}_form').ajaxSubmit({ success: function(resp,stat,xhr,elem){ $('#res').html('Saved '+date.toLocaleString());setTimeout(draft_fc, 300) } });
+
+                    
+            }) 
+            
+            $('#prev_but').click( function (e) { e.preventDefault()
+            
+                    setTimeout(draft_fc, 300);
+
+                    
+            })
+        }); 
     </script>
 	<input type="submit" style="margin-left: 8px;" value="{% trans "Cancel" %}" name="_cancel" class="cancel-btn">
-    <input id="cont_but" type="submit" style="margin-left: 8px;" value="{% trans "Save and continue" %}" name="_save_and_continue" class="save-and-cont--btn"> <span id='res' ></span>
+    
+    <input id="cont_but" type="submit" style="margin-left: 8px;" value="{% trans "Save" %}" name="_save_and_continue" class="save-and-cont--btn"> 
+    <input id="prev_but" type="submit" style="margin-left: 8px;" value="{% trans "Preview draft" %}" name="prev_but" class="save-and-cont--btn">
+    <input id="view_but" type="submit" style="margin-left: 8px;" value="{% trans "Save" %} & {% trans "Preview draft" %}" name="_preview_but" class="save-and-cont--btn">
+    <span id='res' ></span>
 </span>
-</form>
 
+</form>
+<a style="" target="_blank" href="../../preview/?language={{ language }}" class="previewdraftlink"></a> 
 </div>
 {% endblock %}

@@ -2,9 +2,31 @@
 		<script type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery.scrollTo.min.js"></script>
 		<script type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery.localScroll.min.js"></script>
 		<script>
-			$(document).ready(function () {
+		
+			$(document).ready(function () {   //dvizhenie k pri nazahtii na
 				$.localScroll({
-					hash: true
+                    offset: {
+                        top: -60,
+                        left: 0
+                    },
+					onAfter: function(){
+								if ("ontouchstart" in document.documentElement) {
+									$('body').css('width', '+=1');
+									setTimeout(function() {
+									  $('body').css('width', '');
+									}, 1);
+									}
+								},
+                    onBefore: function(e){
+                                    if(history.replaceState)
+                                        history.replaceState(null, null, $(this).find('a').attr('href'));
+								}
 				});
+                var old_hash_anchor = location.hash;
+                $("#nav-list li").on("activate", function(e){ 
+                                var new_hash = $(this).find('a').attr('href');
+                                if (old_hash_anchor != new_hash)
+                                    if(history.replaceState)
+                                        history.replaceState(null, null, new_hash);});
 			});
 		</script>

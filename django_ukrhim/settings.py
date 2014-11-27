@@ -74,7 +74,7 @@ ALLOWED_HOSTS = ['*']
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'Europe/Kiev'
-
+USE_TZ = True
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'ru'
@@ -89,8 +89,7 @@ USE_I18N = True
 # calendars according to the current locale.
 USE_L10N = True
 
-# If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = False
+
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -106,11 +105,11 @@ MEDIA_URL = "/media/"
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, "static")
+STATIC_ROOT = os.path.join(PROJECT_PATH, "media/files/site_static")
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '/media/files/site_static/'
 
 
 
@@ -125,7 +124,7 @@ STATICFILES_DIRS = (
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
+ #   'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
  #   'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',
@@ -145,6 +144,7 @@ MIDDLEWARE_CLASSES = (
     'johnny.middleware.LocalStoreClearMiddleware',
    # 'django.middleware.cache.UpdateCacheMiddleware',    
     'django.middleware.gzip.GZipMiddleware',
+    'django_geoip.middleware.LocationMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
     'johnny.middleware.QueryCacheMiddleware',
    # 'htmlmin.middleware.HtmlMinifyMiddleware',
@@ -160,11 +160,11 @@ MIDDLEWARE_CLASSES = (
     
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
-    'cms.middleware.toolbar.ToolbarMiddleware',
+    #'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.language.LanguageCookieMiddleware',
     'reversion.middleware.RevisionMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
-
+    #'modifier.middleware.profile.ProfileMiddleware',
 
 )
 if PROFILE and  platform.system() == 'Linux':
@@ -181,7 +181,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'cms.context_processors.media',
     'sekizai.context_processors.sekizai',
     'modifier.context_processors.add_sites',
-    #'modifier.context_processors.add_for_cache_info'
+    'modifier.context_processors.location'
     
 )
 
@@ -199,9 +199,8 @@ INSTALLED_APPS = (
      'elfinder', #patched #all places, where "magic" library is  used changed for returning nothing. Default setting for images folder - files
      'imagekit', #patched  #todo rewrite patches, conspect
      'import_export', #patched
-     #TODO repatch, update for xls
 
-     'admin_tools',
+     'admin_tools', #patched recent actions template (maybe)
      'admin_tools.theming',
      'admin_tools.menu',
      'admin_tools.dashboard',
@@ -210,6 +209,7 @@ INSTALLED_APPS = (
      'inline_ordering',
      'compressor',
      'jsonfield',
+     'django_geoip',
      #------not important
      'django_extensions', #mangment/commands/reset_db.py patched: dest='router', default='default'
     'rosetta',
@@ -258,29 +258,29 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
+#LOGGING = {
+#    'version': 1,
+#    'disable_existing_loggers': False,
+#    'filters': {
+#       'require_debug_false': {
+#            '()': 'django.utils.log.RequireDebugFalse'
+#        }
+#    },
+#    'handlers': {
+#        'mail_admins': {
+#            'level': 'ERROR',
+#            'filters': ['require_debug_false'],
+#            'class': 'django.utils.log.AdminEmailHandler'
+#        }
+#    },
+#    'loggers': {
+#        'django.request': {
+#            'handlers': ['mail_admins'],
+#            'level': 'ERROR',
+#            'propagate': True,
+#        },
+#    }
+#}
 
 import logging
 
@@ -315,6 +315,9 @@ CMS_TEMPLATES = (
     ('products.html', gettext('Products (empty) template')),
     ('product_category.html', gettext('Product category (empty) template')),
     ('product_type.html', gettext('"Product type" page template')),
+    ('product_type_w_sections.html', gettext('"Product type" page template with many sections in content')),
+    ('product_type_without_header.html', gettext('"Product type" page template without header')),
+    
     ('product.html', gettext('Auto "Product page" template')),
     ('where_to_buy.html', gettext('"Where to buy" page template')),
     ('about_us.html', gettext('"About us" (menu options) template')),
@@ -340,7 +343,7 @@ SOLID_I18N_USE_REDIRECTS=False
 CMS_MENU_TITLE_OVERWRITE=True
 CMS_REDIRECTS=True
 #CMS_SOFTROOT=True
-PLACEHOLDER_FRONTEND_EDITING=True
+PLACEHOLDER_FRONTEND_EDITING=False
 CMS_CACHE_DURATIONS = {}
 CMS_CACHE_DURATIONS['content']=0
 CMS_CACHE_DURATIONS['menus']=0
@@ -384,6 +387,96 @@ CMS_LANGUAGES = {
             'redirect_on_fallback':True,
         }
     ],
+    3: [
+        {
+            'code': 'en',
+            'name': gettext('English'),
+            'fallbacks': ['ru'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':False,
+        },
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }
+    ],
+    4: [
+        {
+            'code': 'en',
+            'name': gettext('English'),
+            'fallbacks': ['ru'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':False,
+        },
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }
+    ],
+    5: [
+        {
+            'code': 'en',
+            'name': gettext('English'),
+            'fallbacks': ['ru'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':False,
+        },
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }#,
+        #{
+        #    'code': 'kz',
+        #    'name': gettext('Kazakh'),
+        #    'fallbacks': ['ru', 'en'],
+        #    'public': True,
+        #    'hide_untranslated': True,
+        #    'redirect_on_fallback':True,
+        #}
+    ],
+    6: [
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': [],
+            'public': True,
+            'hide_untranslated': False,
+            'redirect_on_fallback':False,
+        }
+    ],
+    7: [
+        {
+            'code': 'en',
+            'name': gettext('English'),
+            'fallbacks': ['ru'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':False,
+        },
+        {
+            'code': 'ru',
+            'name': gettext('Russian'),
+            'fallbacks': ['en'],
+            'public': True,
+            'hide_untranslated': True,
+            'redirect_on_fallback':True,
+        }
+    ],
     'default':
         {
             'code': 'ru',
@@ -406,7 +499,7 @@ ADMIN_TOOLS_MENU = 'modifier.custom_menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashboard'
 
-ADMIN_TOOLS_THEMING_CSS = 'admin_tools_override/css/admintools_theming.css'
+
 #A good start is to copy the admin_tools/media/admin_tools/css/theming.css to your custom file and to modify it to suits your needs.
 
 
@@ -487,3 +580,12 @@ else:
 #--------locale
 LOCALE_PATHS = ( PROJECT_PATH+"/locale",)
 
+#---------GEO_IP
+GEOIP_LOCATION_MODEL = 'django_geoip.models.City'
+
+#---email
+EMAIL_HOST_USER = 'call_asker@ukrhimplast.com'
+EMAIL_HOST_PASSWORD = '777777' 
+EMAIL_HOST='smtp.yandex.ru'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

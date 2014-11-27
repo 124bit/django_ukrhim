@@ -78,19 +78,18 @@ jQuery.fn.initMenu = function() {
                     if(theElement.hasClass('acitem') && theElement.is(':visible')) {
                         if($(parent).hasClass('collapsible')) {
                                                         
-                            alert($('.acitem:visible', parent).html())
+                            $('.acitem:visible', parent).prev().removeClass('active');
                             $('.acitem:visible', parent).first().slideUp('normal');
-                        return false;  
+                        return false;
                     }
                     return false;
                 }
                 if(theElement.hasClass('acitem') && !theElement.is(':visible')) {         
-                    $('.acitem:visible', parent).first().slideUp('normal', function() {
-                        $(this).prev().removeClass('active');
-                    });
-                    theElement.slideDown('normal', function() {
-                        $(this).prev().addClass('active');
-                    });
+                     $('.acitem:visible', parent).prev().removeClass('active');
+                     $('.acitem:visible', parent).first().slideUp('normal');
+                     
+                    theElement.parent().children().first().addClass('active');
+                    theElement.slideDown('normal');
                     return false;
                 }
             }

@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-11 09:26+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: admin.py:94
+msgid "Additional options"
+msgstr ""
+
+#: models.py:16
+msgid "Type name"
+msgstr ""
+
+#: models.py:17
+msgid "Type slug"
+msgstr ""
+
+#: models.py:17
+msgid "Short unique type label."
+msgstr ""
+
+#: models.py:18
+msgid "Fields of type"
+msgstr ""
+
+#: models.py:18
+msgid "Data fields always assigned to products of this type."
+msgstr ""
+
+#: models.py:19
+msgid "Product description"
+msgstr ""
+
+#: models.py:19
+msgid "Common description for products of this type."
+msgstr ""
+
+#: models.py:20
+msgid "Template"
+msgstr ""
+
+#: models.py:20
+msgid "Common template to render product on its page."
+msgstr ""
+
+#: models.py:24
+msgid "product type"
+msgstr ""
+
+#: models.py:25
+msgid "Product types"
+msgstr ""
+
+#: models.py:29 models.py:67 models.py:98
+msgid "Tagged producs"
+msgstr ""
+
+#: models.py:58
+msgid "Tag name (ru)"
+msgstr ""
+
+#: models.py:59
+msgid "Tag name (en)"
+msgstr ""
+
+#: models.py:60
+msgid "Tag slug"
+msgstr ""
+
+#: models.py:60
+msgid "Short unique tag label."
+msgstr ""
+
+#: models.py:62
+msgid "product tag"
+msgstr ""
+
+#: models.py:63 models.py:87
+msgid "Product tags"
+msgstr ""
+
+#: models.py:82
+msgid "Name (ru)"
+msgstr ""
+
+#: models.py:83
+msgid "Name (en)"
+msgstr ""
+
+#: models.py:84
+msgid "Slug"
+msgstr ""
+
+#: models.py:84
+msgid "Short unique product label."
+msgstr ""
+
+#: models.py:85
+msgid "Product type"
+msgstr ""
+
+#: models.py:85
+msgid "Product type assigns some data fields to products."
+msgstr ""
+
+#: models.py:86
+msgid "Additional fields"
+msgstr ""
+
+#: models.py:87
+msgid "Tags are used for quick searching for products."
+msgstr ""
+
+#: models.py:88
+msgid "Active"
+msgstr ""
+
+#: models.py:88
+msgid "If product is deactivated - it doesn't shown anywhere."
+msgstr ""
+
+#: models.py:89
+msgid "Position in type"
+msgstr ""
+
+#: models.py:91
+msgid "Date added"
+msgstr ""
+
+#: models.py:93
+msgid "Last modified"
+msgstr ""
+
+#: models.py:108
+msgid "product"
+msgstr ""
+
+#: models.py:109
+msgid "Products"
+msgstr ""
+
+#: models.py:189
+msgid "in developed"
+msgstr ""
+
+#: models.py:190
+msgid "ask for price"
+msgstr ""

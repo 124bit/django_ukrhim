@@ -27,6 +27,7 @@ from copy import deepcopy
 DEFAULT_FORMATS = (
             base_formats.CSV,
             base_formats.XLS,
+            base_formats.XLSX,
             base_formats.TSV,
             base_formats.ODS,
             base_formats.JSON,
@@ -44,7 +45,7 @@ class ImportMixin(object):
     import_template_name = 'admin/import_export/import.html'
     resource_class = None
     formats = DEFAULT_FORMATS
-    from_encoding = "utf-8"
+    from_encoding = "cp1251"
 
     def get_urls(self):
         urls = super(ImportMixin, self).get_urls()
@@ -69,15 +70,15 @@ class ImportMixin(object):
         """
         Returns available import formats.
         """
-        return [f for f in self.formats if f().can_import()]
+        return [f for f in self.formats]
 
     #changed her, and all places, where used
     def update_resource_class(self, resource):
         for attr in Attribute.objects.all():
-            if 'price_field' in attr.options:
+            if 'price_field' in attr.options and 'dependent' not in attr.options['price_field']:  #dependent problem CHANGE HER
                 slug=attr.slug
                 field=fields.Field()
-                field.column_name=slug
+                field.column_name=attr.name_en
                 field.attribute=slug
                 setattr(resource, slug, field)
                 def dehidrator(attr_slug):
@@ -104,7 +105,7 @@ class ImportMixin(object):
         if confirm_form.is_valid():
             import_formats = self.get_import_formats()
             input_format = import_formats[
-                    int(confirm_form.cleaned_data['input_format'])
+                    1
                     ]()
             import_file = open(confirm_form.cleaned_data['import_file_name'],
                     input_format.get_read_mode())
@@ -142,7 +143,13 @@ class ImportMixin(object):
 
         if request.POST and form.is_valid():
             #changed
-            input_format = import_formats[0]()
+            file_name=form.cleaned_data['import_file'].name
+            if file_name[-3:]=='xls':
+                input_format = import_formats[1]()
+            elif file_name[-3:]=='csv':
+                input_format = import_formats[0]()
+            else:
+                input_format = import_formats[2]()
             import_file = form.cleaned_data['import_file']
             import_file.open(input_format.get_read_mode())
             data = import_file.read()
@@ -191,7 +198,7 @@ class ExportMixin(object):
     change_list_template = 'admin/import_export/change_list_export.html'
     export_template_name = 'admin/import_export/export.html'
     formats = DEFAULT_FORMATS
-    to_encoding = "utf-8"
+    to_encoding = "cp1251"
 
     def get_urls(self):
         urls = super(ExportMixin, self).get_urls()
@@ -246,7 +253,7 @@ class ExportMixin(object):
         formats = self.get_export_formats()
         form = ExportForm(formats, request.POST or None)
         if 1:
-            file_format = formats[0
+            file_format = formats[1
                     ]()
 
             resource_class = self.get_resource_class()
@@ -254,9 +261,9 @@ class ExportMixin(object):
             queryset = self.get_export_queryset(request)
             data = resource_class().export(queryset)
             #changed
-
+            file = file_format.export_data(data)
             response = HttpResponse(
-                file_format.export_data(data),
+                file,
                 mimetype='application/octet-stream',
                 )
             response['Content-Disposition'] = 'attachment; filename=%s' % (

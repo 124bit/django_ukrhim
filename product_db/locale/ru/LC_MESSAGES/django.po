@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-23 20:19+0200\n"
-"PO-Revision-Date: 2013-08-23 21:57+0300\n"
+"POT-Creation-Date: 2013-12-11 09:25+0100\n"
+"PO-Revision-Date: 2014-06-03 19:56+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,146 +19,154 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Translated-Using: django-rosetta 0.7.2\n"
 
-#: admin.py:88
+#: admin.py:94
 msgid "Additional options"
 msgstr "Дополнительные поля"
 
-#: models.py:14
+#: models.py:16
 msgid "Type name"
 msgstr "Название"
 
-#: models.py:15
+#: models.py:17
 msgid "Type slug"
 msgstr "Аттрибут"
 
-#: models.py:15
+#: models.py:17
 msgid "Short unique type label."
 msgstr ""
 "Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
 
-#: models.py:16
+#: models.py:18
 msgid "Fields of type"
 msgstr "Поля типа"
 
-#: models.py:16
+#: models.py:18
 msgid "Data fields always assigned to products of this type."
 msgstr "Поля данных описывающие изделия такого типа."
 
-#: models.py:17
+#: models.py:19
 msgid "Product description"
 msgstr "Описание продуктов"
 
-#: models.py:17
+#: models.py:19
 msgid "Common description for products of this type."
 msgstr "Описание, которое будет высвечиваться для все продуктов данного типа"
 
-#: models.py:18
+#: models.py:20
 msgid "Template"
 msgstr "Шаблон"
 
-#: models.py:18
+#: models.py:20
 msgid "Common template to render product on its page."
 msgstr "Шаблон для отображения продукта этого типа"
 
-#: models.py:21
+#: models.py:24
 msgid "product type"
 msgstr "тип продукта"
 
-#: models.py:22
+#: models.py:25
 msgid "Product types"
 msgstr "Типы продуктов"
 
-#: models.py:26 models.py:64 models.py:95
+#: models.py:29 models.py:67 models.py:98
 msgid "Tagged producs"
 msgstr "Помеченные продукты"
 
-#: models.py:55
+#: models.py:58
 msgid "Tag name (ru)"
 msgstr "Название (рус.)"
 
-#: models.py:56
+#: models.py:59
 msgid "Tag name (en)"
 msgstr "Название (англ.)"
 
-#: models.py:57
+#: models.py:60
 msgid "Tag slug"
 msgstr "Аттрибут"
 
-#: models.py:57
+#: models.py:60
 msgid "Short unique tag label."
 msgstr ""
 "Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
 
-#: models.py:59
+#: models.py:62
 msgid "product tag"
 msgstr "тег продукта"
 
-#: models.py:60 models.py:84
+#: models.py:63 models.py:87
 msgid "Product tags"
 msgstr "Теги продуктов"
 
-#: models.py:79
+#: models.py:82
 msgid "Name (ru)"
 msgstr "Название (рус.)"
 
-#: models.py:80
+#: models.py:83
 msgid "Name (en)"
 msgstr "Название (англ.)"
 
-#: models.py:81
+#: models.py:84
 msgid "Slug"
 msgstr "Аттрибут"
 
-#: models.py:81
+#: models.py:84
 msgid "Short unique product label."
 msgstr ""
 "Короткий уникальный адрес для доступа из шаблонов или откуда-либо еще."
 
-#: models.py:82
+#: models.py:85
 msgid "Product type"
 msgstr "Тип продукта"
 
-#: models.py:82
+#: models.py:85
 msgid "Product type assigns some data fields to products."
 msgstr ""
 "Тип продукта задает некоторые необходимые поля данных для изделий этого "
 "типа."
 
-#: models.py:83
+#: models.py:86
 msgid "Additional fields"
 msgstr "Дополнительные поля"
 
-#: models.py:84
+#: models.py:87
 msgid "Tags are used for quick searching for products."
 msgstr "Теги используются для быстрого поиска по продуктам."
 
-#: models.py:85
+#: models.py:88
 msgid "Active"
 msgstr "Активен"
 
-#: models.py:85
+#: models.py:88
 msgid "If product is deactivated - it doesn't shown anywhere."
 msgstr "Не активированый продукт нигде не отображается."
 
-#: models.py:86
+#: models.py:89
 msgid "Position in type"
 msgstr "Позиция продукта в списке продуктов данного типа"
 
-#: models.py:88
+#: models.py:91
 msgid "Date added"
 msgstr "Дата добавления"
 
-#: models.py:90
+#: models.py:93
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: models.py:105
+#: models.py:108
 msgid "product"
 msgstr "продукт"
 
-#: models.py:106
+#: models.py:109
 msgid "Products"
 msgstr "Продукты"
+
+#: models.py:189
+msgid "in developed"
+msgstr "В разработке"
+
+#: models.py:190
+msgid "ask for price"
+msgstr "Уточняйте"
 
 #~ msgid "UAH"
 #~ msgstr "Грн"

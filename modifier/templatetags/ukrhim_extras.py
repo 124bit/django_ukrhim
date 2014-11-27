@@ -15,10 +15,74 @@ from cms.templatetags.cms_tags import get_placeholder
 from cms.templatetags.cms_tags import get_page
 from django.contrib.sites.models import Site
 from datetime import datetime 
+import datetime as datetime_ 
 from django.db.models import Max
+from django_geoip.models import CustomRegion
 from os import path
 import re
+import pytz
+
 register = template.Library()
+
+def rupluralize(value, endings):
+        endings = endings.split(',')
+        try:
+            value=int(value)
+            if value % 100 in (11, 12, 13, 14):
+                return endings[2]
+            elif value % 10 == 1:
+                return endings[0]
+            elif value % 10 in (2, 3, 4):
+                return endings[1]
+            else:
+                return endings[2]
+        except:  
+            if '/' in unicode(value):
+                return endings[1]
+            else:
+                return endings[1]
+            
+        
+        
+
+register.simple_tag(rupluralize)
+
+
+def add_subd(context, obj):
+    subdomain=context['request'].META['HTTP_HOST']
+    if subdomain[:4]=='www.':
+        subdomain=subdomain[4:]
+    if subdomain.count('.')>=2:
+        subdomain=subdomain[:subdomain.find('.')]
+    else:
+        subdomain=''
+    if subdomain:
+        return obj[:obj.find('/')+2]+subdomain+'.'+obj[obj.find('/')+2:]
+    else:
+        return obj 
+register.simple_tag(takes_context=True)(add_subd)
+
+@register.filter
+def split(obj, key):
+    return obj.split(key)
+
+@register.filter
+def repl_product_page(obj):
+    return obj.replace('product_page','products/product')
+
+@register.filter    
+def if_number(obj):
+    try:
+        float(obj.replace(' ','').replace(',','.'))
+        return True
+    except:
+        return False
+    
+    
+@register.filter
+def get_index_1(lst, key):
+    return lst[int(key)-1]    
+    
 @register.filter
 def get_item(dictionary, key):
     return dictionary[str(key)]
@@ -35,6 +99,12 @@ def arg(obj,key):
 def dict_pop(obj,key):
     return obj.pop(key)
 
+    
+@register.filter
+def dict_del(obj,key):
+    obj.pop(key)
+    return '' 
+    
 @register.filter
 def pname_foramtter(name):
     name.replace('-', ' - ',1)
@@ -45,6 +115,16 @@ def make_dict(key, val):
     return {key:val}
 
     
+from itertools import izip
+
+def pairwise(t):
+    it = iter(t)
+    return izip(it,it)    
+    
+def make_ordered_dict(*key):    
+    return OrderedDict(pairwise(key))
+register.assignment_tag(make_ordered_dict)
+ 
 @register.filter
 def del_style(val):
     pos1=val.find('<style')
@@ -102,12 +182,38 @@ def count_min_height(html, h, offset):
     return(html.count('li')/2*int(h)+offset)
 register.assignment_tag()(count_min_height)           
 
-
+@register.filter
+def to_cm(text):
+    try:
+        fl_text = float(text)/10
+        if fl_text.is_integer():
+            fl_text=int(fl_text)
+    except ValueError:
+        return text
+    return unicode(fl_text).replace(',','.')
+    
+@register.filter
+def to_m(text):
+    try:
+        fl_text = float(text)/1000
+        if fl_text.is_integer():
+            fl_text=int(fl_text)
+    except ValueError:
+        return text
+    return unicode(fl_text).replace(',','.')    
 
     
 def method(obj,method,key):
     return getattr(obj,method)(key) 
 register.simple_tag(method)
+
+
+def photo_prof(string):
+    if string:
+        return 'face_in_products_'+str(string)
+    else:
+        return 'face_in_products_2'
+register.assignment_tag()(photo_prof)
 
 
 def make_list(*args):
@@ -116,6 +222,8 @@ def make_list(*args):
         a.append(arg)
     return a
 register.assignment_tag()(make_list)
+
+
 
 def make_dict(**kwargs):
     return kwargs
@@ -130,6 +238,10 @@ def make_template(string):
 register.assignment_tag(make_template)   
 
 
+
+def req_get(context):
+    return str(context['request'].GET)
+register.assignment_tag(takes_context=True)(req_get)
 
 
 
@@ -148,6 +260,17 @@ def first_time(context):
         return True
 register.assignment_tag(takes_context=True)(first_time)
 
+def visit_number(context):
+    if context['site_cutting']+'_visit_num' in context['request'].COOKIES:
+        try:
+            return int(context['request'].COOKIES[context['site_cutting']+'_visit_num'])
+        except:
+            return 0
+    else:
+        return 0
+register.assignment_tag(takes_context=True)(visit_number) 
+
+
 def if_main(context):
     if context['request'].current_page.reverse_id == "main":
         return True
@@ -158,7 +281,7 @@ register.assignment_tag(takes_context=True)(if_main)
 
 def cache_version(context, version):
     if 'draft' in context['request'].GET and context['request'].GET['draft']:
-        return datetime.now
+        return datetime.now()
     else:
         return version
 register.assignment_tag(takes_context=True)(cache_version)
@@ -193,17 +316,16 @@ register.simple_tag()(get_album_name)
 def get_album_photos(slug):
     photos=[]
     for photo in Album.objects.get(slug=slug).media_set.all():
-        if photo.slug[:4]!='http':
+        if photo.slug:
             photos.append(photo)
+    #photos.sort(key=lambda x: x.inline_ordering_position)
     return photos
 register.assignment_tag()(get_album_photos)
 
 def get_album_videos(slug):
-    photos=[]
-    for photo in Album.objects.get(slug=slug).media_set.all():
-        if photo.slug[:4] == 'http':
-            photos.append(photo)
-    return photos
+    videos=[video for video in Album.objects.get(slug=slug).video_set.all()]
+    
+    return videos
 
 register.assignment_tag()(get_album_videos)
 
@@ -327,6 +449,41 @@ def get_some(names, products):
 register.assignment_tag()(get_some)
 
 
+def compare_time(h_start, m_start, h_end, m_end):
+    now = datetime.now()
+    call_us_now = False
+    if now.weekday() != 6 and now.weekday() != 5:
+        if (h_start < now.hour < h_end): 
+            call_us_now = True
+        elif h_start == now.hour and now.minute >  m_start:
+            call_us_now = True
+        elif h_end == now.hour and now.minute < m_end:
+            call_us_now = True
+    return call_us_now
+register.assignment_tag(compare_time)  
+   
+def call_date(h_end, m_end):
+    now = datetime.today()
+    
+    
+    if now.weekday() == 5:
+        tomorrow=now + datetime_.timedelta(days=2)
+    elif now.weekday() == 4:
+        tomorrow=now + datetime_.timedelta(days=3)
+    else:
+        tomorrow=now + datetime_.timedelta(days=1)
+    
+
+    
+    if  (h_end < now.hour or (h_end == now.hour and m_end < now.minute)) or now.weekday() == 5 or now.weekday() == 6:
+        call_date = tomorrow
+    else:
+        call_date = now
+        
+    return call_date.strftime("%d.%m.%y")
+register.simple_tag(call_date)   
+    
+   
 def change_item(slugs, products, field, value):
     products=get_some(slugs, products)
     value=unicode(value)
@@ -337,15 +494,27 @@ def change_item(slugs, products, field, value):
             new_value= value.replace('{}',old_value)
         else:
             new_value= value
-        setattr(product,field, new_value)
+        setattr(product,field, mark_safe(new_value)) 
     return ''
 register.simple_tag()(change_item)
 
 
+def get_doc_pages(context, main_page):
+    pages=main_page.get_descendants().filter(reverse_id__startswith='instr__', published=True)
+    #pages_dict={ page.reverse_id:page for page in pages if page.published}
+    #instr_pages=[]
+    #for id, page in pages_dict.items():
+    #    if id.startswith('instr__'):
+    #        instr_pages.append(page)
+    return pages
+register.assignment_tag(takes_context=True)(get_doc_pages)
 
 def get_product_info (context,reverse_id_start, product, category_page):
     pages=category_page.get_children()
     pages_dict={ page.reverse_id:page for page in pages if page.published}
+    
+    if product.slug == 'well_pe_kl_660' and context['request'].GET['product_type'] == 'sewerage_wells':
+        return get_placeholder(context,'content',pages_dict['instr__sewerage_wells'])
     
     product_id=reverse_id_start+'__'+product.slug
     for id in pages_dict:
@@ -367,11 +536,47 @@ def get_product_info (context,reverse_id_start, product, category_page):
 register.assignment_tag(takes_context=True)(get_product_info)
 
 
+def get_product_info_tab_name (context,reverse_id_start, product, category_page):
+    pages=category_page.get_children()
+    pages_dict={ page.reverse_id:page for page in pages if page.published}
+    
+    product_id=reverse_id_start+'__'+product.slug
+    for id in pages_dict:
+        if id==product_id:
+            try:
+                return get_placeholder(context,'tab name',pages_dict[id])
+            except:
+                return None 
+            
+    
+    type_id=reverse_id_start+'__'+product.product_type.slug
+    for id in pages_dict:
+        if id==type_id:
+            try:
+                return get_placeholder(context,'tab name',pages_dict[id])
+            except:
+                return None 
+    
+    parent_id=reverse_id_start+'__'+category_page.reverse_id
+    for id in pages_dict:
+        if id==parent_id:
+            try:
+                return get_placeholder(context,'tab name',pages_dict[id])
+            except:
+                return None 
+    
+    return ''
+register.assignment_tag(takes_context=True)(get_product_info_tab_name)
+
+
 def get_sites():
     return Site.objects.all()
 register.assignment_tag()(get_sites)
 
-
+def get_site(site_cutting):
+    return Site.objects.get(site_cutting=site_cutting)
+    
+register.assignment_tag()(get_site)
 def get_product_sales (context, product, category_page):
     pages=get_page(context,'news_list').get_children()
     pages_dict={ page.reverse_id:page for page in pages if page.published}
@@ -410,6 +615,22 @@ def get_section_name(section, menu_items):
         if 'product_type' in item and item['product_type'] == section:
             return item['long_name']
 register.simple_tag()(get_section_name)
+
+
+def set_goal(context, goal_name, append_reverse_id= False):
+    res=goal_name
+    if append_reverse_id:
+        res = res + '_'+context['request'].current_page.reverse_id
+    return "metrikaReach('"+res+"'); ga('send', 'pageview', {'page': '/"+res+"','title': 'my overridden page'});"
+register.simple_tag(takes_context=True)(set_goal)
+
+
+
+
+
+def company_name():
+	return Site.objects.get_current().company
+register.simple_tag()(company_name)
 
 def get_page_section(context):
     request=context['request']
@@ -468,54 +689,79 @@ def get_lastchng_prdt(menu_items):
     dates=[]
     for type in types:
         dates.append(type.changed)
-    if  dates:
+    if dates:
         return max(dates)
     else:
         return '_'
 register.assignment_tag()(get_lastchng_prdt)
 
 def maximum_val(*args):
+    utc=pytz.UTC
     comp=list(args)
     if '_' in comp:
         comp.remove('_')
-    return max(comp)
+    new_comp = []
+    for el in comp:
+        try:
+            new_comp.append(utc.normalize(el))
+        except ValueError:
+            new_comp.append(el.replace(tzinfo=pytz.UTC))
+       
+    return max(new_comp)
+	
 register.assignment_tag()(maximum_val)
 
 
 def get_site_media_css(context):
-    if path.exists(settings.PROJECT_PATH+'/media/files/site_static/catalog/user_media_'+context['site_cutting']+'.css'):
-        
-        return 'user_media_'+context['site_cutting']+'.css'
+    try:
+        if path.exists(settings.PROJECT_PATH+'/media/files/site_static/catalog/user_media_'+context['site_cutting']+'.css'):
+            return 'user_media_'+context['site_cutting']+'.css'
+    except KeyError:
+        pass
 register.assignment_tag(takes_context=True)(get_site_media_css)
 
 def get_product_page(context):
     product=context['product']
-    product_descr=''
+    
+    
+    
+    
     try:
-        product_descr=product.descr_m
+        type_descr=product.product_type.type_description.strip()
     except:
-        pass
-    product_template=''
+        type_descr=''
+    if not type_descr:
+            type_descr = "{% block type_description %}{% endblock %}"
+    
+    
     try:
-        product_template=product.template
+        product_descr=product.descr_m.strip()
     except:
-        pass
-    type_template=product.product_type.template
+        product_descr=''
+    if not product_descr:
+        product_descr="{% block product_description %}{% block type_description %}{% endblock %}{% endblock %}"
+        
+    try:
+        product_template=product.template.strip()
+    except:
+        product_template=''
     
-    
-    type_descr=product.product_type.type_description
-    
-    
+    if product_template:
+        template=product_template
+    elif product.product_type.template.strip():
+        template = product.product_type.template
+    else:
+        template = "{% block left_content %}{% block product_description %}{% endblock %}{{ block.super }}{% endblock %}"
+        
+
+    #raise Exception
     
     type_descr=add_extends(type_descr,'product_descr')
-    product_descr=add_extends(product_descr,'product_template')
-    product_template=add_extends(product_template,'type_template')
-    type_template=add_extends(type_template,'"product_common.html"')
+    product_descr=add_extends(product_descr,'template')
+    template=add_extends(template,'"product_common.html"')
     
     
-    context['type_template']=Template(type_template)
-   # context['type_descr']=Template(type_descr)
-    context['product_template']=Template(product_template)
+    context['template']=Template(template)
     context['product_descr']=Template(product_descr)
     
     return Template(type_descr).render(context)
@@ -585,5 +831,15 @@ def mkrange(parser, token):
     context_name = tokens.pop()
 
     return RangeNode(parser, range_args, context_name)
+
+
+def seo_href_loc():
+    return ''
+register.simple_tag(seo_href_loc)    
+
+def subdomain_region(context):
+       
+    return CustomRegion.objects.get(slug=context['loc']).city_set.all()[0].region.name
+register.simple_tag(takes_context=True)(subdomain_region)  
 
 

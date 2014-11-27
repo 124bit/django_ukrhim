@@ -530,7 +530,7 @@ def _show_placeholder_for_page(context, placeholder_name, page_lookup, lang=None
         cache.set(cache_key, {'content': content, 'sekizai': changes}, get_cms_setting('CACHE_DURATIONS')['content'])
 
     if content:
-        return {'content': mark_safe(content)}
+        return {'content': mark_safe(content.strip())}
     return {'content': ''}
 
 

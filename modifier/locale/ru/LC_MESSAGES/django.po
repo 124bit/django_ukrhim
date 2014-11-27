@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-23 20:21+0200\n"
-"PO-Revision-Date: 2013-08-28 12:46+0300\n"
+"POT-Creation-Date: 2014-09-28 16:59+0200\n"
+"PO-Revision-Date: 2014-09-28 18:01+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,104 +43,187 @@ msgstr "Главная"
 msgid "Settings"
 msgstr "Настройки"
 
-#: custom_menu.py:33
+#: custom_menu.py:35 models.py:236
+msgid "Load files"
+msgstr "Загрузить файлы"
+
+#: custom_menu.py:36
 msgid "On site"
 msgstr "На сайт"
 
-#: models.py:112
+#: models.py:119
 msgid ""
 "Image specifications profiles are used for automatic image generation in "
 "templates."
 msgstr ""
 "Параметры используемые при автоматической генериции картинок в шаблонах."
 
-#: models.py:112
+#: models.py:119
 msgid "Profile name"
 msgstr "Имя профиля"
 
-#: models.py:113
+#: models.py:120
 msgid "Options"
 msgstr "Настройки"
 
-#: models.py:113
+#: models.py:120
 msgid "Options of image convertation."
 msgstr "Настройки преобразования изображения."
 
-#: models.py:116
+#: models.py:123
 msgid "image specification profile"
 msgstr "профиль конвертации картинок"
 
-#: models.py:117
+#: models.py:124
 msgid "Image specification profiles"
 msgstr "Профили конвертации картинок"
 
-#: models.py:195
+#: models.py:203
 msgid "Choose image"
 msgstr "Выберите файл с изображением."
 
-#: models.py:198
+#: models.py:206
 msgid "Converted image in <img> tag."
 msgstr ""
 
-#: models.py:199
+#: models.py:207
 msgid "Converted image in url."
 msgstr ""
 
-#: models.py:200
+#: models.py:208
 msgid "Original image in <img> tag."
 msgstr ""
 
-#: models.py:201
+#: models.py:209
 msgid "Original image url."
 msgstr "Вставить url изображения не конвертирую."
 
-#: models.py:204
+#: models.py:212
 msgid "Choose logic"
 msgstr "Выберите логику работы"
 
-#: models.py:206
+#: models.py:214
 msgid "Image html tags"
 msgstr "Html тэги изображения"
 
-#: models.py:207
+#: models.py:215
 msgid "Choose convertation options"
 msgstr "Выберите параметры конвертации"
 
-#: models.py:208
+#: models.py:216
 msgid "Variable name"
 msgstr "Имя переменной"
 
-#: patches.py:39
+#: patches.py:76
+#, fuzzy
+msgid "No recent actions."
+msgstr "Недавние действия"
+
+#: patches.py:86
 msgid "Site cutting"
 msgstr "Короткий идентификатор"
 
-#: patches.py:39
+#: patches.py:86
 msgid "Short unique site identifier."
 msgstr "Короткий уникальный идентификатор сайта."
 
-#: patches.py:40
+#: patches.py:87
 msgid "Price field attrs"
 msgstr "Аттрибут поля цены"
 
-#: patches.py:40
+#: patches.py:87
 msgid "Attributes of price fields for this site, separated with comma-space."
 msgstr "Аттрибут поля цены товаров для этого сайта"
 
-#: patches.py:41
+#: patches.py:88
 msgid "Site company"
 msgstr "Компания"
 
-#: patches.py:41
+#: patches.py:88
 msgid "Site company will show in header country-company selection"
 msgstr "Страна и компания будут показаны в выборе сайтов в меню навигации"
 
-#: patches.py:42
+#: patches.py:89
 msgid "Site country"
 msgstr "Страна"
 
-#: patches.py:42
+#: patches.py:89
 msgid "Site country will show in header country-company selection"
 msgstr "Страна-компания будут показаны в выбор сайтов в меню навигации"
+
+#: patches.py:90
+msgid "Choose if you want some areas to have their own domains"
+msgstr ""
+"Выберите домены, если вы хотите, чтобы некоторые территории имели свой "
+"поддомен"
+
+#: views.py:11
+msgid "now"
+msgstr "сейчас "
+
+#: views.py:28
+msgid "undefined product"
+msgstr "неопределенный товар"
+
+#: views.py:38
+#, python-format
+msgid "Request for call from %(receive_domain)s for %(product)s"
+msgstr "Запрос на звонок с %(receive_domain)s по %(product)s"
+
+#: views.py:39
+#, python-format
+msgid ""
+"Request for call at %(number)s for %(product)s. Call please to customer at "
+"%(time_to_call)s %(date)s."
+msgstr ""
+"Запрос на звонок по %(number)s по %(product)s. Позвоните, пожалуйста, "
+"покупателю в %(time_to_call)s %(date)s."
+
+#: views.py:41
+msgid ""
+"\n"
+"----------------------\n"
+"Sincerely,\n"
+"Broide Julius I.,\n"
+"marketing team Ltd. Ukrhimplast"
+msgstr ""
+"\n"
+"----------------------\n"
+"с уважением,\n"
+"Бройде Юлий Игоревич,\n"
+"отдел маркетинга ООО Укрхимпласт"
+
+#: views.py:43
+#, python-format
+msgid ""
+"Thanks, you have send request for call at %(time_to_call)s to \n"
+"%(number)s at %(date)s.\n"
+"We will call you back at this time."
+msgstr ""
+"Спасибо, вы отправили заявку на звонок на <br>\n"
+"%(number)s в %(time_to_call)s %(date)s. <br>\n"
+"Мы вам обязательно перезвоним!"
+
+#~ msgid "Request for call from"
+#~ msgstr "Запрос на звонок"
+
+#~ msgid "Request for call at "
+#~ msgstr "Заявка на звонок в "
+
+#~ msgid " for "
+#~ msgstr " по "
+
+#~ msgid ". Call please to customer at "
+#~ msgstr ". Позвоните пожалуйста клиенту в "
+
+#~ msgid "Thanks, you have send request for call at "
+#~ msgstr "Спасибо, вы оставили заявку на звонок в "
+
+#~ msgid " to "
+#~ msgstr " на "
+
+#~ msgid " at "
+#~ msgstr " в "
 
 #~ msgid "Generate <img> tag with attrs."
 #~ msgstr "Вставить тег с url  переконвертированного изображения."

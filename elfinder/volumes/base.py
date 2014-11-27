@@ -768,23 +768,23 @@ class ElfinderVolumeDriver(object):
             raise Exception(ElfinderErrorMessages.ERROR_INVALID_NAME)
         
         mime = uploaded_file.content_type 
-
+        upload = True
         #logic based on http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#order
-        allow = self.mime_accepted(mime, self._options['uploadAllow'], None)
-        deny   = self.mime_accepted(mime, self._options['uploadDeny'], None)
-        if self._options['uploadOrder'][0].lower() == 'allow': #['allow', 'deny'], default is to 'deny'
-            upload = False #default is deny
-            if not deny and allow == True: #match only allow
-                upload = True
-            #else: (both match | no match | match only deny): deny
-        else: #['deny', 'allow'], default is to 'allow' - this is the default rule
-            upload = True #default is allow
-            if deny == True and not allow: #match only deny
-                upload = False
-            #else: (both match | no match | match only allow): allow }
+        # allow = self.mime_accepted(mime, self._options['uploadAllow'], None)
+        # deny   = self.mime_accepted(mime, self._options['uploadDeny'], None)
+        # if self._options['uploadOrder'][0].lower() == 'allow': #['allow', 'deny'], default is to 'deny'
+            # upload = False #default is deny
+            # if not deny and allow == True: #match only allow
+                # upload = True
+        #    else: (both match | no match | match only deny): deny
+        # else: #['deny', 'allow'], default is to 'allow' - this is the default rule
+            # upload = True #default is allow
+            # if deny == True and not allow: #match only deny
+                # upload = False
+        #    else: (both match | no match | match only allow): allow }
         
-        if not upload:
-            raise Exception(ElfinderErrorMessages.ERROR_UPLOAD_FILE_MIME)
+        # if not upload:
+            # raise Exception(ElfinderErrorMessages.ERROR_UPLOAD_FILE_MIME)
 
         if self._options['uploadMaxSize'] > 0 and uploaded_file.size > self._options['uploadMaxSize']:
             raise Exception(ElfinderErrorMessages.ERROR_UPLOAD_FILE_SIZE)

@@ -1,13 +1,12 @@
 {% load compress %}
 {% compress js %}
 		<script src="{{ STATIC_URL }}catalog/js/jquery.magnific-popup.min.js"></script>
-		<script type="text/javascript">
-		  $(document).ready(function() {
-			$('.zoom-gallery').magnificPopup({
-			  delegate: 'a',
+		<script type="text/javascript">  
+		  $(document).ready(function() {             //photos in product face down gallery
+			$('.zoom-gallery').magnificPopup({  
+			  delegate: 'a.photo_link',
 			  type: 'image',
 			  closeOnContentClick: false,
-			  closeBtnInside: false,
 			  mainClass: 'mfp-with-zoom mfp-img-mobile',
 			  image: {
 				verticalFit: true,
@@ -18,6 +17,7 @@
 			  gallery: {
 				enabled: true
 			  },
+              closeBtnInside : true,
 			  zoom: {
 				enabled: true,
 				duration: 300, // don't foget to change the duration also in CSS
@@ -30,12 +30,11 @@
 		  });
           
           
-          $(document).ready(function() {
+          $(document).ready(function() {    //photos on contacts and other pages
 			$('.zoom').magnificPopup({
 			  delegate: 'a',
 			  type: 'image',
-			  closeOnContentClick: false,
-			  closeBtnInside: false,
+			  closeOnContentClick: true,
 			  mainClass: 'mfp-with-zoom mfp-img-mobile',
 			  image: {
 				verticalFit: true,
@@ -43,9 +42,10 @@
 				  return item.el.attr('title') + '  ';
 				}
 			  },
+              closeBtnInside : true,
 			  zoom: {
 				enabled: true,
-				duration: 300, // don't foget to change the duration also in CSS
+				duration: 300, // don't forget to change the duration also in CSS
 				opener: function(element) {
 				  return element.find('img');
 				}
@@ -54,12 +54,12 @@
 			});
 		  });
           
-          $(document).ready(function() {
+          $(document).ready(function() {  //gif 3d in product face page
 			$('.pzoom').magnificPopup({
 			  delegate: 'a',
 			  type: 'image',
-			  closeOnContentClick: false,
-			  closeBtnInside: false,
+			  closeOnContentClick: true,
+              closeBtnInside : true,
 			  mainClass: 'mfp-img-mobile',
 			  image: {
 				verticalFit: true,
@@ -70,5 +70,31 @@
 			  
 			});
 		  });
+          
+          $(document).ready(function() {  //gif 3d in product face page
+			$('.model_gif').magnificPopup({
+			  delegate: 'a',
+			  type: 'image',
+			  closeOnContentClick: true,
+              closeBtnInside : true,
+			  mainClass: 'mfp-img-mobile model_gif_inner',
+			  image: {
+				verticalFit: true,
+				titleSrc: function(item) {
+				  return item.el.attr('title') + '  ';
+				}
+			  }
+			  
+			});
+		  });
+          $(document).ready(function() {  //buy_button
+			$('.buy_button').magnificPopup({
+			  type:'inline',
+              mainClass: 'mfp-img-mobile',
+			  closeMarkup: '<button class="mfp-close close_button" type="button" title="Close (Esc)"></button>'
+			});
+		  });
+          
+
 		</script>
 {% endcompress %}

@@ -7,7 +7,7 @@ from models import InheritPagePlaceholder
 from django.conf import settings
 from cms.plugins.inherit.forms import InheritForm
 import copy
-
+from django.contrib.sites.models import Site
 class InheritPagePlaceholderPlugin(CMSPluginBase):
     """
     Locates the plugins associated with the "from_page" of an InheritPagePlaceholder instance
@@ -79,7 +79,7 @@ class InheritPagePlaceholderPlugin(CMSPluginBase):
                 # instanciate the form on call
                 form = self.Form(*args, **kwargs)
                 # tell form we are on this site
-                form.for_site(self.site)
+                form.for_site(Site.objects.get(site_cutting='ukrhim'))
                 return form
             
         return FakeForm(Form, self.cms_plugin_instance.page.site or self.page.site)

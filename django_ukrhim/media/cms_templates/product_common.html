@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 {% load i18n ukrhim_extras cms_tags currency imagekit assign compress adv_cache %}
 
+{% get_product as product %}
+{% block canonical %}
+{% assign name="normal_link" %}{% page_url "product_inner" %}?{% if "type" in request.GET and product.product_type.slug != "accessoires" %}type={{ request.GET.type }}&{% endif  %}{% if "product_category" in request.GET %}product_category={{ request.GET.product_category }}&{% endif %}{% if "product_type" in request.GET %}product_type={{ request.GET.product_type }}&{% endif %}product={{ request.GET.product }}{% endassign %}
+    {% if normal_link != request.get_full_path %}<link rel="canonical" href='{{ normal_link }}'>{% endif %}
+{% endblock %}
+
+
 {% block title %}
-    {% get_product as product %}
     {% get_product_type request.GET.product_type as type %}
-   <title> {{ product.name }} {% if type %}{{ type.name}}{% endif %}</title>
+   <title>{% company_name %} - {{ product.name }} {% if type %}{{ type.name}}{% endif %} {% if subdomain %}{% subdomain_region %}{% endif %}</title>
 {% endblock %}
 
 
@@ -16,55 +22,13 @@
     {% get_product_type request.GET.product_type as type %}
     {% get_page request.GET.product_category as category_page %}
     {% maximum_val type.changed category_page.parent.child_last_publish_date as tversion %}
+    {% cache_version tversion as cversion %} 
     {% assign name="left_menu" %}
-        {% cache 0 product_inner_left_nav product.pk site.pk LANGUAGE_CODE cdraft tversion %}
-            <nav class="menu-left">
-                <ul class="product_inner">			
-                    <li class="bold">{% page_attribute "menu_title" category_page.parent %}:</li>
-                    {% for child in category_page.parent.get_children %}
-                        {% if child.in_navigation %}
-                        
-                            {% get_placeholder 'menu items' child as menu_items_txt %}
-                            {% if menu_items_txt %}
-                                {% get_menu_items_from_txt menu_items_txt as menu_items %}
-                            {% else %}
-                                {% get_page_attribute "menu_title" child as item_title %}
-                                {% make_dict name=item_title page_section=child.reverse_id as item_dict%}
-                                {% make_list item_dict as menu_items %}
-                            {% endif %}
-                            
-                            {% for item in menu_items %}
-                                <li>
-
-                                    <a href="{{ child.get_absolute_url }}{% if 'page_section' in item %}#{{ item.page_section }}{% endif %}" {% if section == item.page_section or  section == item.product_type %} class="current-button" {% endif %}>{{ item.name }}</a>
-                                    
-                                    {% if section == item.page_section or section == item.product_type %}
-                                        {% get_type_and_addtnl_products product request.GET.product_type as products %}
-                                        {% if products.0 or products.1 %}
-                                            <ul>
-                                                {% for product in products.0 %}
-                                                    <li><a {% if product.slug == request.GET.product %}class="current-button inner_b"{% endif %} href="{% page_url "product_inner" %}?product={{ product.slug }}&product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}" >{{ product.name }}</a></li>
-                                                {% endfor %}
-                                                {% if products.1 %}
-                                                    <li class="bold"> {% trans 'Accessoires:' %}<li>
-                                                    {% for product in products.1 %}
-                                                        <li><a {% if product.slug == request.GET.product %}class="current-button inner_b"{% endif %} href="{% page_url "product_inner" %}?product={{ product.slug }}&product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}" >{{ product.name }}</a></li>
-                                                    {% endfor %}
-                                                {% endif %}
-                                            </ul>
-                                           
-                                        {% endif %}
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-            
-                </ul>
-            </nav>
+        {% cache 0 product_inner_left_nav product.pk site.pk LANGUAGE_CODE cdraft cversion request.GET.product_type %}
+            {% include 'left_product_menu.html' %}
         {% endcache %}
     {% endassign %}
-    {% count_min_height left_menu 25 170 as min_height %} 
+    {% count_min_height left_menu 18 120 as min_height %} 
         
 	<div class="middle background" style="min-height: {{ min_height }}px;">
         {{ left_menu }}
@@ -103,135 +67,356 @@
 			
 			
 			
-            <h1>{% block heading %} {{ product.name }} {% if type %}{{ type.name}}{% endif %} {% endblock %}</h1>       
+            <h1>{% block heading %} {{ product.name }} {% endblock %}</h1>       
 			           
             <div class="f_left container" style="width: 380px;">
                 
-                {% block left_content %}    
+                {% block left_content %}
                 
-                    {% block characteristics %}
-                    <h3 class="left  mtop30">{% trans "Characteristics" %}</h3>
+                    {% block left_1 %}
+                    {% endblock %}
+                    {% block left_2 %}
+                    <h3 class="left  mtop30 charact_header">{% trans "Characteristics" %}</h3>
                     <ul class="features left mtop30">
                     
-                            {% with "v l w h d_n l_w m" as fields %}
+                            {% with "l_sld v l l_wd w h w_h d d_n l_w t d_in d_out flt fxtr m m_c carrying_capacity" as fields %}
                                 {% with fields.split as field_list %}
                                     {% for field in field_list %}
                                         {% get_product_field product field as field_content %}
 
                                         {% if field_content %}
-                                            <li>{% get_field_name field %} : {{ field_content }} {% get_field_units field %}</li>
+                                            {% if field in 'l_sld l l_wd l_w w h d d_n w_h d_in d_out carrying_capacity'|split:" " %} 
+                                                <li>{% get_field_name field %}: {{ field_content|to_cm }} {% trans 'cm' %}</li>
+                                            {% else %}
+                                                <li>{% get_field_name field %}: {{ field_content }} {% if field_content != '-' %} {% get_field_units field %} {% endif %}</li>
+                                            {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                 {% endwith %}
                             {% endwith %}
-                        {% block price %}
-                            {% if LANGUAGE_CODE != LANGUAGES.0.0 %}
-                                <li class="price"> {% trans "Price" %}: {{ product.price|format_price_str }} {% currency %}.</li>
-                            {% else %}
-                                {% product_second_price product as price2 %} 
-                                {% product_first_price product as price1 %} 
-                                <li class="price"> {% trans "Price" %}: {{ price1|format_price_str }} {% currency upper=True %} {% if price2 %} / {{ price2|format_price_str }} {% currency price_index=1 upper=True %} {% endif %}<br> <span class="vat" >{% trans 'incl. VAT' %}</span> </li>
-                            {% endif %}
-                        {% endblock %}
                     </ul>
                     {% endblock %}
-                    
+                    {% block left_3 %}
+                        {% block price %}
+                            
+                            {% get_placeholder 'buy popup' 'main' as buy_popup %}
+                            <div style="float:left;width: 100%;"></div>
+                            {% if LANGUAGE_CODE != LANGUAGES.0.0 %}
+                                {% if buy_popup %}
+                                    <button onclick="{% set_goal 'buy_button' False  %}  return true;"  class="buy_button f_right" style="margin-top: 29px;  margin-right: 20px;" href="#button_popup">{% trans 'Buy' %}</button>
+                                {% endif %}
+                                <div class="price under_features f_right" style="margin-right: 20px;">
+                                    {% trans "Price" %}: {{ product.price|format_price_str }} {% if product.price.isdigit %} {% currency %}.{% endif %}
+                                </div>
+                            {% else %}
+                                <div class="price under_features f_right" style="margin-right: 20px;">
+                                    {% product_second_price product as price2 %} 
+                                    {% product_first_price product as price1 %} 
+                                     {% trans "Price" %}: {{ price1|format_price_str }} {% currency upper=True %} {% if price2 %} / {{ price2|format_price_str }} {% currency price_index=1 upper=True %} {% endif %}<br> <span class="vat" >{% trans 'incl. VAT' %}</span> 
+                                </div>
+                                <div style="float:left;width: 100%;"></div>
+                                {% if buy_popup %}
+                                    <button onclick="{% set_goal 'buy_button' False  %}  return true;" class="buy_button f_right" style=" width: 90px; margin-top: 29px;  margin-right: 100px;" href="#button_popup">{% trans 'Buy' %}</button>
+                                {% endif %}
+                            {% endif %}
+                            
+                        {% endblock %}
+                    {% endblock %}
                     
                 {% endblock %}
             
             </div>
             
-           {% get_product_field product "photo" as photo %}
+            {% get_placeholder 'buy popup' 'main' as buy_popup %}
+           
+                    {% if buy_popup %}
+                        {{ buy_popup }}
+                    {% endif %}
+                    
+                    
+            {% get_product_field product "photos_from_product" as photos_from_product %}
+            {% if photos_from_product %}
+                {% get_product photos_from_product as photo_product %}
+                {% get_product_field photo_product "photo" as photo %}
+                {% get_product_field photo_product "p_s" as photo_size %}
+            {% else %}
+                {% get_product_field product "photo" as photo %}
+                {% get_product_field product "p_s" as photo_size %}
+            {% endif %}
             
             <div class="f_right container" style="width: 370px;">
                 
                 {% block right_content %} 
                 
-                    {% block photo %}
-                        <a id="pr_photo_link" href="#">{% if photo.url %}{% generateimage "face_in_products" source=photo.url -- class="mtop30 right" %}{% endif %}</a>
+                    {% block right_1 %}
+                        <a id="pr_photo_link" href="#">
+                            {% if photo.url %}                       
+                                {% if photo_size == 1 %}
+                                    {% generateimage "face_in_products_1" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 2 %}
+                                    {% generateimage "face_in_products_2" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 3 %}
+                                    {% generateimage "face_in_products_3" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 4 %}
+                                    {% generateimage "face_in_products_4" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 5 %}
+                                    {% generateimage "face_in_products_5" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 6 %}
+                                    {% generateimage "face_in_products_6" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 7 %}
+                                    {% generateimage "face_in_products_7" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 8 %}
+                                    {% generateimage "face_in_products_8" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% elif photo_size == 9 %}
+                                    {% generateimage "face_in_products_9" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% else%}
+                                    {% generateimage "face_in_products_7" source=photo.url -- class="mtop30 right mleft40" %}
+                                {% endif %}
+                            {% endif %}
+                        </a>
                     {% endblock %}
                     
-                    {% block right_list %}
-                        {% get_product_field product "sketch" as sketch %}
-                        {% get_product_field product "animation_3d" as animation_3d %}
-                        <ul class ="f_left" style="margin-top:7px; margin-left:120px;"> 
-                            
-                            {% if sketch.url %}
-                                {% generateimage "sketch_in_products" source=sketch.url as img %} 
-                                <li class="f_left pzoom" ><a href="{{ img.url }}" class="link" title="{{ product.name }} {% trans "Sketch" %}" >{% trans "Sketch" %}</a></li> 
-                            {% endif %}
-                            {% if animation_3d.url %}
-                                <li class="f_left pzoom"  style="margin-left:30px;"><a title="{{ product.name }} {% trans "3D" %}" class="link" href="{{ animation_3d.url }}">{% trans "3D" %}</a></li>
-                            {% endif %}
-                        </ul>
+                    {% block right_2 %}
+                        
+                        {% get_product_field product "sketch_from_product" as sketch_from_product %}
+                        
+                        {% if sketch_from_product %}
+                            {% get_product sketch_from_product as sketch_product %}
+                            {% get_product_field sketch_product "sketch" as sketch %}
+                        {% else %}
+                            {% get_product_field product "sketch" as sketch %}
+                        {% endif %}
+                        
+                        
+                        {% get_product_field product "animation_3d_from_product" as animation_3d_from_product %}
+                        {% if animation_3d_from_product %}
+                            {% get_product animation_3d_from_product as animation_3d_product %}
+                            {% get_product_field animation_3d_product "animation_3d" as animation_3d %}
+                        {% else %}
+                            {% get_product_field product "animation_3d" as animation_3d %}
+                        {% endif %}
+                        
+                        
+                        
+
+                        {% if sketch.url or animation_3d.url %}
+                            <div class="f_left" style="margin-top:7px; margin-left:70px; width:260px; text-align:center;"> 
+                                
+                                {% if sketch.url %}
+                                    {% generateimage "sketch_in_products" source=sketch.url as img %} 
+                                    <div class="pzoom" style="display:inline;"><a href="{{ img.url }}" class="link" title="{{ product.name }} {% trans "Sketch" %}" >{% trans "Sketch" %}</a></div> 
+                                {% endif %}
+								
+                                {% if sketch and animation_3d %}
+									<div style="display:inline; padding: 0px 15px;">&nbsp;</div>
+								{% endif %}
+								
+                                {% if animation_3d.url|slice:"-4:" == ".obj" %}
+                                    {% block js_alternating %}
+                                        {{ block.super }}
+                                        {% if LANGUAGE_CODE == 'en' %}
+                                            {% compress js %}
+                                                <script src="{{ STATIC_URL }}catalog/js/jsc3d_en.js"></script>
+                                                <script src="{{ STATIC_URL }}catalog/js/jsc3d.touch.js"></script>
+                                                <script src="{{ STATIC_URL }}catalog/js/jsc3d.webgl.js"></script>
+                                            {% endcompress %}
+                                        {% else %}
+                                            {% compress js %}
+                                                <script src="{{ STATIC_URL }}catalog/js/jsc3d_ru.js"></script>
+                                                <script src="{{ STATIC_URL }}catalog/js/jsc3d.touch.js"></script>
+                                                <script src="{{ STATIC_URL }}catalog/js/jsc3d.webgl.js"></script>
+                                            {% endcompress %}
+                                        {% endif %}
+                                    {% endblock %}
+                                        <script>
+                                             $(document).ready(function(){ 
+                                             if (("ontouchstart" in document.documentElement)) {
+                                                wind_src = '<div class="white-popup"><canvas id="cv_f_model" width=640 height=480>{% trans "Update your browser" %}</canvas><div class="{% if LANGUAGE_CODE == 'en' %}tip_model{% else %}tip_model_ru{% endif %}">{% trans "Drag model to rotate" %}<br>{% trans "Use two fingers to zoom" %}</div><div id="toggle_but" class="model_but pause"></div></div>'
+                                                }
+                                            else {
+                                                wind_src = '<div class="white-popup"><canvas id="cv_f_model" width=640 height=480>{% trans "Update your browser" %}</canvas><div class="{% if LANGUAGE_CODE == 'en' %}tip_model{% else %}tip_model_ru{% endif %}">{% trans "Drag model to rotate"  %}<br>{% trans "Use mouse wheel to zoom" %}</div><div id="toggle_but" class="model_but pause"></div></div>'
+                                                }
+                                            
+                                             
+                                             $('.mzoom').magnificPopup({  //3d model .obj in product face page
+                                                  items: {
+                                                      src: wind_src,
+                                                      type: 'inline'
+                                                  },
+                                                  callbacks: {
+                                                            open: function() {
+                                                                    var viewer = new JSC3D.Viewer(document.getElementById('cv_f_model'));
+                                                                    viewer.setParameter('ModelColor', '#4169E1');
+                                                                    viewer.setParameter('SceneUrl', '{{ animation_3d.url }}');
+                                                                    viewer.setParameter('RenderMode', 'texturesmooth');
+                                                                    viewer.setParameter('BackgroundColor1', '#cccccc');
+                                                                    viewer.setParameter('BackgroundColor2', '#87CEFA');
+                                                                    if (!("ontouchstart" in document.documentElement)) {
+                                                                        viewer.setParameter('Definition', 'high');
+                                                                        viewer.setParameter('MipMapping', 'on');
+                                                                    }
+                                                                    
+                                                                    viewer.setParameter('Renderer', 'webgl');
+                                                                    viewer.setParameter('ProgressBar', 'on');
+                                                                    viewer.setParameter('InitRotationX', -70);
+                                                                    viewer.setParameter('InitRotationY', -10);
+                                                                    viewer.setParameter('InitRotationZ', -5);
+                                                                    viewer.init();
+                                                                    viewer.update();
+                                                                    
+                                                                   
+                                                                    var model_rot_interval = setInterval(function(){viewer.rotate(0, -1, 0); viewer.update();}, 60);
+                                                                    
+                                                                    $('#toggle_but').bind("click", function() {
+                                                                    if ($(this).hasClass("play") )
+                                                                    {
+                                                                        $(this).removeClass("play").addClass("pause");
+                                                                        
+                                                                        model_rot_interval = setInterval(function(){viewer.rotate(0, -2, 0); viewer.update();}, 60);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $(this).removeClass("pause").addClass("play");
+                                                                        clearInterval(model_rot_interval);
+                                                                    }
+                                                                    });
+                                                                    $('#cv_f_model').mousedown(function() {                                                                        
+                                                                            if ($('#toggle_but').hasClass("pause")) {clearInterval(model_rot_interval); } 
+                                                                            viewer.rotate(0, 14, 0);
+                                                                            viewer.update();
+                                                                        }             
+                                                                    );
+                                                                    
+                                                                    $('#cv_f_model').click(function() {                                                                        
+                                                                            if ($('#toggle_but').hasClass("pause")) {$('#toggle_but').removeClass("pause").addClass("play");} 
+                                                                        }                                                    
+                                                                    );
+                                                            },
+                                                            close: function() {
+                                                                $('#toggle_but').remove();
+                                                                $('#cv_f_model').remove();
+                                                                $('.tip_model').remove();
+                                                                $('.progr_frame').remove();
+                                                                $('.progr_rect').remove();
+                                                                $('.progr_panel').remove();
+                                                            
+                                                            }
+                                                    
+                                                  }
+                                                });
+                                             });
+                                            </script>
+                                   
+                                    <div class="mzoom" style="display:inline;"><a title="{{ product.name }} {% trans "3D" %}" class="link" href="{{ animation_3d.url }}">{% trans "3D" %}</a></div>
+                                {% elif animation_3d %}
+                                    <div class="model_gif" style="display:inline;"><a title="{{ product.name }} {% trans "3D" %}" class="link" href="{{ animation_3d.url }}">{% trans "3D" %}</a></div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <br>
+                    {% endblock %}
+                    
+                    {% block right_3 %}
+                        <div style="padding-left:30px;">
+                            {% block right_cons_pros %}
+                            {% endblock %}
+                        </div>
                     {% endblock %}
                     
                 {% endblock %}
             
             </div>
+            
             <div class="f_left container" style="width: 750px;">
-			{% block bottom_content %} {% endblock %}
+                {% block bottom_content %}
+                {% endblock %}
             </div>
+            
             <br />
 			{% block tabs %}
-			
-			{% get_product_field product "list_photos" as list_photos %}
-            {% get_product_info "instr" product category_page  as product_instrs %}
-            {% get_product_info "cert" product category_page  as product_certs %}
-            {% get_product_sales product category_page  as product_sales %}
-			<nav id="tabs" class="category">
-				<ul>
-                    
-					{% if list_photos.0 %}<li><a id='photo_tab' href="#photo_tab">{% trans "Photos" %}</a></li>{% endif %}
-                    {% if product_instrs %}<li><a href="#instr">{% trans "Instructions" %}</a></li>{% endif %}
-					{% if product_certs %}<li><a href="#cert">{% trans "Certificates" %}</a></li>{% endif %}
-                    {% if product_sales %}<li><a class="red" href="#sales">{% trans "Shares" %}</a></li>{% endif %}
-					
-				</ul>
-				<br />
-			</nav>
-			
-			<div id="panels">
-				<div class="panel-wrapper">
-                    {% if list_photos.0 %}
-                        <div class="panel" style="display: none;">
-                            <div class="zoom-gallery">
-                            {% get_child_photo_url photo.url as child_url %}
-                            {% for product_photo in list_photos %}
-                                {% generateimage "photo_big" source=product_photo  as big_photo %}
-                                <a {% if child_url == product_photo %} id="child_photo" {% endif %} href="{{ big_photo.url }}" class="gallery-product" title= '{{ product.name }} {% get_section_name section menu_items %}' >
-                                    {% generateimage "products_photo_small" source=product_photo  %}
-                                </a>
-                            {% endfor %}
+                {% if photos_from_product %}
+                    {% get_product photos_from_product as photo_product %}
+                    {% get_product_field photo_product "photo_order" as photo_order %}
+                    {% get_product_field photo_product "list_photos" as list_photos %}
+                {% else %}
+                    {% get_product_field product "photo_order" as photo_order %}
+                    {% get_product_field product "list_photos" as list_photos %}
+                {% endif %}
+                
+                {% get_product_info "instr" product category_page  as product_instrs %}
+                {% get_product_info_tab_name "instr" product category_page  as product_instrs_tab %}
+                {% get_product_sales product category_page  as product_sales %}
+                {% get_placeholder 'delivery' 'main' as delivery %}
+                <nav id="tabs" class="category">
+                    <ul>
+                        
+                        {% if list_photos.0 %}<li><a id='photo_tab' href="#photo_tab_">{% trans "Photos" %}</a></li>{% endif %}
+                        {% if delivery %}<li><a  onclick="{% set_goal 'delivery_tab' False  %}  return true;" id='delivery_tab' href="#delivery_tab_">{% trans 'Delivery' %}</a></li>{% endif %}
+                        {% if product_instrs %}<li><a id='instr_tab' href="#instr_tab_">{% if product_instrs_tab %} {{ product_instrs_tab }} {% else %}{% trans "Documentation" %}{% endif %}</a></li>{% endif %}
+                        {% if product_sales %}<li><a class="red" href="#sales">{% trans "Discounts" %}</a></li>{% endif %}
+                        
+                    </ul>
+                    <br />
+                </nav>
+                
+                <div id="panels">
+                    <div class="panel-wrapper">
+                        {% if list_photos.0 %}
+                            <div class="panel" style="display: none;">
+                                <div class="zoom-gallery">
+                                        {% get_child_photo_url photo.url as child_url %}
+                                        {% if photo_order %}
+                                            {% for photo_num in photo_order|split:',' %}
+                                                {% generateimage "photo_big" source=list_photos|get_index_1:photo_num  as big_photo %}
+                                                <a {% if child_url == list_photos|get_index_1:photo_num %} id="child_photo" {% endif %} href="{{ big_photo.url }}" class="gallery-product photo_link" title= '{{ product.name }} {% get_section_name section menu_items %}' >
+                                                    {% generateimage "products_photo_small" source=list_photos|get_index_1:photo_num  %}
+                                                </a>
+                                                
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for product_photo in list_photos %}
+                                                {% generateimage "photo_big" source=product_photo  as big_photo %}
+                                                <a {% if child_url == product_photo %} id="child_photo" {% endif %} href="{{ big_photo.url }}" class="gallery-product photo_link" title= '{{ product.name }} {% get_section_name section menu_items %}' >
+                                                    {% generateimage "products_photo_small" source=product_photo  %}
+                                                </a>
+                                            {% endfor %}
+                                        {% endif %}
+                                </div>
                             </div>
-                        </div>
-					{% endif %}   
-					
-                    {% if product_instrs %}
-                        <div class="panel" style="display:none ;">
-                            {{ product_instrs }}		
-                        </div>
-                    {% endif %}
-					{% if product_certs %}
-                        <div class="panel" style="display:none ;">
-                            {{ product_certs }}		
-                        </div>
-					{% endif %}
-                    {% if product_sales %}
-                        <div class="panel" style="display:none ;">
-                            <ul class="star-list sales_product_list">
-                                {% for sale in product_sales %}
-                                    <li><a href="{% page_url sale %}" >{% show_placeholder "short text"  sale %}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-					{% endif %}
-					
-				</div>
-			</div>	
-            <script>   
-                $('#pr_photo_link').click(function (e) { e.preventDefault(); $('#photo_tab').click(); setTimeout("$('#child_photo').click()",500) })
-            </script>
+                        {% endif %}   
+                        {% if delivery %}
+                            <div class="panel" style="display:none ;">
+                                {{ delivery }}	
+                            </div>
+                        {% endif %}
+                        {% if product_instrs %}
+                            <div class="panel" style="display:none ;">
+                                {{ product_instrs }}		
+                            </div>
+                        {% endif %}
+
+                        {% if product_sales %}
+                            <div class="panel" style="display:none ;">
+                                <ul class="star-list sales_product_list">
+                                    {% for sale in product_sales %}
+                                        <li><a href="{% page_url sale %}" >{% show_placeholder "short text"  sale %}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>	
+                <script>   
+                    $('#doc_link').click(function (e) {  
+                        e.preventDefault();
+                        location.hash = '#instr_tab_'
+                        $('#instr_tab').click(); $.scrollTo('#instr_tab',400); })
+                    $('#pr_photo_link').click(function (e) { 
+                        e.preventDefault();
+                        location.hash = '#photo_tab_'
+                        $('#photo_tab').click(); $.scrollTo('#photo_tab',400); setTimeout("$('#child_photo').click()",300) })
+                </script>
 	
 			{% endblock %}
 
@@ -248,7 +433,91 @@
 	{{ block.super }}
 	{% include 'gall_js.html' %}
 	{% include 'scroll_move_js.html' %}
+    <script>
+        var call_date="{% call_date 17 30 %}"
+    </script>
 	{% compress js %}
+        <script src="{{ STATIC_URL }}catalog/js/jquery.form.js"></script>
+
+
+        
+       <script>
+            $(document).ready(function() {
+                
+                var values = {};
+                
+               
+               
+            
+
+
+
+            
+                function getUrlVars()
+                {
+                    var vars = [], hash;
+                    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                    for(var i = 0; i < hashes.length; i++)
+                    {
+                        hash = hashes[i].split('=');
+                        vars.push(hash[0]);
+                        vars[hash[0]] = hash[1];
+                    }
+                    return vars;
+                }
+                get_vars=getUrlVars()
+            
+
+
+            
+                function onSuccess(data)
+                {
+                  if (data)
+                  { 
+                    $('#call_submit_form').toggle() ;
+                    
+                    $('#call_req_answer').css('background' , 'none');
+                    $('#call_req_answer').css('min-height' , 'none');
+                    $('#call_req_answer').html(data);
+                    }
+                }
+                
+                
+                
+                
+                
+                $('#call_submit_form').submit(function(e) {
+                    e.preventDefault();
+                    if ('product' in get_vars)
+                    {
+                        values['product']=get_vars['product']
+                        values['date']=call_date
+                    }
+                    var $inputs = $('#call_submit_form :input');
+                    $inputs.each(function() {
+                        values[this.name] = $(this).val();
+                    }); 
+                    
+                    if (values['number'].length<18)
+                    { $('#error_field').html('<span style="color: red;">номер слишком короткий</span>')}
+                    else
+                    {
+                     $('#error_field').html('')
+                     $('#call_req_answer').css('min-height' , '40px');
+                     $.post(
+                          "/call_req/",
+                          values,
+                          onSuccess
+                        );
+                     }
+                    }
+                )
+  
+            }); 
+        </script>
+
+     
+        
 		<script src="{{ STATIC_URL }}catalog/js/jquery.address-1.6.min.js"></script>
 		<script>
 			$(document).ready(function(){
@@ -304,8 +573,11 @@
 			// Execute this script!
 			QTABS.init();
 		});
+        
 		</script>
     {% endcompress %}
+    
+
 
 {% endblock %}
 

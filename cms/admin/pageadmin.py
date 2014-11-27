@@ -5,7 +5,7 @@ from urllib2 import unquote
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from cms.utils.conf import get_cms_setting
 from cms.utils.helpers import find_placeholder_relation
-
+ 
 import django
 from django.conf import settings
 from django.contrib import admin, messages
@@ -837,7 +837,7 @@ class PageAdmin(ModelAdmin):
 
             else:
                 results+='\n'+(permission_check)
-            return results
+        return results
 
 
 

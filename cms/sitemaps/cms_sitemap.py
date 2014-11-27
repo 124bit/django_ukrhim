@@ -10,7 +10,7 @@ def from_iterable(iterables):
             yield element
 
 class CMSSitemap(Sitemap):
-    changefreq = "monthly"
+    changefreq = "weekly"
     priority = 0.5
 
     def items(self):
@@ -26,4 +26,5 @@ class CMSSitemap(Sitemap):
         plugin_modification_dates = map(lambda plugin: plugin.changed_date, plugins)
         modification_dates.extend(plugin_modification_dates)
         return max(modification_dates)
+    
     

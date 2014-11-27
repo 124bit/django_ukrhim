@@ -10,11 +10,14 @@ from cms.test_utils.util.context_managers import SettingsOverride
 from django.conf import settings
 from django.conf.urls.defaults import patterns
 from django.core.urlresolvers import resolve, Resolver404, reverse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils import translation
 from django.utils.http import urlquote
+from cms.templatetags import cms_tags
+from django.contrib.sites.models import Site
+from modifier.context_processors import location
 
 def _handle_no_page(request, slug):
     if not slug and settings.DEBUG:
@@ -29,6 +32,43 @@ def details(request, slug):
     """
     # get the right model
     context = RequestContext(request)
+    
+    subdomain=request.META['HTTP_HOST'] 
+    if subdomain[:4]=='www.':
+        subdomain=subdomain[4:]
+    if (subdomain[-6:]=='com.ua' and subdomain.count('.')>=3) or (subdomain[-6:]!='com.ua' and subdomain.count('.')>=2):
+        subdomain=subdomain[:subdomain.find('.')]
+    else:
+        subdomain=''
+    
+    
+    main_domain=request.META['HTTP_HOST']
+    if subdomain!='':
+        main_domain=main_domain[len(subdomain)+1:]
+    
+
+    if subdomain and subdomain!='etalon' and not subdomain.endswith('dev'):
+        try:
+            obl=Site.objects.get_current().obl.get(subdomain=subdomain)
+        except:
+            return HttpResponseRedirect('http://'+main_domain+request.get_full_path())
+    else:
+        if request.location and request.location.custom_region:
+            try:
+                obl=Site.objects.get_current().obl.get(slug=request.location.custom_region.slug)
+                return HttpResponseRedirect('http://'+request.location.custom_region.subdomain+'.'+main_domain+request.get_full_path())
+            except:
+                pass
+            
+            
+#    import logging
+#    logging.info('dm='+request.META['HTTP_HOST'])
+#    logging.info('sbd='+subdomain)
+#    logging.info('mdm='+main_domain)
+ #   logging.info('loc='+location(request)['loc'])
+#    
+    
+    
     # Get a Page model object from the request
     page = get_page_from_request(request, use_path=slug)
     if not page:
@@ -71,6 +111,7 @@ def details(request, slug):
                 _handle_no_page(request, slug)
         else:
             return _handle_no_page(request, slug)
+    
     if current_language not in available_languages:
         # If we didn't find the required page in the requested (current)
         # language, let's try to find a fallback
@@ -89,7 +130,7 @@ def details(request, slug):
         if not found:
             # There is a page object we can't find a proper language to render it
             _handle_no_page(request, slug)
-
+    
     if apphook_pool.get_apphooks():
         # There are apphooks in the pool. Let's see if there is one for the
         # current page
@@ -114,20 +155,25 @@ def details(request, slug):
             except Resolver404:
                 pass
         # Check if the page has a redirect url defined for this language.
+    
     redirect_url = page.get_redirect(language=current_language)
     if redirect_url:
-        if (is_language_prefix_patterns_used() and redirect_url[0] == "/"
-            and not redirect_url.startswith('/%s/' % current_language)):
-            # add language prefix to url
-            redirect_url = "/%s/%s" % (current_language, redirect_url.lstrip("/"))
-            # prevent redirect to self
-        own_urls = [
-            'http%s://%s%s' % ('s' if request.is_secure() else '', request.get_host(), request.path),
-            '/%s' % request.path,
-            request.path,
-        ]
-        if redirect_url not in own_urls:
-            return HttpResponseRedirect(redirect_url + attrs)
+        if redirect_url.startswith('reverse_id:'): 
+            slug=cms_tags._get_page_by_untyped_arg(redirect_url.split(':')[1], request, Site.objects.get_current().id).get_absolute_url()
+            return HttpResponsePermanentRedirect(slug)
+        else:
+            if (is_language_prefix_patterns_used() and redirect_url[0] == "/"
+                and not redirect_url.startswith('/%s/' % current_language)):
+                # add language prefix to url
+                redirect_url = "/%s/%s" % (current_language, redirect_url.lstrip("/"))
+                # prevent redirect to self
+            own_urls = [
+                'http%s://%s%s' % ('s' if request.is_secure() else '', request.get_host(), request.path),
+                '/%s' % request.path,
+                request.path,
+            ]            
+            if redirect_url not in own_urls:
+                return HttpResponsePermanentRedirect(redirect_url + attrs)
 
     # permission checks
     if page.login_required and not request.user.is_authenticated():

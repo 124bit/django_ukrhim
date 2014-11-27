@@ -25,7 +25,7 @@ from mptt.models import MPTTModel
 from os.path import join
 from datetime import datetime
 import modifier
-
+ 
 class Page(MPTTModel):
     """
     A simple hierarchical page model
@@ -476,10 +476,10 @@ class Page(MPTTModel):
             else:
                 self.parent.save()
         self.save()
-        if self.site.site_cutting=="ukrhim":
+        if self.site.site_cutting=="etalon_ukrhim":
             republished=Page.objects.filter(reverse_id=self.reverse_id, published=True)
             for page in republished:
-                if page.site.site_cutting!='ukrhim':
+                if page.site.site_cutting!='etalon_ukrhim':
                     page.last_publish_date=datetime.now()
                     page._publisher_keep_state = True
                     page.save()
@@ -687,12 +687,11 @@ class Page(MPTTModel):
     def get_title_obj_attribute(self, attrname, language=None, fallback=True, version_id=None, force_reload=False):
         """Helper function for getting attribute or None from wanted/current title.
         """
-        try:
-            attribute = getattr(self.get_title_obj(
-                language, fallback, version_id, force_reload), attrname)
-            return attribute
-        except AttributeError:
-            return None
+        
+        attribute = getattr(self.get_title_obj(
+            language, fallback, version_id, force_reload), attrname)
+        return attribute
+  
 
     def get_path(self, language=None, fallback=True, version_id=None, force_reload=False):
         """
@@ -1184,7 +1183,7 @@ class Page(MPTTModel):
 
         if self.parent!=None:
             try:
-                new_parent=Page.objects.get(site=site,reverse_id=self.parent.reverse_id)
+                new_parent=Page.objects.drafts().get(site=site,reverse_id=self.parent.reverse_id) #mb will cause problem
             except ObjectDoesNotExist:
                 return default_return
 
@@ -1210,13 +1209,16 @@ class Page(MPTTModel):
         from cms.utils.i18n import get_language_tuple
 
         self.copy_page(target,site,position)
-        new_page=Page.objects.get(site=site, reverse_id=self.reverse_id)
+        new_parent_page=Page.objects.get(site=site, reverse_id=self.reverse_id)
+        for new_page in new_parent_page.get_descendants(True):
+            for placeholder in new_page.placeholders.all():
+                for plugin in placeholder.get_plugins():
+                    plugin.delete_with_public()
+                for language in get_language_tuple():
+                    new_plugin=add_plugin(placeholder,InheritPagePlaceholderPlugin,language[0], position='last-child',
+                   target=None, from_page=Page.objects.drafts().on_site(Site.objects.get(site_cutting='etalon_ukrhim')).get(reverse_id=new_page.reverse_id) ,from_language=language[0])
+                     
 
-        for placeholder in new_page.placeholders.all():
-            for plugin in placeholder.get_plugins():
-                plugin.delete_with_public()
-            for language in get_language_tuple():
-                add_plugin(placeholder,InheritPagePlaceholderPlugin,language[0],from_language=language[0])
 
     def has_active_children(self):
         has=False

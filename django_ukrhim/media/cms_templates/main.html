@@ -1,20 +1,23 @@
 {% extends "base.html" %}
-{% load cms_tags sekizai_tags compress %}
+{% load cms_tags sekizai_tags compress i18n %}
 
 {% block common_input %}
 	{% placeholder "logo" %}
-	{% placeholder "favicon" %}
 	{% placeholder "slogan" %}
 	{% placeholder "site company" %}
-	{% placeholder "site skype" %}
-	{% placeholder "site emeil" %}
-	{% placeholder "site phone" %}
 	{% placeholder "site twitter" %}
 	{% placeholder "site vk" %}
 	{% placeholder "site fb" %}
+    {% placeholder "site right header" %}
+    {% placeholder "footer contacts" %}
+    {% placeholder "price phone" %}
+    {% placeholder "price email" %}
+    {% placeholder "delivery" %}
+    {% placeholder "buy popup" %}
+    {% placeholder "menu stopper" %}
     {% placeholder "google analitycs" %}
     {% placeholder "yandex metric" %}
-    
+    {% trans 'Load files' %}
 {% endblock %}
 
 {% block css %}
@@ -30,12 +33,13 @@
 {% block meta %}
     {{ block.super }}
     {% placeholder "google site verification" %}
+    {% placeholder "yandex site verification" %}
 {% endblock %}
 
 {% block middle %}
         <br />
         <div class="middle">
-            <div id='slider_bg_fade' style="display:none"><img src="{{ STATIC_URL }}catalog/img/fon-slider.jpg"></div>
+            <div id='slider_bg_fade' style="display:none"><img src="{{ STATIC_URL }}catalog/img/fon-slider.jpg?b57acbfc28f8"></div>
             <div class="slider" id="will_fade_slider">
                 <div id="slides">
                     {% placeholder "slider slides" %}
@@ -53,14 +57,14 @@
 {% block footer %}
     <div class="footer-sticky">
         <div class="directions">
-                <h1><span class='will_fade'>{% placeholder "work directions header" %}</span></h1>
+                <h2><span class='will_fade'>{% placeholder "work directions header" %}</span></h2>
                 <div class="middle will_fade">
                     {% placeholder "work direction 1" %}
-                    <img src="{{ STATIC_URL }}catalog/img/separator.png" />
+                    <img width="3" src="{{ STATIC_URL }}catalog/img/separator.png" />
                     {% placeholder "work direction 2" %}
-                    <img src="{{ STATIC_URL }}catalog/img/separator.png" />
+                    <img width="3" src="{{ STATIC_URL }}catalog/img/separator.png" />
                     {% placeholder "work direction 3" %}
-                    <img src="{{ STATIC_URL }}catalog/img/separator.png" />
+                    <img width="3" src="{{ STATIC_URL }}catalog/img/separator.png" />
                     {% placeholder "work direction 4" %}		
                 </div>
         </div>
@@ -86,7 +90,7 @@
                         // You cannot use your own buttons. Sorry.
                       effect: "slide",
                         // [string] Can be either "slide" or "fade".
-                      interval: 13000,
+                      interval: 7000,
                         // [number] Time spent on each slide in milliseconds.
                       auto: true,
                         // [boolean] Start playing the slideshow on load.
@@ -100,7 +104,7 @@
                     effect: {
                           slide: {
                             // Slide effect settings.
-                            speed: 1200
+                            speed: 1320
                               // [number] Speed in milliseconds of the slide animation.
                           }
                       }
@@ -108,7 +112,7 @@
             
 			});
             
-           $(function() {  $('#look_products').click(function(e) { e.preventDefault(); $('#products_button').click()}) })
+           $(function() {  $('.look_products').click(function(e) { e.preventDefault(); $('#products_button').click()}) })
            
            
            
@@ -116,17 +120,19 @@
                function show_all_slow()
                         {
                             imagesLoaded('#will_fade_logo', function() {  
-                                $('#will_fade_logo').css('-moz-transform','rotate(-360deg)');
-                                $('#will_fade_logo').css('-ms-transform','rotate(-360deg)');
-                                $('#will_fade_logo').css('-o-transform','rotate(-360deg)');
-                                $('#will_fade_logo').css('transform','rotate(-360deg)'); 
-                                $('#will_fade_logo').css('visibility','visible').hide().fadeIn(800);  
+                                $('#will_fade_logo').addClass('logo_transitions')
+                                $('#will_fade_logo').css('visibility','visible').hide().fadeIn(1200); 
+                                $('#will_fade_logo').css('-webkit-transform','rotate(0deg)');
+                                $('#will_fade_logo').css('-moz-transform','rotate(0deg)');
+                                $('#will_fade_logo').css('-ms-transform','rotate(0deg)');
+                                $('#will_fade_logo').css('-o-transform','rotate(0deg)');
+                                $('#will_fade_logo').css('transform','rotate(0deg)');                                 
                             
                             } );
                             
                             setTimeout( function() {
                                 $('.will_fade').css('visibility','visible').hide().fadeIn(2000,'linear');  
-                                $('.menu-block').css('transition', 'width 1.2s linear')
+                                $('.menu-block').css('transition', 'width 1.1s linear')
                                 $('.menu-block').css('width', '1005px');
                                 time=200
                                 $('.menu-item-1').delay(time).fadeIn('slow')
@@ -142,6 +148,10 @@
                                 $('.menu-item-6').delay(time).fadeIn('slow')
                                 time=time+200
                                 $('.menu-item-7').delay(time).fadeIn('slow')
+                                time=time+200
+                                $('.menu-item-8').delay(time).fadeIn('slow')
+                                time=time+200
+                                $('.menu-item-9').delay(time).fadeIn('slow')
                             }, 2000)
                             
                             setTimeout( function() {
@@ -185,12 +195,12 @@
                             
                             } );
                             
-                            $('.menu-block').css('transition', 'width 1.2s linear')
+                            //$('.menu-block').css('transition', 'width 1.1s linear') //menu go
                             
                             $('.will_fade').css('visibility','visible').hide().fadeIn(1000,'linear'); 
                             
-                            $('.menu-block').css('width', '1005px');
-                            
+                            //$('.menu-block').css('width', '1005px'); //menu go
+                            /*
                             time=400
                             $('.menu-item-1').delay(time).fadeIn('slow')
                             time=time+200
@@ -204,7 +214,25 @@
                             time=time+200
                             $('.menu-item-6').delay(time).fadeIn('slow')
                             time=time+200
-                            $('.menu-item-7').delay(time).fadeIn('slow')
+                            $('.menu-item-7').delay(time).fadeIn('slow') */ //menu go
+                            
+                            $('.menu-item-1').fadeIn(1000,'linear')
+                           
+                            $('.menu-item-2').fadeIn(1000,'linear')
+                          
+                            $('.menu-item-3').fadeIn(1000,'linear')
+                           
+                            $('.menu-item-4').fadeIn(1000,'linear')
+                           
+                            $('.menu-item-5').fadeIn(1000,'linear')
+                          
+                            $('.menu-item-6').fadeIn(1000,'linear')
+                           
+                            $('.menu-item-7').fadeIn(1000,'linear')
+                            
+                            $('.menu-item-8').fadeIn(1000,'linear')
+                            
+                            $('.menu-item-9').fadeIn(1000,'linear')
                             
                             imagesLoaded('#slider_bg_fade', function() {
                                $('#will_fade_slider').css('visibility','visible').hide().fadeIn(1000,'linear'); 

@@ -31,7 +31,7 @@
 		<div class="right-block will_fade">  
                 
 				{% for share in request.current_page.get_children %}
-							{% if share.in_navigation and share.template == 'share.html' %}
+							{% if share.in_navigation and share.published and share.template == 'share.html' %}
 								{% show_placeholder 'list heading block' share %}
 							{% endif %}
 				{% endfor %}
@@ -46,13 +46,16 @@
 			
 				{% if "year" in request.GET %}
 					{% for news in request.current_page.get_children %}
-						{% if news.template == 'news.html' and news.in_navigation %}
+						{% if news.template == 'news.html' and news.in_navigation and news.published %}
 							{% get_placeholder 'date' news as news_date %}
 							{% if news_date|slice:'-5:'|slugify == request.GET.year|slugify and news.in_navigation %}
 								<div class="news-item">
 									<p>{{ news_date }}</p>
-									{% get_placeholder 'picture' news as pic %}
-									{% generateimage "news_pic_news_list" source=pic %}
+                                    
+                                    {% get_placeholder 'picture' news as pic %}
+									{% if pic %}
+                                        {% generateimage "news_pic_news_list" source=pic %}
+                                    {% endif %}
 									<a href="{% page_url news %}">{% show_placeholder 'list heading text' news %}</a>
 								</div>
 							{% endif %}
@@ -60,11 +63,13 @@
 					{% endfor %}
 				{% else %}
 					{% for news in request.current_page.get_children %}
-							{% if forloop.counter < 12 and news.in_navigation and news.template == 'news.html' %}
+							{% if news.in_navigation and news.template == 'news.html'  and news.in_navigation and news.published  %}
 								<div class="news-item">
 									<p>{% show_placeholder 'date' news %}</p>
 									{% get_placeholder 'picture' news as pic %}
-									{% generateimage "news_pic_news_list" source=pic %}
+                                    {% if pic %}
+                                        {% generateimage "news_pic_news_list" source=pic %}
+                                    {% endif %}
 									<a href="{% page_url news %}">{% show_placeholder 'list heading text' news %}</a>
 								</div>
 							{% endif %}

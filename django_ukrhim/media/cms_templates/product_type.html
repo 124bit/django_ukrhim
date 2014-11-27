@@ -1,132 +1,48 @@
-{% extends "base.html" %}
-{% load cms_tags compress ukrhim_extras adv_cache assign %}
-
-{% block meta %}
-	{{ block.super }}
-	{% page_attribute "meta_description" as meta_descr %}
-	{% if not meta_descr %}
-			{% is_draft as cdraft %}
-			{% get_lastchng_prdt current_menu_items as type_changed %}
-			{% cache_version request.current_page.last_publish_date as cversion %}
-			{% maximum_val type_changed cversion as tversion %}
-			{% cache 0 product_meta_content request.current_page.pk site.pk LANGUAGE_CODE cdraft tversion %}
-				{% get_placeholder "content" request.current_page as content %}
-				<meta name="description" content="{{ content|del_style|striptags|truncatewords:27 }}" />
-				
-			{% endcache %}
-	{% endif %}
-
-{% endblock %}
+{% extends "product_category.html" %}
+{% load cms_tags compress ukrhim_extras adv_cache assign i18n %}
 
 {% block middle %}
-
-    {% get_placeholder 'menu items' request.current_page as current_menu_items_txt %}  
-    {% if current_menu_items_txt %}
-        {% get_menu_items_from_txt current_menu_items_txt as current_menu_items %}
-    {% else %}
-        {% get_page_attribute "menu_title" request.current_page as item_title %}
-        {% make_dict name=item_title as item_dict %}
-        {% make_list item_dict as current_menu_items %}
-    {% endif %}
-
-    {% is_draft as cdraft %}
-    {% cache_version request.current_page.parent.child_last_publish_date as cversion %}
     {% assign name="left_menu" %}
+        {% cache_version request.current_page.parent.child_last_publish_date as cversion %}
         {% cache 0 left_menu site.pk request.current_page.pk LANGUAGE_CODE cdraft cversion %}
-            {% if current_menu_items|length > 1 %}	
-                <nav class="menu-left bs-docs-sidebar">
-                    <ul class="nav affix product-page {% if request.current_page.reverse_id == "plastic_tanks" %}pl_tanks{% endif %}">
-                        {% if not  request.current_page.reverse_id == "plastic_tanks" %}
-                            <li class="bold outer"><a>{% page_attribute "menu_title" request.current_page.parent %}:</a></li>
-                        {% endif %}
-                        {% for child in request.current_page.parent.get_children %}
-                            {% if child.in_navigation %}
-                                
-                                {% if child.reverse_id == request.current_page.reverse_id %}
-                                    {% if not  request.current_page.reverse_id == "plastic_tanks" %}
-                                        <br>
-                                    {% endif %}
-                                    <hr color="#d2e0ec" size="1px" />
-                                    {% page_attribute "menu_title" child as menu_title %}
-                                    <li class="inner bold"><a {% if menu_title|length|intify > 21 %}class="two_lines two-row"{% endif %} href="#start"><span>{{ menu_title }}</a></span></li>
-                                    {% for item in current_menu_items %}  
-                                        <li class="inner"><a {% if item.name|length|intify > 21 %}class="two_lines two-row"{% endif %}  href="#{{ item.page_section }}"><span>{{ item.name}}</span></a> </li>
-                                    {% endfor %}
-                                    <br>
-                                    <hr color="#d2e0ec" size="1px" />
-                                
-                                {% else %}        
-                                    {% get_placeholder 'menu items' child as menu_items_txt %} 
-                                    {% if menu_items_txt %}
-                                        {% get_menu_items_from_txt menu_items_txt as menu_items %}
-                                    {% else %}
-                                        {% get_page_attribute "menu_title" child as item_title %}
-                                        {% make_dict name=item_title as item_dict%}
-                                        {% make_list item_dict as menu_items %}
-                                    {% endif %}
-                                    {% for item in menu_items %}
-                                        <li class="outer"><a href="{% page_url child %}{% if 'page_section' in item %}#{{ item.page_section }}{% endif %}">{{ item.name }}</a></li>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endif %}
-                                
-                        {% endfor %}
-                    </ul>
-                    {% show_placeholder 'left block under menu' request.current_page %}
-                </nav>
-            {% else %}
-                <nav class="menu-left">
-                    <ul class="product-menu">
-                         <li class="bold">{% page_attribute "menu_title" request.current_page.parent %}:</li>
-                        {% for child in request.current_page.parent.get_children %}
-                           
-                            {% if child.in_navigation %}
-                                {% if child.reverse_id == request.current_page.reverse_id %}
-                                   
-                                    {% for item in current_menu_items %}
-                                        <li><a class="current-button" href="{% page_url child %}">{{ item.name }}</a></li>
-                                    {% endfor %}
-                                
-                                {% else %}        
-                                    {% get_placeholder 'menu items' child as menu_items_txt %} 
-                                    {% if menu_items_txt %}
-                                        {% get_menu_items_from_txt menu_items_txt as menu_items %}
-                                    {% else %}
-                                        {% get_page_attribute "menu_title" child as item_title %}
-                                        {% make_dict name=item_title as item_dict%}
-                                        {% make_list item_dict as menu_items %}
-                                    {% endif %}
-                                    {% for item in menu_items %}
-                                        <li><a  href="{% page_url child %}{% if 'page_section' in item %}#{{ item.page_section }}{% endif %}">{{ item.name }}</a></li>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endif %}                            
-                        {% endfor %}
-
-                
-                    </ul>
-                    {% show_placeholder 'left block under menu' request.current_page %}
-                </nav>
-            {% endif %}
+            {% include 'left_product_menu.html' %}
         {% endcache %}
     {% endassign %}
-    {% count_min_height left_menu 25 170 as min_height %} 
+    {% count_min_height left_menu 18 120 as min_height %} 
     <div class="middle background  container"  style="min-height: {{ min_height }}px;">
     {{ left_menu }}
-    <script> $(document).ready(function(){ if ($(window).height()>{{ min_height }}) { $('.menu-left').attr('id','sticker'); $('.menu-left>ul').addClass('nav-list') } });</script>
+    {% compress js inline %}
+        <script>
+            $(document).ready(function(){ if ($(window).height()>{{ min_height }}) { $('.menu-left').attr('id','sticker'); $('.menu-left>ul').addClass('nav-list') } });
+            $(document).ready(function(){metrikaReach('product_type_page');var _gaq = _gaq || [];_gaq.push(['_trackEvent', 'product_type_page', 'product_type_page', '{{ request.current_page.reverse_id }}'])});
+
+         </script>
+    {% endcompress %}
     <div class="main-block right will_fade">
         <ul class="bread-crumbs">
-            {% include 'breadcrumb.html' %}
+            {% if request.current_page.parent.parent.reverse_id == 'products_seo' %}
+                 <li><a href="{% page_url 'main' %}">{% page_attribute "menu_title" 'main' %}</a></li> <i></i>
+                 <li><a href="{% page_url 'plastic_tanks' %}">{% page_attribute "menu_title" 'plastic_tanks' %}</a></li> <i></i>
+                 <li>{% page_attribute "menu_title" %}</li>
+            {% else %}
+                {% include 'breadcrumb.html' %}
+            {% endif %}
         </ul>
-        <h1 id="start">{% page_attribute "title" request.current_page %}</h1>
-        
-        {% get_lastchng_prdt current_menu_items as type_changed %}
-        {% cache_version request.current_page.last_publish_date as cversion %}
-        {% maximum_val type_changed cversion as tversion %}
-        {% cache 0 product_type_content request.current_page.pk site.pk LANGUAGE_CODE cdraft tversion %}
-            {% placeholder "content" %}
-        {% endcache %}
-        
+        {% block type_title %}
+            <h1 id="start">{% page_attribute "title" request.current_page %}</h1>
+        {% endblock %}
+        {% block cached_content %}
+            {% get_lastchng_prdt current_menu_items as type_changed %}
+            {% cache_version request.current_page.last_publish_date as cversion %}
+            {% maximum_val type_changed cversion as tversion %}
+            {% if not cdraft %}
+                {% cache 0  'product_content' request.current_page.pk site.pk LANGUAGE_CODE tversion %}
+                    {% placeholder "content" %}
+                {% endcache %}
+            {% else %}
+                {% placeholder "content" %}
+            {% endif %}
+        {% endblock %}
     </div>
     <br />
    
@@ -137,13 +53,4 @@
 
 {% block options %}
     {% placeholder "menu items" %}
-	{% placeholder "left block under menu" %}
-{% endblock %}
-
-{% block js %}
-	{{ block.super }}
-	{% include 'scroll_move_js.html' %}
-	{% compress js %}
-		<script src="{{ STATIC_URL }}catalog/js/bootstrap-scrollspy.js"></script>
-	{% endcompress %}
 {% endblock %}

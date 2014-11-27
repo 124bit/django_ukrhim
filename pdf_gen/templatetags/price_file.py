@@ -27,9 +27,7 @@ def price_file(name, site=None,lang=None):
     prices_folder=settings.MEDIA_ROOT + "/files/generated_prices/"
     prices_url=urljoin(settings.MEDIA_URL, "files/generated_prices/")
     
-    time=Price.objects.get(name=name).get_update_time()
-    if time!=_("price list never generated"):
-        time=time.strftime('%s')
+    time=str(Price.objects.get(name=name).last_update).translate(None, ' -:')
     if path.isfile(path.join(Price.prices_path,name_with_lang)):
         return urljoin(prices_url,name_with_lang)+'?date='+time, os.path.getsize(path.join(Price.prices_path,name_with_lang))/1024
     else:

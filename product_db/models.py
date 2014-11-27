@@ -10,18 +10,20 @@ from django.contrib.sites.models import Site
 from cms.utils.i18n import get_fallback_languages
 from django.utils.safestring import mark_safe
 from datetime import datetime
+from django.utils import translation
+
 class ProductType(models.Model):
     name=models.CharField(max_length=30,verbose_name=_("Type name"))
     slug=EavSlugField(max_length=30,verbose_name=_("Type slug"),help_text=_("Short unique type label."), unique=True)
     fields=models.ManyToManyField(Attribute, verbose_name=_("Fields of type"), help_text=_("Data fields always assigned to products of this type."), blank=True)
-    type_description=models.TextField(null=True, blank=True ,verbose_name=_("Product description"), help_text=_("Common description for products of this type."))
-    template=models.TextField(null=True, blank=True ,verbose_name=_("Template"), help_text=_("Common template to render product on its page."))
+    type_description=models.TextField(null=True, blank=True ,verbose_name=_("Product description"), help_text=_("Common description for products of this type. Default: {% block type_description %}{% endblock %}"))
+    template=models.TextField(null=True, blank=True ,verbose_name=_("Template"), help_text=_("Common template to render product on its page. Default: {% block left_content %}{% block product_description %}{% endblock %}{{ block.super }}{% endblock %}"))
     changed=models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name = _('product type')
         verbose_name_plural = _('Product types')
-
+        ordering = ['name']
     def count_products_of_type(self):
       return self.product_set.count()
     count_products_of_type.short_description = _("Tagged producs")
@@ -37,7 +39,9 @@ class ProductType(models.Model):
                     accs_list.append(acc)
             except AttributeError:
                 pass
-        products=self.product_set.all()
+        products=list(self.product_set.all())
+        if self.slug == "sewerage_wells":
+            products.insert(0,Product.objects.get(slug='well_pe_kl_660'))
         return products,accs_list
 
     def __unicode__(self):
@@ -135,7 +139,7 @@ class Product(models.Model):
         '''get activated product EAV attributes'''
         try:
             if self.product_type:
-                attrs=self.product_type.fields.all() | self.additional_fields.all()
+                attrs=Attribute.objects.filter(pk__in=list(self.product_type.fields.values_list('pk', flat=True))+list(self.additional_fields.values_list('pk', flat=True)))
             else:
                 attrs=self.additional_fields.all()
             attrs=attrs.order_by('importance').reverse()
@@ -174,24 +178,27 @@ class Product(models.Model):
                     except ValueError:
                         pass
                     res= unicode(res)
-                    if res.lower() == u'ожидается' or res.lower() == u'на стадии разработки':
-                        res= 'in developed'
-                    elif res.lower() == u'цену уточняйте':
-                        res= 'ask for price'
+
                     
             except TypeError:
                 pass
+            
+
             if not res:   
                 res=unicode(getattr(self, price_slug))
             
-            if lang=='en':
-                if res.strip().lower() == u'ожидается' or res.lower() == u'на стадии разработки':
-                    res = 'in developed'
-                        
-                if res.strip().lower() == u'цену уточняйте':
-                    res = 'ask for price'
             
-            return res   
+            _(u'in developed')
+            _(u'ask for price')
+            
+            if lang == None:
+                return _(res)
+            
+            else:
+                with translation.override(lang):
+                    trans_res=_(res)
+                return trans_res
+            
             
         except AttributeError:
             return ''

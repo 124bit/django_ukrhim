@@ -1,0 +1,81 @@
+{% load cms_tags compress ukrhim_extras adv_cache assign imagekit i18n %}
+{% get_page "products" as products_page %}
+<nav class="menu-left bs-docs-sidebar {% if request.current_page.reverse_id == 'product_inner' %}product_inner{% endif %} ">
+    <ul id="nav-list" class="nav affix product-page {% if request.current_page.reverse_id == "plastic_tanks" %}pl_tanks{% endif %}">
+        {% for category_page in products_page.get_children %} 
+            {% if category_page.in_navigation %}
+                <li class="bold outer"><a href="{% page_url category_page %}">{% page_attribute "menu_title" category_page %}</a></li>
+                {% if request.current_page.parent == category_page or request.current_page == category_page  or 'type' in request.GET and request.GET.type == category_page.reverse_id %}
+                    {% for child in category_page.get_children %}
+                        {% if child.in_navigation %}
+                            {% if child.reverse_id == request.current_page.reverse_id  or 'product_category' in request.GET and request.GET.product_category == child.reverse_id %}
+                                {% get_placeholder 'menu items' child as current_menu_items_txt %} 
+                                {% if current_menu_items_txt %}
+                                    {% get_menu_items_from_txt current_menu_items_txt as current_menu_items %}
+                                {% else %}
+                                    {% get_page_attribute "menu_title" child as current_item_title %}
+                                    {% make_dict long_name=current_item_title page_section=child.reverse_id as current_item_dict %}
+                                    {% make_list current_item_dict as current_menu_items %}
+                                {% endif %}
+                                {% if current_menu_items|length > 1  and not 'product' in request.GET %}
+                                    {% if not request.current_page.reverse_id == "plastic_tanks" %}
+                                        <br>
+                                        <hr color="#d2e0ec" size="1px" />
+                                    {% endif %}
+                                    {% page_attribute "menu_title" child as menu_title %}
+                                    <li class="outer {% if not request.current_page.reverse_id == "plastic_tanks" %}in_list{% endif %}"><a {% if menu_title|length|intify > 21 %}class="two_lines two-row"{% endif %} href="#start"><span>{{ menu_title }}</a></span></li>
+                                    {% for item in current_menu_items %}  
+                                        <li class="inner {% if not request.current_page.reverse_id == "plastic_tanks" %}in_list{% endif %}"><a {% if item.name|length|intify > 21 %}class="two_lines two-row"{% endif %}  href="#{{ item.page_section }}"><span>{{ item.name}}</span></a> </li>
+                                    {% endfor %}
+                                    {% if not request.current_page.reverse_id == "plastic_tanks" %}
+                                        <br>
+                                        <hr color="#d2e0ec" size="1px" />
+                                    {% endif %}
+                                {% else %}
+                                    {% for item in current_menu_items %}
+                                        <li class="outer"><a class="{% if item.page_section == request.current_page.reverse_id or item.page_section == section or item.product_type == section %} current-button {% endif %}" href="{% page_url child %}{% if item.page_section %}#{{ item.page_section }}{% endif %}">{{ item.long_name }}</a></li>
+                                        {% if 'product' in request.GET %}
+                                            {% if section == item.page_section or section == item.product_type %}
+                                                {% get_type_and_addtnl_products product request.GET.product_type as products %}
+                                                {% if products.0 or products.1 %}
+                                                    <ul>
+                                                        {% for product in products.0 %}
+                                                            {% if product.active %}
+                                                                <li><a class='inner-menu-a {% if product.slug == request.GET.product %}current-button inner_b{% endif %}' href="{% page_url "product_inner" %}?{% if 'type' in request.GET %}type={{ request.GET.type }}&{% endif %}product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}&product={{ product.slug }}" >{{ product.name }}</a></li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                         {% if products.1 %}
+                                                            <hr size="1px" style="margin-left:11px; width: 50px; margin-top: 7px; margin-bottom: -8px; border:none; background-color:#eeeeee; color:#eeeeee;"/>
+                                                       
+                                                            {% for product in products.1 %}
+                                                                {% if product.active %}
+                                                                    <li><a class='inner-menu-a {% if product.slug == request.GET.product %}current-button inner_b{% endif %}' href="{% page_url "product_inner" %}?{% if 'type' in request.GET %}type={{ request.GET.type }}&{% endif %}product_category={{ request.GET.product_category }}{% if 'product_type' in request.GET %}&product_type={{ request.GET.product_type }}{% endif %}&product={{ product.slug }}" >{{ product.name }}</a></li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                {% get_placeholder 'menu items' child as menu_items_txt %} 
+                                {% if menu_items_txt %}
+                                    {% get_menu_items_from_txt menu_items_txt as menu_items %}
+                                {% else %}
+                                    {% get_page_attribute "menu_title" child as item_title %}
+                                    {% make_dict long_name=item_title as item_dict%}
+                                    {% make_list item_dict as menu_items %}
+                                {% endif %}
+                                {% for item in menu_items %} 
+                                    <li class="outer"><a href="{% page_url child %}{% if item.page_section %}#{{ item.page_section }}{% endif %}">{{ item.long_name }}</a></li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}                      
+    </ul>
+</nav>

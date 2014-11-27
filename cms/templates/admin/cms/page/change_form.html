@@ -98,8 +98,8 @@
 
 
       <script type="text/javascript">
-          $(function (){
-              $('#transferdialog').click(function() {
+          jQuery(function (){
+              jQuery('#transferdialog').click(function() {
                   var url = this.href.split('#')[0].split('?')[0]+'transfer_dialog/';
                   // show a spinner or something via css
                   var dialog = django.jQuery('<div style="display:none" class="loading"></div>').appendTo('body');

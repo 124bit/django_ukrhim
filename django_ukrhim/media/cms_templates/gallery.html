@@ -45,16 +45,19 @@
 			</ul>
             {% if 'album' in request.GET %} 
                  <h1>{% get_album_name request.GET.album %}</h1>
-            {% else %}
+            {% else %} 
 			    <h1>{% page_attribute "title" request.current_page %}</h1>
             {% endif %}
 			{% if 'album' in request.GET %} 
 				{% get_album_photos request.GET.album as photos %}
-				<div class="zoom-gallery">
+				<div class="zoom-gallery inner">
 				{% for photo in photos %}
-                    {% if photo.show %}
-                        {% generateimage 'photo_big' source=photo.slug as photo_big %}
-                        <a href="{{ photo_big.url }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}" title='{{ photo.descr|unicodify|safe }}' >{% generateimage 'gallery_photo_small' source=photo.slug as img %}<img src="{{ img.url }}">{{ photo.descr|unicodify|safe }}</a>
+                    {% if photo.show  and photo.slug and photo.slug.hash %}
+                        {% generateimage 'photo_big' source=photo.slug.url as photo_big %}
+                        <div class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}">
+                        <a class="photo_link" href="{{ photo_big.url }}"  title='{{ photo.descr|repl_product_page|unicodify|safe }}'>{% generateimage 'gallery_photo_small' source=photo.slug.url as img %}<img alt="{{ photo.descr|striptags|truncatewords:4  }}" src="{{ img.url }}">
+                        </a><span class="descr_s">{{ photo.descr|repl_product_page|striptags|truncatewords:3 }}</span><span class="descr_l">{{ photo.descr|repl_product_page|striptags }}</span>
+                        </div>
                         {% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
                     {% endif %}
 				{% endfor %}
@@ -63,7 +66,7 @@
 				{% get_album_videos request.GET.album as videos %}
 				<div class="video">
 				{% for video in videos %}
-                    {% if video.show %}
+                    {% if video.show  %}
                         <p class="green">{% trans "Videos" %}</p>
                         <a class="show_popup gallery-item-block" rel="video-1" href="#">
                             <img src="{{ STATIC_URL }}catalog/img/demo/pic-29.jpg" class="different" />
@@ -72,7 +75,7 @@
                         </a>
                         <div class="popup video-1">
                             <a class="close" href="#">Close</a>
-                            <iframe width="640" height="360" src="{{ video.slug }}" frameborder="0" allowfullscreen></iframe>
+                            <iframe width="640" height="360" src="{{ video.slug.url }}" frameborder="0" allowfullscreen></iframe>
                         </div>			
                     {% endif %}
 				{% endfor %}
@@ -100,8 +103,8 @@
 					
 				<div class="zoom-gallery">
 					{% for album in albums %}
-						<a href="{{ request.current_page.get_absolute_url }}?album={{ album.slug }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}">{% generateimage 'gallery_photo_small' source=album.face_photo.url as img  %}<img src="{{ img.url }}">{{ album.name }}</a>
-						{% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
+                            <a href="{{ request.current_page.get_absolute_url }}?album={{ album.slug }}" class="gallery-item-block {% if forloop.counter|divisibleby:"4" %}last{% endif %}">{% generateimage 'gallery_photo_small' source=album.face_photo.url as img  %}<img src="{{ img.url }}">{{ album.name }}</a>
+                            {% if forloop.counter|divisibleby:"4" %}<br />{% endif %}
 					{% endfor %}
 				</div>
 			{% endif %}

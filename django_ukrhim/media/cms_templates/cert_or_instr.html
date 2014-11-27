@@ -84,6 +84,8 @@
             {% include 'breadcrumb.html' %}
         </ul>
         <h1 id="start">{% page_attribute "title" request.current_page %}</h1>
+        <br>
+        <br>
         {% placeholder "content" %}
     </div>
     <br />		
@@ -94,4 +96,8 @@
 {% block js %}
 	{{ block.super }}
 	{% include 'scroll_move_js.html' %}
+{% endblock %}
+
+{% block options %}
+	{% placeholder "tab name" %}
 {% endblock %}

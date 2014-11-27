@@ -1,0 +1,38 @@
+{% extends "product_type.html" %}
+{% load cms_tags ukrhim_extras adv_cache assign %}
+{% block cached_content %}
+    {% get_lastchng_prdt current_menu_items as type_changed %}
+    {% cache_version request.current_page.last_publish_date as cversion %}
+    {% maximum_val type_changed cversion as tversion %}
+    {% if not cdraft %}
+        {% cache 0 product_type_content request.current_page.pk site.pk LANGUAGE_CODE tversion %}
+            {% placeholder "content1" %}
+            {% placeholder "content2" %}
+            {% placeholder "content3" %}
+            {% placeholder "content4" %}
+            {% placeholder "content5" %}
+            {% placeholder "content6" %}
+            {% placeholder "content7" %}
+            {% placeholder "content8" %}
+            {% placeholder "content9" %}
+            {% placeholder "content10" %}
+            {% placeholder "content11" %}
+            {% placeholder "content12" %}
+        {% endcache %}
+    {% else %}
+        {% placeholder "content1" %}
+        {% placeholder "content2" %}
+        {% placeholder "content3" %}
+        {% placeholder "content4" %}
+        {% placeholder "content5" %}
+        {% placeholder "content6" %}
+        {% placeholder "content7" %}
+        {% placeholder "content8" %}
+        {% placeholder "content9" %}
+        {% placeholder "content10" %}
+        {% placeholder "content11" %}
+        {% placeholder "content12" %}
+    {% endif %}
+{% endblock %}
+{% block type_title %}
+{% endblock %}

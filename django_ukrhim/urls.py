@@ -11,7 +11,7 @@ import platform
 object_tools.autodiscover()
 
 handler404 = 'site_utils.handler404'
-
+handler500 = 'site_utils.handler500'
 
 urlpatterns = solid_i18n_patterns('',
                        url(r'^admin_tools/', include('admin_tools.urls')),
@@ -19,9 +19,11 @@ urlpatterns = solid_i18n_patterns('',
 
                        url(r'^elfinder/', include('elfinder.urls')),
 
-                       url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': {'cmspages': CMSSitemap}}),
+                       url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': {'cmspages': CMSSitemap}, 'template_name': 'custom_sitemap.html'}),
 
                        url(r'^pos/', include('generic_positions.urls')),
+                       url(r'^robots\.txt$', include('modifier.urls_robots')), 
+                       url(r'^call_req/', include('modifier.urls_call_req')),
 #-------cms.urls must be last
                        url(r'^', include('cms.urls')),
 
@@ -29,7 +31,10 @@ urlpatterns = solid_i18n_patterns('',
                        )
 
 
-#if settings.DEBUG:
+if settings.DEBUG:
+    urlpatterns = solid_i18n_patterns('',
+            url(r'^rosetta/', include('rosetta.urls')),
+        ) + urlpatterns
  #   urlpatterns = patterns('',
 #                           url(r'^rosetta/', include('rosetta.urls')),
 

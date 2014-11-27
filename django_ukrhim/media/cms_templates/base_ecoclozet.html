@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+{% load cms_tags ukrhim_extras compress imagekit %}
+{% if_main as if_main %}
+{% spaceless %}
+<html>
+<head>
+	<meta charset="utf-8" />
+	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<title>{% page_attribute "page_title" as page_title %}{% page_attribute "title" as title %}{% if page_title != title %} {{ page_title }}{% else %}{% company_name %} - {% page_attribute "title"  %}{% endif %}</title>
+    
+    {% page_attribute "meta_keywords" as meta_words %}
+    {% if meta_words %}
+        <meta name="keywords" content="{{ meta_words }}" />
+    {% endif %}
+    
+    {% page_attribute "meta_description" as meta_descr %}
+    {% if meta_descr %}
+        <meta name="description" content="{{ meta_descr }}" />
+    {% endif %}
+  
+
+    {% show_placeholder 'google site verification' 'main' %}
+    {% show_placeholder 'yandex site verification' 'main' %}
+    
+    {% compress css %}
+        <link href="{{ STATIC_URL }}ecoclozet/style.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}ecoclozet/jquery.fancybox.css" rel="stylesheet"/>
+    {% endcompress %}
+    
+	
+        
+        <script src="{{ STATIC_URL }}ecoclozet/js/modernizr.js"></script>
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery-1.10.2.js"></script>
+    
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.event.drag.js"></script> 
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.roundabout.min.js"></script> 
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.featureCarousel.js"></script>
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.touchSwipe.min.js"></script>
+       
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.fancybox.pack.js"></script>
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.transit.min.js"></script>
+         
+        <script src="{{ STATIC_URL }}ecoclozet/js/jquery.maskedinput.min.js"></script>
+    
+        <script src="{{ STATIC_URL }}ecoclozet/js/init.js"></script>
+        <script src="{{ STATIC_URL }}catalog/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+    
+    
+	{% show_placeholder 'yandex metric' 'main' %}
+    {% show_placeholder 'google analitycs' 'main' %}
+	<meta name="viewport" content="width=1073, maximum-scale=1">
+    <meta name="format-detection" content="telephone=no">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+
+<body {% if not if_main %}class="body_inner_bg_scale"{% endif %}>
+{% if if_main %} 
+    <div class="body_bg">
+{% else %}
+    <div class="body_inner_bg">
+{% endif %}
+
+<div class="wrapper">
+{% block header %}
+	<header class="header">
+		<a href="{% page_url 'main' %}" class="logo"></a>
+		{% show_placeholder 'site right header' 'main' %}
+		<nav class="navbar floatFix">
+			<ul>
+                {% get_page "main" as main_page %}
+                <li><a class="{% if request.current_page.reverse_id == 'main' %}active{% endif %}" href="{% page_url 'main' %}">{% page_attribute "menu_title" 'main' %}</a></li>
+                {% for page in main_page.get_children %}
+                    {% if page.published and page.in_navigation %}
+                        <li><a class="{% if page.reverse_id == request.current_page.reverse_id %}active{% endif %}"  {% if  not page.get_children %}href="{% page_url page %}"{% else %}href="" onclick="return false;"{% endif %} >{% page_attribute "menu_title" page %}</a>
+                        {% if page.get_children %}
+                            <ul>
+                                {% for child in  page.get_children %}
+                                    {% if child.published and child.in_navigation %}
+                                        <li><a href="{% page_url child %}">{% page_attribute "menu_title" child.reverse_id %}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            
+                        {% endif %}
+                        </li>
+                    {% endif %}
+                
+                {% endfor %}
+            
+            </ul>
+		</nav>
+	</header><!-- .header-->
+{% endblock %}
+
+{% block middle %}
+    {% placeholder "content" %}
+{% endblock %}
+</div><!-- .wrapper -->
+
+{% if request.current_page.reverse_id == 'prices' %}
+    {% show_placeholder 'buy popup' 'main' %}
+{% endif %}
+
+{% block footer %}
+<footer class="footer">
+	<div class="wrapper">
+		<div class="ftrOne">
+			<ul>
+				<li><a href="{% page_url 'sitemap' %}">Карта сайта</a></li>
+				<li><a href="{% page_url 'contacts' %}">Контакты</a></li>
+			</ul>
+			© 2012-{% now "Y" %} ЭкоКлозет
+		</div>
+        {% show_placeholder 'footer contacts' 'main' %}
+		
+    </div>
+</footer><!-- .footer -->
+{% endblock %}
+</div>
+</body>
+</html>
+{% endspaceless %}

@@ -71,6 +71,7 @@ from imagekit import ImageSpec
 from pilkit.processors import *
 from eav.fields import EavSlugField
 from PIL import ImageMath
+from django.contrib.sites.models import Site
 
 #threshold - color distance from 0 to 1000
 class TransparentBg(object):
@@ -89,6 +90,12 @@ class TransparentBg(object):
             t=self.thresh2, d=self.distance2, c=self.color, r=red, g=green, b=blue, a=alpha))
         return image
 
+class MakeSiteUnique (object):
+    def process(self, im):
+        site=Site.objects.get_current().site_cutting
+        
+        return im
+        
 class ColorBg(object):
     def __init__(self,color):
         self.color=color
@@ -115,6 +122,7 @@ class ImageSpecModel(models.Model):
     class Meta:
         verbose_name = _('image specification profile')
         verbose_name_plural = _('Image specification profiles')
+        ordering = ['name']
 
     def __init__(self, *args, **kwargs):
         super(ImageSpecModel, self).__init__(*args, **kwargs)
@@ -221,7 +229,13 @@ class ElfinderPictureHolderForm(CMSPluginBase):
     class Meta:
         model = ElfinderPictureHolder
 
-#------fixture for significant attributs
+#-----------------------------------------------------        
+
+class FileLoader(models.Model):
+
+    file = ElfinderField(blank=True, null=True, help_text=_("Load files"), start_path='site_media')  
+    
+#------fixture for significant attributes
 
 #from eav.models import Attribute
 

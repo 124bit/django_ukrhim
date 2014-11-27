@@ -27,9 +27,12 @@ class CustomMenu(Menu):
                         'product_db.models.ProductTag',
                         'eav.models.Attribute',
                         'modifier.models.ImageSpecModel',
+                        'pdf_gen.models.Chunk',
+                        'django_geoip.models.CustomRegion',
                         'django.contrib.*',
                         )
             ),
+            items.MenuItem(_('Load files'), '/admin/modifier/fileloader/add/'),
             items.MenuItem(_("On site"),'/')
         ]
 

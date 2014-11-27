@@ -8,6 +8,37 @@ def add_sites(request):
     
     return context_extras
     
+    
+def location(request):
+    context_extras = {}
+    subdomain=request.META['HTTP_HOST']
+    if subdomain[:4]=='www.':
+        subdomain=subdomain[4:]
+    if (subdomain[-6:]=='com.ua' and subdomain.count('.')>=3) or (subdomain[-6:]!='com.ua' and subdomain.count('.')>=2):
+        subdomain=subdomain[:subdomain.find('.')]
+    else:
+        subdomain=''
+    context_extras['subdomain']=subdomain
+    if Site.objects.get_current().obl.count()>0:
+        if subdomain:
+            try:
+                obl=Site.objects.get_current().obl.get(subdomain=subdomain)
+                context_extras['loc']=obl.slug
+            except:
+                context_extras['loc']='default'
+        
+        else:
+            if request.location and request.location.custom_region and  Site.objects.get_current().obl.filter(slug=request.location.custom_region.slug).exists():
+                context_extras['loc']=request.location.custom_region.slug
+            else:
+                context_extras['loc']='default'
+    else:
+        if request.location and request.location.custom_region:
+            context_extras['loc']=request.location.custom_region.slug
+        else:
+            context_extras['loc']='default'
+    return context_extras
+    
 #not used    
 def add_for_cache_info(request):
     context_extras = {}

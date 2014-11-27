@@ -103,6 +103,7 @@ class Attribute(models.Model):
     class Meta:
         verbose_name = _('attribute')
         verbose_name_plural = _('Attributes')
+        ordering = ['name']
 
 
     TYPE_TEXT = 'text'
@@ -378,7 +379,7 @@ class Entity(object):
         '''
         Tha magic getattr helper.  This is called whenevery you do
         this_instance.<whatever>
-
+ 
         Checks if *name* is a valid slug for attributes available to this
         instances. If it is, tries to lookup the :class:`Value` with that
         attribute slug. If there is one, it returns the value of the
@@ -394,14 +395,20 @@ class Entity(object):
                                        u"'%(attr)s'") % \
                                      { 'attr': name})
             try:
-                if self.model.get_secondary_attributes().filter(slug=name).count()!=0:
-                    return self.get_value_by_attribute(attribute).value
-                else:
-                    raise AttributeError(_(u"%(obj)s hasn't no EAV attribute named " \
+                self.model.get_secondary_attributes().get(slug=name)
+                
+            except Attribute.DoesNotExist:
+                raise AttributeError(_(u"%(obj)s hasn't no EAV attribute named " \
                                             u"'%(attr)s'") % \
                                           {'obj': self.model, 'attr': name})
+            except Attribute.MultipleObjectsReturned:
+                pass
+            
+            try:   
+                return self.get_value_by_attribute(attribute).value
             except Value.DoesNotExist:
                 return ''
+                
         return getattr(super(Entity, self), name)
 
     def get_all_attributes(self):

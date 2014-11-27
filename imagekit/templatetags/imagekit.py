@@ -10,6 +10,8 @@ from django.utils.safestring import SafeText, SafeUnicode
 import platform
 from django.core.files.images import ImageFile
 from os.path import join, exists
+from django.contrib.sites.models import Site
+
 register = template.Library()
 ASSIGNMENT_DELIMETER = 'as'
 HTML_ATTRS_DELIMITER = '--'
@@ -97,7 +99,16 @@ class GenerateImageTagNode(template.Node):
         # proportional in-browser scaling).
         if not 'width' in attrs and not 'height' in attrs:
             attrs.update(width=file.width, height=file.height)
-
+        if 'title' in attrs and attrs['title']==u"copy_alt":
+            attrs['title']=attrs['alt']
+        if 'title' in attrs:
+            attrs['title']=attrs['title'].replace('[company]', Site.objects.get_current().company)
+            attrs['title']=attrs['title'].replace('[country]', Site.objects.get_current().country)
+        
+        if 'alt' in attrs:
+            attrs['alt']=attrs['alt'].replace('[company]', Site.objects.get_current().company)
+            attrs['alt']=attrs['alt'].replace('[country]', Site.objects.get_current().country)        
+        
         attrs['src'] = file.url
         attr_str = ' '.join('%s="%s"' % (escape(k), escape(v)) for k, v in
                 attrs.items())
@@ -166,7 +177,18 @@ class ThumbnailImageTagNode(template.Node):
         # proportional in-browser scaling).
         if not 'width' in attrs and not 'height' in attrs:
             attrs.update(width=file.width, height=file.height)
-
+        
+        if 'title' in attrs and attrs['title']==u"copy_alt":
+            attrs['title']=attrs['alt']
+            
+        if 'title' in attrs:
+            attrs['title']=attrs['title'].replace('[company]', Site.objects.get_current().company)
+            attrs['title']=attrs['title'].replace('[country]', Site.objects.get_current().country)
+        
+        if 'alt' in attrs:
+            attrs['alt']=attrs['alt'].replace('[company]', Site.objects.get_current().company)
+            attrs['alt']=attrs['alt'].replace('[country]', Site.objects.get_current().country)    
+        
         attrs['src'] = file.url
         attr_str = ' '.join('%s="%s"' % (escape(k), escape(v)) for k, v in
                 attrs.items())

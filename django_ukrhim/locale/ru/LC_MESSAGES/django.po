@@ -2,172 +2,273 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-28 11:31+0200\n"
-"PO-Revision-Date: 2013-08-28 12:44+0300\n"
+"POT-Creation-Date: 2014-09-26 18:07+0200\n"
+"PO-Revision-Date: 2014-05-05 11:06+0300\n"
 "Last-Translator:   <124bit@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Translated-Using: django-rosetta 0.7.2\n"
 
-#: settings.py:293
+#: settings.py:307 settings_ecoclozet.py:7
 msgid "Base template"
 msgstr "Базовый шаблон"
 
-#: settings.py:294
+#: settings.py:308
+msgid "Fully blank tmpl with plchd"
+msgstr "Полностью пустой шаблон с плейсхолдером"
+
+#: settings.py:309
 msgid "Base page template with clean middle plchldr"
 msgstr "Базовый шаблон с плейсхолдером в центре"
 
-#: settings.py:295
+#: settings.py:310
 msgid "Base page template with middle plchldr on background"
 msgstr "Базовый шаблон с плейсхолдером в центре на белом фоне"
 
-#: settings.py:296
+#: settings.py:311 settings_ecoclozet.py:8
 msgid "\"Main\" page template"
 msgstr "Главная"
 
-#: settings.py:297
+#: settings.py:312
 msgid "\"Gallery\" page template"
 msgstr "Галерея"
 
-#: settings.py:298
+#: settings.py:313
 msgid "\"News list\" page template"
 msgstr "Список новостей"
 
-#: settings.py:299
+#: settings.py:314
 msgid "\"News\" page template"
 msgstr "Новость"
 
-#: settings.py:300
+#: settings.py:315
 msgid "\"Share and sale\" page template"
 msgstr "Акция"
 
-#: settings.py:301
+#: settings.py:316
 msgid "Products (empty) template"
 msgstr "Продукция"
 
-#: settings.py:302
+#: settings.py:317
 msgid "Product category (empty) template"
 msgstr "Категория продукции"
 
-#: settings.py:303
+#: settings.py:318
 msgid "\"Product type\" page template"
 msgstr "Тип продукции"
 
-#: settings.py:304
+#: settings.py:319
+msgid "\"Product type\" page template with many sections in content"
+msgstr "Тип продукции с большим количество секций в контенте"
+
+#: settings.py:320
+msgid "\"Product type\" page template without header"
+msgstr "Тип продукции без заголовка"
+
+#: settings.py:322
 msgid "Auto \"Product page\" template"
 msgstr "Автогенерируемая страница продукта"
 
-#: settings.py:305
+#: settings.py:323
 msgid "\"Where to buy\" page template"
 msgstr "Где купить?"
 
-#: settings.py:306
+#: settings.py:324
 msgid "\"About us\" (menu options) template"
 msgstr "О нас (категория)"
 
-#: settings.py:307
+#: settings.py:325
 msgid "Development (menu options) template"
 msgstr "Разработка (категория)"
 
-#: settings.py:308
+#: settings.py:326
 msgid "\"Development with us\" page template"
 msgstr "Разработка с нами"
 
-#: settings.py:309
+#: settings.py:327
 msgid "\"Contacts\" page template"
 msgstr "Контакты"
 
-#: settings.py:310
+#: settings.py:328
 msgid "\"Search\" page template"
 msgstr "Поиск"
 
-#: settings.py:311
+#: settings.py:329
 msgid "\"Certificate\" or \"Instructions\" page template"
 msgstr "Сертификаты или Инструкции"
 
-#: settings.py:337 settings.py:355
+#: settings.py:358 settings.py:376 settings.py:394 settings.py:412
+#: settings.py:430 settings.py:466
 msgid "English"
 msgstr "Английский"
 
-#: settings.py:345 settings.py:363 settings.py:373
+#: settings.py:366 settings.py:384 settings.py:402 settings.py:420
+#: settings.py:438 settings.py:456 settings.py:474 settings.py:484
 msgid "Russian"
 msgstr "Русский"
 
-#: media/files/cms_templates/base.html:59
-#: media/files/cms_templates/base.html:60
+#: media/cms_templates/base.html:144
+msgid "Welcome to our website!"
+msgstr "Добро пожаловать на наш сайт!"
+
+#: media/cms_templates/base.html:145
+msgid "Please, enable javascript to use our site."
+msgstr "Пожалуйста, включите javascript для использования нашего сайта!"
+
+#: media/cms_templates/base.html:145
+msgid "https://support.google.com/answer/23852?hl=en"
+msgstr "https://support.google.com/answer/23852?hl=ru"
+
+#: media/cms_templates/base.html:145
+msgid "How?"
+msgstr "Как?"
+
+#: media/cms_templates/base.html:152
+msgid "Main page"
+msgstr "Главная"
+
+#: media/cms_templates/base.html:163 media/cms_templates/base.html.py:164
 msgid "search on site"
 msgstr "поиск по сайту"
 
-#: media/files/cms_templates/base.html:176
+#: media/cms_templates/base.html:182
+msgid "Product types"
+msgstr "Типы продукции"
+
+#: media/cms_templates/base.html:320
+msgid "Main"
+msgstr "Главная"
+
+#: media/cms_templates/base.html:323
 msgid "Site map"
 msgstr "Карта сайта"
 
-#: media/files/cms_templates/base.html:177
+#: media/cms_templates/base.html:324
 msgid "Contact Us"
 msgstr "Контакты"
 
-#: media/files/cms_templates/base.html:190
+#: media/cms_templates/base.html:335
 msgid "Site created by"
 msgstr "Дизайн создан"
 
-#: media/files/cms_templates/base.html:190
-msgid "Studio March"
+#: media/cms_templates/base.html:335
+msgid "Studio Mart"
 msgstr "Студией \"Март\""
 
-#: media/files/cms_templates/gallery.html:35
+#: media/cms_templates/gallery.html:41
 msgid "Album"
 msgstr "Альбом"
 
-#: media/files/cms_templates/gallery.html:59
+#: media/cms_templates/gallery.html:70
 msgid "Videos"
 msgstr "Видео"
 
-#: media/files/cms_templates/news_list.html:15
+#: media/cms_templates/main.html:20
+msgid "Load files"
+msgstr "Файлы"
+
+#: media/cms_templates/news_list.html:21
 msgid "Archive"
 msgstr "Архив"
 
-#: media/files/cms_templates/product_common.html:36
+#: media/cms_templates/product_common.html:58
 msgid "Accessoires:"
 msgstr "Акксесуары:"
 
-#: media/files/cms_templates/product_common.html:90
+#: media/cms_templates/product_common.html:127
 msgid "Characteristics"
 msgstr "Характеристики"
 
-#: media/files/cms_templates/product_common.html:105
+#: media/cms_templates/product_common.html:137
+msgid "cm"
+msgstr "см"
+
+#: media/cms_templates/product_common.html:154
+#: media/cms_templates/product_common.html:167
+msgid "Buy"
+msgstr "Купить"
+
+#: media/cms_templates/product_common.html:157
+#: media/cms_templates/product_common.html:163
 msgid "Price"
 msgstr "Цена"
 
-#: media/files/cms_templates/product_common.html:117
+#: media/cms_templates/product_common.html:163
+msgid "incl. VAT"
+msgstr "вкл. НДС"
+
+#: media/cms_templates/product_common.html:255
 msgid "Sketch"
 msgstr "Чертеж"
 
-#: media/files/cms_templates/product_common.html:118
+#: media/cms_templates/product_common.html:282
+#: media/cms_templates/product_common.html:285
+msgid "Update your browser"
+msgstr "Ваш браузер не поддерживается. <br> Пожалуйста, обновите браузер!"
+
+#: media/cms_templates/product_common.html:282
+#: media/cms_templates/product_common.html:285
+msgid "Drag model to rotate"
+msgstr "Управляйте моделью с помощью мышки."
+
+#: media/cms_templates/product_common.html:282
+msgid "Use two fingers to zoom"
+msgstr "Растяните модель пальцами чтоб приблизить."
+
+#: media/cms_templates/product_common.html:285
+msgid "Use mouse wheel to zoom"
+msgstr "Используйте колесико мыши чтоб приблизить."
+
+#: media/cms_templates/product_common.html:358
+#: media/cms_templates/product_common.html:360
 msgid "3D"
 msgstr "3D модель"
 
-#: media/files/cms_templates/product_common.html:119
+#: media/cms_templates/product_common.html:401
 msgid "Photos"
 msgstr "Фото"
 
-#: media/files/cms_templates/product_common.html:120
-msgid "Instructions"
-msgstr "Инструкция"
+#: media/cms_templates/product_common.html:402
+msgid "Delivery"
+msgstr "Доставка"
 
-#: media/files/cms_templates/product_common.html:121
-msgid "Certificates"
-msgstr "Сертификаты"
+#: media/cms_templates/product_common.html:403
+msgid "Documentation"
+msgstr "Документация"
 
-#: media/files/cms_templates/product_common.html:122
-msgid "Shares"
+#: media/cms_templates/product_common.html:404
+msgid "Discounts"
 msgstr "Акция"
+
+#: media/cms_templates/where_to_buy.html:6
+msgid "Shops and warehouses"
+msgstr "Магазины и склады"
+
+#~ msgid "Kazakh"
+#~ msgstr "Казахский"
+
+#~ msgid "Certificates"
+#~ msgstr "Сертификаты"
+
+#~ msgid "Логотип"
+#~ msgstr "Логотип"
+
+#~ msgid "Instructions"
+#~ msgstr "Инструкция"
+
+#~ msgid "big photo"
+#~ msgstr "большое фото"
+
+#~ msgid "Shares"
+#~ msgstr "Акция"

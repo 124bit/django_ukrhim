@@ -1,10 +1,22 @@
 	{% load compress %}
 	{% compress js %}
 		<script type="text/javascript" src="{{ STATIC_URL }}catalog/js/jquery.sticky.js"></script>
-		<script>
+		<script> // peremescenie menu sleva
 		$(window).load(function(){
-		  $("#sticker").sticky({ topSpacing: 40, bottomSpacing: 200 }).sticky('update');
+          var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+          if (h > 780)
+          {
+            $("#sticker").sticky({ topSpacing: 40, bottomSpacing: 200 }).sticky('update');
+          }
+          else
+          {
+            $("#sticker").sticky({ topSpacing: 0, bottomSpacing: 180 }).sticky('update');
+          }
+          
+                      
+          
 		});
         
 		</script>
 	{% endcompress %}
+    

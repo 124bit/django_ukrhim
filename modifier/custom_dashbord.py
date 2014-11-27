@@ -60,7 +60,7 @@ class CustomIndexDashboard(Dashboard):
                collapsible=False
             )
         ]
-        self.children.append(modules.RecentActions(_('Recent Actions'), 7,
+        self.children.append(modules.RecentActions(_('Recent Actions'), 20,
                                                    draggable=False,
                                                    deletable=False,
                                                    collapsible=False,))

@@ -164,9 +164,14 @@ class Resource(object):
 
     #changed
     def import_field(self, field, obj, data):
-        if field.column_name in data:
+        if field.column_name in data and field.column_name!='name_ru' and field.column_name!='name_en' and field.column_name!='product_type':
             if not field.attribute:
                 field.attribute=field.column_name
+            try:
+                data[field.column_name]=int(data[field.column_name])
+            except:
+                pass
+            data[field.column_name]=unicode(data[field.column_name])    
             field.save(obj, data)
 
     def import_obj(self, obj, data):

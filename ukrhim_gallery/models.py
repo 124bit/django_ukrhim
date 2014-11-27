@@ -10,7 +10,8 @@ from urlparse import urljoin
 from modifier.help_functions import url_to_path
 from django.utils.translation import get_language
 from django.contrib.contenttypes import generic
-
+from django.conf import settings
+from os.path import join
 class Album(models.Model):
     name_en=models.CharField(max_length=70,verbose_name=_("Album name (en)"),null=True,blank=True)
     name_ru=models.CharField(max_length=70,verbose_name=_("Album name (ru)"),null=True,blank=True)
@@ -23,18 +24,18 @@ class Album(models.Model):
         verbose_name = _('Album')
         verbose_name_plural = _('Albums')
 
-    def save(self,*args,**kwargs):
-        super(Album,self).save(*args,**kwargs)
-        folder_url='/'.join(self.face_photo.url.split('/')[:-1])
-        folder_path=url_to_path(folder_url)
-        all_files=listdir(folder_path)
-        photos_urls = [ folder_url+'/'+file_name for file_name in all_files if '_face' not in file_name ]
+    # def save(self,*args,**kwargs):
+        # super(Album,self).save(*args,**kwargs)
+        # folder_url='/'.join(self.face_photo.url.split('/')[:-1])
+        # folder_path=url_to_path(folder_url)
+        # all_files=listdir(folder_path)
+        # photos_urls = [ folder_url+'/'+file_name for file_name in all_files if '_face' not in file_name ]
 
 
-        for photo in photos_urls:
-            if not self.media_set.filter(slug=photo).exists():
-                a=Media(slug=photo,album=self)
-                a.save()
+        # for photo in photos_urls:
+            # if not self.media_set.filter(slug=photo).exists():
+                # a=Media(slug=photo,album=self)
+                # a.save()
 
 
     def __unicode__(self):
@@ -53,10 +54,35 @@ class Album(models.Model):
 
 
 class Media(Orderable):
-    slug=models.CharField(max_length=255,verbose_name=_("name/url"))
-    descr_en=models.CharField(max_length=240,verbose_name=_("Photo description (en)"),null=True,blank=True)
-    descr_ru=models.CharField(max_length=240,verbose_name=_("Photo description (ru)"),null=True,blank=True)
+   
+    descr_ru=models.TextField(verbose_name=_("Photo description (ru)"),null=True,blank=True)
+    descr_en=models.TextField(verbose_name=_("Photo description (en)"),null=True,blank=True)
     show=models.BooleanField(verbose_name=_("Show photo"),default=True)
+    album=models.ForeignKey(Album)
+    
+    
+    slug=ElfinderField(help_text=_("Choose photo"), blank = True, null = True, start_path='site_media')
+
+    def __unicode__(self):
+        return self.slug.url
+
+    def descr(self):
+        current_lang=get_language()
+        if current_lang=='ru':
+            return self.descr_ru
+        else:
+            return  self.descr_en
+    
+    class Meta:
+        verbose_name = _('Photo')
+        verbose_name_plural = _('Photos')
+        ordering = ('inline_ordering_position',)
+            
+class Video(Orderable):
+    slug=models.CharField(max_length=255,verbose_name=_("Video link"))
+    descr_en=models.TextField(verbose_name=_("Video description (en)"),null=True,blank=True)
+    descr_ru=models.TextField(verbose_name=_("Video description (ru)"),null=True,blank=True)
+    show=models.BooleanField(verbose_name=_("Show video"),default=True)
     album=models.ForeignKey(Album)
     def __unicode__(self):
         return self.slug
@@ -67,3 +93,6 @@ class Media(Orderable):
             return self.descr_ru
         else:
             return  self.descr_en
+    class Meta:
+        verbose_name = _('Video')
+        verbose_name_plural = _('Videos')
