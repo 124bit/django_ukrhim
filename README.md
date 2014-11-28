@@ -21,6 +21,7 @@ django_ukrhim - LLC "Ukrhimplast" corporate portal
     <li>Many price-fields with different currencies for one product in many regions for different customers. Price-fields can be dependent.</li>
     <li>Flexible template system for product presentation.</li>
     <li>Frequently changing data import from xlsx.</li>
+    <li>and many more..</li>
   </ul>  
   <h3>DOCUMENT GENERATION</h3>
   <ul>
