@@ -1,6 +1,6 @@
 django_ukrhim - LLC "Ukrhimplast" corporate portal
 =============
-<p>You can look at the public part her: <a href="www.ukrhimplast.com">www.ukrhimplast.com</a>.</p>
+<p>You can look at the public part her: <a href="http://www.ukrhimplast.com">www.ukrhimplast.com</a>.</p>
 <p>It is monstrous system, its code is really low quality, however it fully meets the business requirements! Documentation is in Russian so I'll describe only main components:</p>
 
   <h3>CMS</h3>
