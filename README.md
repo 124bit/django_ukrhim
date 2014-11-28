@@ -1,7 +1,7 @@
 django_ukrhim - LLC "Ukrhimplast" corporate portal
 =============
-<p>You can look at the public part her <a href="www.ukrhimplast.com">www.ukrhimplast.com</a></p>
-<p>It is monstrous, its code is really low quality, however it fully meets the business requirements! Documentation is in Russian so I'll describe only main components:</p>
+<p>You can look at the public part her: <a href="www.ukrhimplast.com">www.ukrhimplast.com</a>.</p>
+<p>It is monstrous system, its code is really low quality, however it fully meets the business requirements! Documentation is in Russian so I'll describe only main components:</p>
 
   <h3>CMS</h3>
     <p>Based on Divio django-cms 2.4. Implemented tons of additional features for using in multisite and multilanguage conditions:</p>
