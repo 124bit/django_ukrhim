@@ -5,7 +5,7 @@
 		return function() {
 			return fn.apply(this, args.concat($.makeArray(arguments)));
 		}
-	}  
+	};
 	
 	$.__callbackPool = {}; 
 	
@@ -16,7 +16,7 @@
 		}
 		$.__callbackPool[name] = fn;
 		return name;	
-	}
+	};
 	
 	$.callbackCall = function(name/*, extra arg0, extra arg1, ..*/){
 		if (!name || !name in $.__callbackPool) {
@@ -25,7 +25,7 @@
 		$.__callbackPool[name].apply(this, $.makeArray(arguments).slice(1, arguments.length));
 		$.callbackRemove(name);	
 		return name;
-	}
+	};
 	
 	$.callbackRemove = function(name) {
 		delete $.__callbackPool[name];

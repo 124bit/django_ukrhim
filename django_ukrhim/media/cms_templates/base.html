@@ -79,11 +79,11 @@
                         } );
                     }
                     
-                    $.cookie("{{ site.site_cutting }}_first_visit", "firstSet")
+                    $.cookie("{{ site.site_cutting }}_first_visit", "firstSet");
                     
-                    visit_num=parseInt($.cookie("{{ site.site_cutting }}_visit_num"))
+                    visit_num=parseInt($.cookie("{{ site.site_cutting }}_visit_num"));
                     if (! visit_num){
-                        visit_num=1
+                        visit_num=1;
                         $.cookie("{{ site.site_cutting }}_visit_num", visit_num, {"expires" : 7})
                         
                     }
@@ -103,7 +103,7 @@
                     }
                     )   
                    
-                })
+                });
                 
                 $(function() { 
                         if (!("ontouchstart" in document.documentElement)) {
@@ -120,7 +120,7 @@
                 <script>
                 $(document).ready(function(){
                         $('.will_fade').css('visibility','visible').hide().fadeIn(400,'swing'); 
-                      })
+                      });
                 function metrikaReach(goal_name) {
                     for (var i in window) {
                         if (/^yaCounter\d+/.test(i)) {
@@ -155,7 +155,11 @@
                             {% get_page 'site_search' as site_search_page %}
                             {% get_placeholder 'search id' site_search_page as search_id %}
                             {% get_placeholder 'site right header' 'main' as right_header %}
-                            {% if right_header %}
+                            {% if LANGUAGE_CODE == 'en' %}
+                                <div style="margin-top:60px; color: #389fd7;">
+                                    <span>Attention!</span>
+                                    Support of the English version of this web-site is discontinued. For current info, please contact <a href='mailto:{% show_placeholder "price email" "main" %}'>{% show_placeholder "price email" "main" %}</a> or use <a href='/'>Russian</a> version.</div>
+                            {% elif right_header %}
 								{{ right_header }}
                             {% else %}
                                 {% if search_id %}
@@ -185,7 +189,7 @@
                                                 <div class="arrow-top"></div>
                                                     {% get_page  "products" as products_page %}
                                                     {% for page in products_page.get_children %}
-                                                        {% if page.reverse_id != "product_inner" and page.published %}
+                                                        {% if page.reverse_id != "product_inner" and page.published and LANGUAGE_CODE in page.get_languages %}
                                                             <ul class="left {% if forloop.counter > 2 %}s-nav-ul{% endif %} {% if forloop.counter == 5 %}nav-ul-in-develop{% endif %}">
 																{% assign name='category_page_url' %}{% if page.reverse_id|slice:":10" != "redirect__" %}{% page_url page %}{% else %}{% page_url page.reverse_id|slice:"10:" %}{% endif %}{% endassign %}
 																
@@ -203,7 +207,7 @@
 																	{% endif %}
 																</li>
                                                                 {% for child in page.get_children %}
-                                                                    {% if child.in_navigation and child.published %}
+                                                                    {% if child.in_navigation and child.published and LANGUAGE_CODE in child.get_languages %}
                                                                         
                                                                         {% get_placeholder 'menu items' child as menu_items_txt %}
                                                                         {% if menu_items_txt %}

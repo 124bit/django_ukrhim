@@ -3,11 +3,11 @@
 <nav class="menu-left bs-docs-sidebar {% if request.current_page.reverse_id == 'product_inner' %}product_inner{% endif %} ">
     <ul id="nav-list" class="nav affix product-page {% if request.current_page.reverse_id == "plastic_tanks" %}pl_tanks{% endif %}">
         {% for category_page in products_page.get_children %} 
-            {% if category_page.in_navigation %}
+            {% if category_page.in_navigation and LANGUAGE_CODE in category_page.get_languages %}
                 <li class="bold outer"><a href="{% page_url category_page %}">{% page_attribute "menu_title" category_page %}</a></li>
                 {% if request.current_page.parent == category_page or request.current_page == category_page  or 'type' in request.GET and request.GET.type == category_page.reverse_id %}
                     {% for child in category_page.get_children %}
-                        {% if child.in_navigation %}
+                        {% if child.in_navigation and LANGUAGE_CODE in child.get_languages %}
                             {% if child.reverse_id == request.current_page.reverse_id  or 'product_category' in request.GET and request.GET.product_category == child.reverse_id %}
                                 {% get_placeholder 'menu items' child as current_menu_items_txt %} 
                                 {% if current_menu_items_txt %}

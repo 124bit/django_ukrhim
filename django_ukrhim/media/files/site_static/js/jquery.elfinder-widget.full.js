@@ -48,7 +48,7 @@
 					new ElfinderWidget( this, options ));
             }
 		});
-	}
+	};
 
 	/*
 	 * Initialize the class members and call the init method
@@ -72,7 +72,7 @@
 					//hide elfinder & elfinder wrapper
 					elw.elfinder.parent().hide();
 					elw.elfinder.elfinder('hide');
-					return;
+
 				}
 			}),
 			keywords : $.extend({}, defaults.keywords, options.keywords) 
@@ -85,7 +85,7 @@
 	 */
 	ElfinderWidget.prototype.init = function() {
 		
-		this.el.wrap('<div class="elfinder-widget"/>')
+		this.el.wrap('<div class="elfinder-widget"/>');
 		
 		//Initialize elfinder		
 		this.elfinder = $('<div id="' + this.id + '-elfinder" class="elfinder-root" />')
@@ -111,7 +111,7 @@
 			}).insertBefore(this.elfinder);
 
 		this.elfinder.elfinder('instance').destroy();
-	}
+	};
 	
 	/*
 	 * Generate the preview div based on a dictionary of attributes
@@ -121,7 +121,7 @@
 		if (!file.name) return;
 
 		var header = $('<div class="elfinder-info-title"><span class="elfinder-cwd-icon"/></div>')
-			.append('<strong>'+file.name+'</strong><span class="elfinder-info-kind">'+file.mime.split('/').reverse().join(" ").capitalize()+'</span>')
+			.append('<strong>'+file.name+'</strong><span class="elfinder-info-kind">'+file.mime.split('/').reverse().join(" ").capitalize()+'</span>');
 
 		file.tmb
 			? $('.elfinder-cwd-icon', header).addClass('tmb').css('background-image', 'url(' + file.tmb + ')')
@@ -140,7 +140,7 @@
 		if (file.dim) table.append('<tr><td>' + this.options.keywords.dimensions + ':</td><td>' + file.dim + '</td></tr>');
 			
 		this.pr.empty().append(header, table);
-	}
+	};
 	
 	/*
 	 * Initialize the widget's set/update and clear buttons

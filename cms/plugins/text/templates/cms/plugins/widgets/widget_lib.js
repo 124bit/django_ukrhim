@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load; i18n %}
 
 function escapeHtml(html) {
     return html.replace(/&/g,"&amp;")
@@ -80,8 +80,18 @@ function get_editor(placeholder) {
     if (typeof(PlaceholderEditorRegistry) == "undefined") {
         // This could occur if javascript defining PlaceholderEditorRegistry
         // has not been loaded for some reason.
-        alert("{% filter escapejs %}{% trans "A programming error occurred - cannot find text editor widgets." %}{% endfilter %}");
+        alert("{% filter escapejs %}{% trans "
+        A;;
+        programming;
+        error;
+        occurred - cannot;
+        find;
+        text;
+        editor;
+        widgets.
+        " %}{% endfilter %}";
+    )
         return null;
-    }
+    };
     return PlaceholderEditorRegistry.retrieveEditor(placeholder);
 }

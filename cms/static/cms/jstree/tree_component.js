@@ -28,12 +28,12 @@ function tree_component () {
 	// instance manager
 	if(typeof tree_component.inst == "undefined") {
 		tree_component.cntr = 0;
-		tree_component.inst = new Array();
-		tree_component.drop = new Array();
+		tree_component.inst = [];
+		tree_component.drop = [];
 
 		tree_component.focusInst = function () {
 			return tree_component.inst[tree_component.focused];
-		}
+		};
 		tree_component.mousedown = function(event) {
 			var _this = tree_component.focusInst();
 			if(!_this) return;
@@ -153,7 +153,7 @@ function tree_component () {
 					var goTo = { 
 						x : (jQuery(event.target).offset().left - 1),
 						y : (event.pageY - tree_component.inst[cnt.attr("id")].offset.top)
-					}
+					};
 					if(cnt.hasClass("rtl")) {
 						goTo.x += jQuery(event.target).width() - 8;
 					}
@@ -529,7 +529,7 @@ function tree_component () {
 				this.scrtop = this.container.get(0).scrollTop;
 				var xsl = (this.settings.data.type == "xml_flat") ? "flat.xsl" : "nested.xsl";
 				this.container.getTransform(this.path + xsl, this.settings.data.url, { params : { theme_name : cls, theme_path : _this.theme }, meth : _this.settings.data.method ,callback: function () { _this.reselect.apply(_this); } });
-				return;
+
 			}
 			else if(this.settings.data.type == "json") {
 				if(this.settings.data.json) {
@@ -1047,7 +1047,7 @@ function tree_component () {
 			if(this.settings.rules[rule] == "none")	return false;
 			if(this.settings.rules[rule] == "all")	return true;
 			if(rule == "dragrules") {
-				var nds = new Array();
+				var nds = [];
 				nds[0] = this.get_type(nodes[0]);
 				nds[1] = nodes[1];
 				nds[2] = this.get_type(nodes[2]);
@@ -1391,7 +1391,7 @@ function tree_component () {
 					.bind("keyup",			function (event) { 
 							var key = event.keyCode || event.which;
 							if(key == 27) { this.value = last_value; this.blur(); return }
-							if(key == 13) { this.blur(); return }
+							if(key == 13) { this.blur();  }
 						});
 				_this.inp.blur(function(event) {
 						if(this.value == "") this.value == last_value; 
@@ -1537,7 +1537,7 @@ function tree_component () {
 				what.each(function (i) {
 					if(i == 0) return;
 					tmp = _this.moved(this, tmp.children("a:eq(0)"), "after", false, is_copy);
-				})
+				});
 				return;
 			}
 			if(is_copy) {
@@ -1546,7 +1546,7 @@ function tree_component () {
 					this.id = this.id + "_copy";
 					jQuery(this).find("li").each(function () {
 						this.id = this.id + "_copy";
-					})
+					});
 					jQuery(this).find("a.clicked").removeClass("clicked");
 				});
 			}
@@ -1628,7 +1628,7 @@ function tree_component () {
 				$parent.children("li:last").addClass("last");
 			}
 			if(is_new && how != "inside") where = this.get_node(where).parents("li:eq(0)");
-			if(is_copy)		this.settings.callback.oncopy.call(null, this.get_node(what).get(0), this.get_node(where).get(0), how, this)
+			if(is_copy)		this.settings.callback.oncopy.call(null, this.get_node(what).get(0), this.get_node(where).get(0), how, this);
 			else if(is_new)	this.settings.callback.oncreate.call(null, this.get_node(what).get(0), this.get_node(where).get(0), this.settings.insertAt, this);
 			else			this.settings.callback.onmove.call(null, this.get_node(what).get(0), this.get_node(where).get(0), how, this);
 			return what;
@@ -1751,4 +1751,4 @@ function tree_component () {
 			tree_component.cntr --;
 		}
 	}
-};
+}

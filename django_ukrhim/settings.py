@@ -4,64 +4,20 @@ gettext = lambda s: s
 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-#MODULES_PATH = os.path.normpath(os.path.join(PROJECT_PATH, '..', '..')) #for importing third-party modules vonnected to git
-#import_export_path = os.path.join(MODULES_PATH, 'django-import-export')
-#imagekit_path = os.path.join(MODULES_PATH, 'django-imagekit')
-#elfinder_path = os.path.join(MODULES_PATH, 'yawd-elfinder')
-#sys.path.append(import_export_path)
-#sys.path.append(imagekit_path)
-#sys.path.append(elfinder_path)
 
-#--------- DJANGO SETTINGS for django_ukrhim project.
-if platform.system() == 'Linux':
-    if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
-        DEBUG = True
-    else:
-        DEBUG = False
-else:
-    DEBUG = True
-PROFILE = False
+
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('124bit', '124bit@gmail.com'),
 )
 
 MANAGERS = ADMINS
 
 
-if platform.system() == 'Linux':
-	if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
-		DATABASES = {
-			'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'. 
-			'NAME': 'ukrhimdev',                      # Or path to database file if using sqlite3.
-			'USER': 'postgres',                      # Not used with sqlite3.
-			'PASSWORD': '777777', 
-			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-		}}
-	else:
-		DATABASES = {
-			'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-			'NAME': 'postgr2',                      # Or path to database file if using sqlite3.
-			'USER': 'postgres',                      # Not used with sqlite3.
-			'PASSWORD': '777777',                  # Not used with sqlite3.
-			'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-			'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-		}}
-else:
-    DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'postgr2',                      # Or path to database file if using sqlite3.
-        'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': '777777',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }}
 
+from db_settings import *
 
 
 
@@ -79,7 +35,7 @@ USE_TZ = True
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'ru'
 
-SITE_ID = 2
+SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -167,9 +123,7 @@ MIDDLEWARE_CLASSES = (
     #'modifier.middleware.profile.ProfileMiddleware',
 
 )
-if PROFILE and  platform.system() == 'Linux':
-    MIDDLEWARE_CLASSES=('profiler.middleware.ProfilerMiddleware',
-    'profiler.middleware.StatProfMiddleware') + MIDDLEWARE_CLASSES
+
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -282,18 +236,18 @@ INSTALLED_APPS = (
 #    }
 #}
 
-import logging
-
-
-logging.basicConfig(
-    level = logging.INFO,
-    format = '%(asctime)s %(levelname)s %(message)s',
-    filename = PROJECT_PATH+'/djangoLog.log',)
-
-    
-import logging
-logging.info(PROJECT_PATH)
-logging.info(str(DATABASES))
+# import logging
+#
+#
+# logging.basicConfig(
+#     level = logging.INFO,
+#     format = '%(asctime)s %(levelname)s %(message)s',
+#     filename = PROJECT_PATH+'/djangoLog.log',)
+#
+#
+# import logging
+# logging.info(PROJECT_PATH)
+# logging.info(str(DATABASES))
   
 STATICFILES_DIRS = ('modifier/static', 'django_ukrhim/media/files/site_static')
 
@@ -504,8 +458,8 @@ ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'modifier.custom_dashbord.CustomAppIndexDashbo
 
 
 #--------------------compressors and minifiers settings
-COMPRESS_OFFLINE= False
-COMPRESS_ENABLED= True
+COMPRESS_OFFLINE = False
+COMPRESS_ENABLED = True
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 
 #--SSI
@@ -529,53 +483,24 @@ COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 # cache
 
 USE_ETAGS=True
+
 ADV_CACHE_VERSIONING=True
 #----johnycache
-if platform.system() == 'Linux':
-    if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
-        CACHES = {
-            'default' : dict(
-                BACKEND = 'johnny.backends.memcached.MemcachedCache',
-                LOCATION = ['127.0.0.1:11211'],
-                JOHNNY_CACHE = True,
-            )
-        }
-    else:
-        CACHES = {
-            'default' : dict(
-                BACKEND = 'johnny.backends.memcached.MemcachedCache',
-                LOCATION = ['127.0.0.1:11211'],
-                JOHNNY_CACHE = True,
-            )
-        }
-else:
-    CACHES = {
-            'default' : dict(
-                BACKEND = 'johnny.backends.memcached.MemcachedCache',
-                LOCATION = ['127.0.0.1:11211'],
-                JOHNNY_CACHE = True,
-            )
-        }
-    
-if platform.system() == 'Linux':
-    if PROJECT_PATH == '/srv/www/django_ukrhim_dev/django_ukrhim':
-        JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_dev_'
-        PAGES_DATES_PREFIX='dates_ukrhim_dev_'
-        KEY_PREFIX='ukrhim_dev_'
-        ADV_CACHE_VERSION='ukrhimadv_dev_'
-        CMS_CACHE_PREFIX='ukrhim_dev_'
-    else:
-        JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_'
-        PAGES_DATES_PREFIX='dates_ukrhim_'
-        KEY_PREFIX='ukrhim_'
-        ADV_CACHE_VERSION='ukrhimadv_'
-        CMS_CACHE_PREFIX='ukrhim_'
-else:
-    JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_dev_'
-    PAGES_DATES_PREFIX='dates_ukrhim_dev_' 
-    KEY_PREFIX='ukrhim_dev_'
-    ADV_CACHE_VERSION='ukrhimadv_dev_'
-    CMS_CACHE_PREFIX='ukrhim_dev_'
+
+CACHES = {
+    'default' : dict(
+        BACKEND = 'johnny.backends.memcached.MemcachedCache',
+        LOCATION = ['127.0.0.1:11211'],
+        JOHNNY_CACHE = True,
+    )
+}
+
+
+JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_ukrhim_'
+PAGES_DATES_PREFIX='dates_ukrhim_'
+KEY_PREFIX='ukrhim_'
+ADV_CACHE_VERSION='ukrhimadv_'
+CMS_CACHE_PREFIX='ukrhim_'
 
 #--------locale
 LOCALE_PATHS = ( PROJECT_PATH+"/locale",)

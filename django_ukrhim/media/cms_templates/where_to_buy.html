@@ -21,16 +21,16 @@
         var zoom = 4.7;
         
         {% if site_cutting == "belhimplastic" %}
-            coords = [49.979220,48.253225]
-            zoom = 4.9
+            coords = [49.979220,48.253225];
+            zoom = 4.9;
         {% elif site_cutting == "belhim" %}
-            coords = [53.713325,27.605120]
-            zoom = 5.8
+            coords = [53.713325,27.605120];
+            zoom = 5.8;
         {% elif site_cutting == "ukrhim" %}
-            coords = [50.439135,30.535757]
+            coords = [50.439135,30.535757];
         {% elif site_cutting == "krimhim" %}
-            coords = [45.899305,37.0049632]
-            zoom = 6.5
+            coords = [45.899305,37.0049632];
+            zoom = 6.5;
         {% endif %}
         
     </script>
@@ -44,7 +44,7 @@ function init () {
     
     if (coords == false)
     {
-        var geolocation = ymaps.geolocation
+        var geolocation = ymaps.geolocation;
         coords = [geolocation.latitude, geolocation.longitude]
     }
     
@@ -61,7 +61,7 @@ function init () {
 	
     var getState = function (point) {
                     return clusterer.getObjectState(point);
-                }
+                };
     
     var openBalloon = function (point) {
                     var state = getState(point),
@@ -100,10 +100,10 @@ function init () {
                             }
                         }
                     });
-                }
+                };
     
-	myMap.controls.add('zoomControl', { right: 5, top: 5 }).add('mapTools', { right: 35, top: 5 })
-    var clusterer = new ymaps.Clusterer({preset: 'twirl#invertedLightblueClusterIcons'}) // 'twirl#lightblueClusterIcons'
+	myMap.controls.add('zoomControl', { right: 5, top: 5 }).add('mapTools', { right: 35, top: 5 });
+    var clusterer = new ymaps.Clusterer({preset: 'twirl#invertedLightblueClusterIcons'}); // 'twirl#lightblueClusterIcons'
 	
     // Добавляем кластеризатор на карту.
     myMap.geoObjects.add(clusterer);
@@ -116,7 +116,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }
+        };
     
     var shop={
             iconImageHref: '/media/files/site_static/catalog/img/point_shop.png',
@@ -127,7 +127,7 @@ function init () {
             balloonShadow: false,
             balloonMaxWidth: 300,
             zIndex: 690,
-        }
+        };
         
     var ishop={
             iconImageHref: '/media/files/site_static/catalog/img/point_ishop.png',
@@ -137,7 +137,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }
+        };
 		
 	var office={
             iconImageHref: '/media/files/site_static/catalog/img/point_office.png',
@@ -147,7 +147,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }	
+        };
 	var epicenter={
             iconImageHref: '/media/files/site_static/catalog/img/point_epic.png',
             iconImageSize: [47, 57],
@@ -156,7 +156,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }	
+        };
         
     var placemarks = [];
     
@@ -737,12 +737,12 @@ function init () {
 					e.preventDefault();
 					$.scrollTo('#shops_and',{duration:150});
                     //myMap.setZoom(12 , { callback: function() { Pan(item[1]) } } )
-                    myMap.setZoom(12.5)
+                    myMap.setZoom(12.5);
                     Pan(item[1])
                     }
                     )
                     }
-                    )
+                    );
 
     
 
@@ -757,12 +757,12 @@ function init () {
                    $(this).css("font-weight","Bold");
                    id='#'+$(this).attr('href').substring(1);
                    city=$(id);
-                   show_block=0
+                   show_block=0;
                    if (!(city.parent().parent().prev().attr('id') && (city.parent().prev().hasClass('country-name') || city.attr('id')=='kiev')))
                    {
-                        show_block=1
+                        show_block=1;
                         city_copy=city.parent().clone();
-                        city_copy.children(":first").attr('id',id.substring(1)+'_show')
+                        city_copy.children(":first").attr('id',id.substring(1)+'_show');
                         $('#city_html_copy').prepend(city_copy);
                         
                    }
@@ -771,7 +771,7 @@ function init () {
                 } 
             }
                 
-            )
+            );
  
     $('#show_city_a').click( 
                 function() {
@@ -782,10 +782,10 @@ function init () {
                             }).then(function (res) {
                         
                                     var firstGeoObject = res.geoObjects.get(0),
-                                    coords = firstGeoObject.geometry.getCoordinates()
-                                    myMap.setZoom(10.5)
+                                    coords = firstGeoObject.geometry.getCoordinates();
+                                    myMap.setZoom(10.5);
                                     myMap.panTo(coords, {delay:200});
-                                    })
+                                    });
                              $.scrollTo('#shops_and', 300);
                              if (show_block == 1)
                              {
@@ -794,7 +794,7 @@ function init () {
                             return false;
                             
                             } 
-                            )
+                            );
                             
     $('#city_html_copy').find('.map-icon').each(
         function(){

@@ -90,7 +90,7 @@ CMS.$(document).ready(function ($) {
 					}
 					else{
 						throw new Error('CMS.Placeholders was unable to perform this ajax request. Try again or contact the developers.');
-					};
+					}
 				}
 			});
 		},
@@ -200,7 +200,7 @@ CMS.$(document).ready(function ($) {
 			var that = this;
 			// get all siblings within the placeholder
             var plugin_id = $(plugin).attr('id').split("-")[1];
-            var multi = $('#cms_placeholder_multi-'+plugin_id)
+            var multi = $('#cms_placeholder_multi-'+plugin_id);
             if(multi.length > 0) {
                 plugin = multi
             }
@@ -251,7 +251,7 @@ CMS.$(document).ready(function ($) {
 					}
 					else{
 						throw new Error('CMS.Placeholders was unable to perform this ajax request. Try again or contact the developers.');
-					};
+					}
 				}
 			});
 
@@ -354,7 +354,7 @@ CMS.$(document).ready(function ($) {
 						}
 						else{
 							throw new Error('CMS.Placeholders was unable to perform this ajax request. Try again or contact the developers.');
-						};
+						}
 					}
 				});
 			});
@@ -396,11 +396,11 @@ CMS.$(document).ready(function ($) {
 
             if(options.allow_children){
                 add_list.show();
-                plugin_list = add_list.find('ul')
-                plugin_list.html('')
+                plugin_list = add_list.find('ul');
+                plugin_list.html('');
                 for (var i=0; i< options.child_classes.length; i++){
-                    var class_name = options.child_classes[i].class_name
-                    var plugin_name = options.child_classes[i].plugin_name
+                    var class_name = options.child_classes[i].class_name;
+                    var plugin_name = options.child_classes[i].plugin_name;
                     plugin_list.append($('<li><a href="" rel="type::'+class_name+'">' + plugin_name + '</a></li>').data({
                         'class_name': class_name,
                         'placeholder_id': values.placeholder,

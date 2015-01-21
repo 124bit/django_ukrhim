@@ -101,7 +101,7 @@ var CalendarNamespace = {
 
         calDiv.appendChild(calTable);
     }
-}
+};
 
 // Calendar -- A calendar instance
 function Calendar(div_id, callback) {
@@ -153,4 +153,4 @@ Calendar.prototype = {
         this.currentYear++;
         this.drawCurrent();
     }
-}
+};

@@ -602,7 +602,7 @@ exports.coreCommands = {
 
 var handleCursorMove = exports.onCursorMove = function(editor, e) {
     if (util.currentMode === 'insert' || handleCursorMove.running)
-        return;
+
     else if(!editor.selection.isEmpty()) {
         handleCursorMove.running = true;
         if (util.onVisualLineMode) {
@@ -621,7 +621,7 @@ var handleCursorMove = exports.onCursorMove = function(editor, e) {
             }
         }
         handleCursorMove.running = false;
-        return;
+
     }
     else {
         if (e && (util.onVisualLineMode || util.onVisualMode)) {
@@ -787,7 +787,7 @@ module.exports = {
 
 });
  
-"use strict"
+"use strict";
 
 define('ace/keyboard/vim/maps/motions', ['require', 'exports', 'module' , 'ace/keyboard/vim/maps/util', 'ace/search', 'ace/range'], function(require, exports, module) {
 
@@ -820,7 +820,7 @@ function Motion(getRange, type){
 
         editor.clearSelection();
         editor.moveCursorTo(a.row, a.column);
-    }
+    };
     this.sel = function(editor){
         var r = getRange(editor);
         if (!r)
@@ -849,20 +849,20 @@ var StringStream = function(editor, cursor) {
     this.row = cursor.row;
     this.col = cursor.column;
     var line = editor.session.getLine(this.row);
-    var maxRow = editor.session.getLength()
-    this.ch = line[this.col] || '\n'
+    var maxRow = editor.session.getLength();
+    this.ch = line[this.col] || '\n';
     this.skippedLines = 0;
 
     this.next = function() {
         this.ch = line[++this.col] || this.handleNewLine(1);
         //this.debug()
         return this.ch;
-    }
+    };
     this.prev = function() {
         this.ch = line[--this.col] || this.handleNewLine(-1);
         //this.debug()
         return this.ch;
-    }
+    };
     this.peek = function(dir) {
         var ch = line[this.col + dir];
         if (ch)
@@ -872,7 +872,7 @@ var StringStream = function(editor, cursor) {
         if (this.col == line.length - 1)
             return '\n';
         return editor.session.getLine(this.row + 1)[0] || '\n';
-    }
+    };
 
     this.handleNewLine = function(dir) {
         if (dir == 1){
@@ -895,11 +895,11 @@ var StringStream = function(editor, cursor) {
             this.skippedLines--;
             return '\n';
         }
-    }
+    };
     this.debug = function() {
         console.log(line.substring(0, this.col)+'|'+this.ch+'\''+this.col+'\''+line.substr(this.col+1));
     }
-}
+};
 
 var Search = require("ace/search").Search;
 var search = new Search();
@@ -958,7 +958,7 @@ module.exports = {
         return {column: str.col, row: str.row};
     }),
     "B": new Motion(function(editor) {
-        var str = new StringStream(editor)
+        var str = new StringStream(editor);
         str.prev();
         while(str.ch && !(!whiteRe.test(str.ch) && whiteRe.test(str.peek(-1))) && str.skippedLines > -2)
             str.prev();
@@ -1287,7 +1287,7 @@ module.exports = {
                 content += "\n";
 
             if (content.length) {
-                editor.navigateLineEnd()
+                editor.navigateLineEnd();
                 editor.insert(content);
                 util.insertMode(editor);
             }
@@ -1304,7 +1304,7 @@ module.exports = {
             if (content.length) {
                 if(row > 0) {
                     editor.navigateUp();
-                    editor.navigateLineEnd()
+                    editor.navigateLineEnd();
                     editor.insert(content);
                 } else {
                     editor.session.insert({row: 0, column: 0}, content);
@@ -1391,9 +1391,9 @@ module.exports = {
                         var selRange = editor.getSelectionRange();
                         // check if end of the document was reached
                         if (!selRange.isMultiLine()) {
-                            lastLineReached = true
+                            lastLineReached = true;
                             var row = selRange.start.row - 1;
-                            var col = editor.session.getLine(row).length
+                            var col = editor.session.getLine(row).length;
                             selRange.setStart(row, col);
                             editor.session.remove(selRange);
                             editor.selection.clearSelection();
@@ -1528,7 +1528,7 @@ module.exports = {
 };
 });
  
-"use strict"
+"use strict";
 
 define('ace/keyboard/vim/maps/aliases', ['require', 'exports', 'module' ], function(require, exports, module) {
 module.exports = {

@@ -25,13 +25,13 @@ function getAllChildren(e) {
 document.getElementsBySelector = function(selector) {
   // Attempt to fail gracefully in lesser browsers
   if (!document.getElementsByTagName) {
-    return new Array();
+    return [];
   }
   // Split selector in to tokens
   var tokens = selector.split(' ');
   var currentContext = new Array(document);
   for (var i = 0; i < tokens.length; i++) {
-    token = tokens[i].replace(/^\s+/,'').replace(/\s+$/,'');;
+    token = tokens[i].replace(/^\s+/, '').replace(/\s+$/, '');
     if (token.indexOf('#') > -1) {
       // Token is an ID selector
       var bits = token.split('#');
@@ -40,7 +40,7 @@ document.getElementsBySelector = function(selector) {
       var element = document.getElementById(id);
       if (!element || (tagName && element.nodeName.toLowerCase() != tagName)) {
         // ID not found or tag with that ID not found, return false.
-        return new Array();
+        return [];
       }
       // Set currentContext to contain just this element
       currentContext = new Array(element);
@@ -55,7 +55,7 @@ document.getElementsBySelector = function(selector) {
         tagName = '*';
       }
       // Get elements matching tag, filter them for class selector
-      var found = new Array;
+      var found = [];
       var foundCount = 0;
       for (var h = 0; h < currentContext.length; h++) {
         var elements;
@@ -73,7 +73,7 @@ document.getElementsBySelector = function(selector) {
           found[foundCount++] = elements[j];
         }
       }
-      currentContext = new Array;
+      currentContext = [];
       var currentContextIndex = 0;
       for (var k = 0; k < found.length; k++) {
         if (found[k].className && found[k].className.match(new RegExp('\\b'+className+'\\b'))) {
@@ -92,7 +92,7 @@ document.getElementsBySelector = function(selector) {
         tagName = '*';
       }
       // Grab all of the tagName elements within current context
-      var found = new Array;
+      var found = [];
       var foundCount = 0;
       for (var h = 0; h < currentContext.length; h++) {
         var elements;
@@ -105,7 +105,7 @@ document.getElementsBySelector = function(selector) {
           found[foundCount++] = elements[j];
         }
       }
-      currentContext = new Array;
+      currentContext = [];
       var currentContextIndex = 0;
       var checkFunction; // This function will be used to filter the elements
       switch (attrOperator) {
@@ -131,7 +131,7 @@ document.getElementsBySelector = function(selector) {
           // Just test for existence of attribute
           checkFunction = function(e) { return e.getAttribute(attrName); };
       }
-      currentContext = new Array;
+      currentContext = [];
       var currentContextIndex = 0;
       for (var k = 0; k < found.length; k++) {
         if (checkFunction(found[k])) {
@@ -143,7 +143,7 @@ document.getElementsBySelector = function(selector) {
     }
     // If we get here, token is JUST an element (not a class or ID selector)
     tagName = token;
-    var found = new Array;
+    var found = [];
     var foundCount = 0;
     for (var h = 0; h < currentContext.length; h++) {
       var elements = currentContext[h].getElementsByTagName(tagName);
@@ -154,7 +154,7 @@ document.getElementsBySelector = function(selector) {
     currentContext = found;
   }
   return currentContext;
-}
+};
 
 /* That revolting regular expression explained 
 /^(\w+)\[(\w+)([=~\|\^\$\*]?)=?"?([^\]"]*)"?\]$/

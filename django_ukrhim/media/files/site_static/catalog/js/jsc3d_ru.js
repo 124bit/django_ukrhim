@@ -3109,12 +3109,12 @@ JSC3D.Viewer.prototype.renderSolidSphereMapped = function(mesh) {
 			j++;
 			v1 = ibuf[j] * 3;
 			vn1 = vnibuf[j] * 3;
-			j++
+			j++;
 
 			do {
 				v2 = ibuf[j] * 3;
 				vn2 = vnibuf[j] * 3;
-				j++
+				j++;
 
 				Xs[0] = ~~(vbuf[v0    ] + 0.5);
 				Ys[0] = ~~(vbuf[v0 + 1] + 0.5);
@@ -4400,7 +4400,7 @@ JSC3D.Math3D = {
 	 */
 	transformVectorZs: function(mat, vecs, xfveczs) {
 		var num = vecs.length / 3;
-		var i = 0, j = 0
+		var i = 0, j = 0;
 		while(i < num) {
 			xfveczs[i] = mat.m20 * vecs[j] + mat.m21 * vecs[j + 1] + mat.m22 * vecs[j + 2] + mat.m23;
 			i++;
@@ -4671,7 +4671,7 @@ JSC3D.BinaryStream.prototype.decodeFloat = function(bytes, significandBits) {
 	var bits = -7;
 	var e = s & ((1 << (-bits)) - 1);
 	s >>= -bits;
-	bits += eLen
+	bits += eLen;
 	while(bits > 0) {
 		e = e * 256 + (this.data[this.offset + i].charCodeAt(0) & 0xff);
 		i += d;

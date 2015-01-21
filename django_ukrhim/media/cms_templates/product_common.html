@@ -24,7 +24,7 @@
     {% maximum_val type.changed category_page.parent.child_last_publish_date as tversion %}
     {% cache_version tversion as cversion %} 
     {% assign name="left_menu" %}
-        {% cache 0 product_inner_left_nav product.pk site.pk LANGUAGE_CODE cdraft cversion request.GET.product_type %}
+        {% cache 0 'product_inner_left_nav' product.pk site.pk LANGUAGE_CODE cdraft cversion request.GET.product_type %}
             {% include 'left_product_menu.html' %}
         {% endcache %}
     {% endassign %}
@@ -410,11 +410,11 @@
                 <script>   
                     $('#doc_link').click(function (e) {  
                         e.preventDefault();
-                        location.hash = '#instr_tab_'
-                        $('#instr_tab').click(); $.scrollTo('#instr_tab',400); })
+                        location.hash = '#instr_tab_';
+                        $('#instr_tab').click(); $.scrollTo('#instr_tab',400); });
                     $('#pr_photo_link').click(function (e) { 
                         e.preventDefault();
-                        location.hash = '#photo_tab_'
+                        location.hash = '#photo_tab_';
                         $('#photo_tab').click(); $.scrollTo('#photo_tab',400); setTimeout("$('#child_photo').click()",300) })
                 </script>
 	
@@ -465,7 +465,7 @@
                     }
                     return vars;
                 }
-                get_vars=getUrlVars()
+                get_vars=getUrlVars();
             
 
 
@@ -490,7 +490,7 @@
                     e.preventDefault();
                     if ('product' in get_vars)
                     {
-                        values['product']=get_vars['product']
+                        values['product']=get_vars['product'];
                         values['date']=call_date
                     }
                     var $inputs = $('#call_submit_form :input');
@@ -502,7 +502,7 @@
                     { $('#error_field').html('<span style="color: red;">номер слишком короткий</span>')}
                     else
                     {
-                     $('#error_field').html('')
+                     $('#error_field').html('');
                      $('#call_req_answer').css('min-height' , '40px');
                      $.post(
                           "/call_req/",
@@ -569,7 +569,7 @@
 					// change the page title to current selected tab
 					//document.title = tab.attr('title');
 				}
-			}
+			};
 			// Execute this script!
 			QTABS.init();
 		});

@@ -4,7 +4,7 @@
 {% block middle %}
     {% assign name="left_menu" %}
         {% cache_version request.current_page.parent.child_last_publish_date as cversion %}
-        {% cache 0 left_menu site.pk request.current_page.pk LANGUAGE_CODE cdraft cversion %}
+        {% cache 0 'left_menu_product_type' site.pk request.current_page.pk LANGUAGE_CODE cdraft cversion %}
             {% include 'left_product_menu.html' %}
         {% endcache %}
     {% endassign %}

@@ -1,9 +1,9 @@
 var SelectBox = {
-    cache: new Object(),
+    cache: {},
     init: function(id) {
         var box = document.getElementById(id);
         var node;
-        SelectBox.cache[id] = new Array();
+        SelectBox.cache[id] = [];
         var cache = SelectBox.cache[id];
         for (var i = 0; (node = box.options[i]); i++) {
             cache.push({value: node.value, text: node.text, displayed: 1});
@@ -108,4 +108,4 @@ var SelectBox = {
             box.options[i].selected = 'selected';
         }
     }
-}
+};

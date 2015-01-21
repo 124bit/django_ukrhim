@@ -58,7 +58,7 @@ $.fn.ajaxSubmit = function(options) {
 	    // clean url (don't include hash vaue)
 	    url = (url.match(/^([^#]+)/)||[])[1];
    	}
-   	url = url || window.location.href || ''
+   	url = url || window.location.href || '';
 
     options = $.extend({
         url:  url,
@@ -329,8 +329,7 @@ $.fn.ajaxSubmit = function(options) {
                 $io.remove();
                 xhr.responseXML = null;
             }, 100);
-        };
-
+        }
         function toXml(s, doc) {
             if (window.ActiveXObject) {
                 doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -340,8 +339,8 @@ $.fn.ajaxSubmit = function(options) {
             else
                 doc = (new DOMParser()).parseFromString(s, 'text/xml');
             return (doc && doc.documentElement && doc.documentElement.tagName != 'parsererror') ? doc : null;
-        };
-    };
+        }
+    }
 };
 
 /**
@@ -638,6 +637,5 @@ $.fn.selected = function(select) {
 function log() {
     if ($.fn.ajaxSubmit.debug && window.console && window.console.log)
         window.console.log('[jquery.form] ' + Array.prototype.join.call(arguments,''));
-};
-
+}
 })(jQuery);

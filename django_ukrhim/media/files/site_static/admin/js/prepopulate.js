@@ -24,7 +24,7 @@
                   if ($(field).val().length > 0) {
                       values.push($(field).val());
                   }
-                })
+                });
                 field.val(URLify(values.join(' '), maxLength));
             };
 

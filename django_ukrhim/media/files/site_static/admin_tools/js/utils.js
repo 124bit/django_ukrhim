@@ -39,4 +39,4 @@ var loadScripts = function(js_files, onComplete){
     }
 
     loadScript(0);
-}
+};

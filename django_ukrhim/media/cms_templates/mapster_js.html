@@ -7,26 +7,26 @@
                    
                     $(this).parents('tr').hover(
                         function(){
-                            href = $(this).children(":first").children(":first").attr('href')
+                            href = $(this).children(":first").children(":first").attr('href');
                             href_selector = $("[href='"+ href + "']");
                             href_selector.filter('area').mapster('select');
                             data_href_selector = $("[data-href='"+ href + "']");
-                            data_href_selector.show()
+                            data_href_selector.show();
                             
-                            img_href = $(this).children(":first").children(":first").attr('data-img-href')
+                            img_href = $(this).children(":first").children(":first").attr('data-img-href');
                             img_href_selector = $("[href='"+ img_href + "']");
                             img_href_selector.filter('area').mapster('select');
                             
                             href_selector.filter('a.hprod').addClass('hprod_hover');
                         },
                         function(){
-                            href = $(this).children(":first").children(":first").attr('href')
+                            href = $(this).children(":first").children(":first").attr('href');
                             href_selector = $("[href='"+ href + "']");
                             href_selector.filter('area').mapster('deselect');
                             data_href_selector = $("[data-href='"+ href + "']");
-                            data_href_selector.hide()
+                            data_href_selector.hide();
                             
-                            img_href = $(this).children(":first").children(":first").attr('data-img-href')
+                            img_href = $(this).children(":first").children(":first").attr('data-img-href');
                             img_href_selector = $("[href='"+ img_href + "']");
                             img_href_selector.filter('area').mapster('deselect');
                             
@@ -42,7 +42,7 @@
                             href_selector = $("[href='"+ $(this).attr('href') + "']");
                             href_selector.filter('a').parents('tr').addClass('tr_hover');
                             data_href_selector = $("[data-href='"+ $(this).attr('href') + "']");
-                            data_href_selector.show()
+                            data_href_selector.show();
                             href_selector.filter('area').not(this).mapster('select');
                             href_selector.filter('a.hprod').addClass('hprod_hover');
                         },
@@ -50,18 +50,18 @@
                             href_selector = $("[href='"+ $(this).attr('href') + "']");
                             href_selector.filter('a').parents('tr').removeClass('tr_hover');
                             data_href_selector = $("[data-href='"+ $(this).attr('href') + "']");
-                            data_href_selector.hide()
+                            data_href_selector.hide();
                             href_selector.filter('area').not(this).mapster('deselect');
                             href_selector.filter('a.hprod').removeClass('hprod_hover');
                         }
-                    )   
+                    );
                     
                     $('a.hprod').hover(
                         function(){
                             href_selector = $("[href='"+ $(this).attr('href') + "']");
                             href_selector.filter('a').parents('tr').addClass('tr_hover');
                             data_href_selector = $("[data-href='"+ $(this).attr('href') + "']");
-                            data_href_selector.show()
+                            data_href_selector.show();
                             href_selector.filter('area').mapster('select');
                             href_selector.filter('a.hprod').not('this').addClass('hprod_hover');
                         },
@@ -69,12 +69,12 @@
                             href_selector = $("[href='"+ $(this).attr('href') + "']");
                             href_selector.filter('a').parents('tr').removeClass('tr_hover');
                             data_href_selector = $("[data-href='"+ $(this).attr('href') + "']");
-                            data_href_selector.hide()
+                            data_href_selector.hide();
                             href_selector.filter('area').mapster('deselect');
                             href_selector.filter('a.hprod').not('this').removeClass('hprod_hover');
                         }
                     )
-            })
+            });
         
                     
             $(document).ready(

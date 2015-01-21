@@ -121,18 +121,18 @@
     <script src="{{ STATIC_URL }}catalog/js/jquery.form.js"></script> 
     <script>
         $(document).ready(function() { 
-            $('#cont_but').click( function (e) { e.preventDefault()
-			var date = new Date
+            $('#cont_but').click( function (e) { e.preventDefault();
+			var date = new Date;
             $('#{{ opts.module_name }}_form').ajaxSubmit({ success: function(resp,stat,xhr,elem){ $('#res').html('Saved '+date.toLocaleString()); } });}) 
         }); 
         $(document).ready(function() { 
-            var win_g=false
+            var win_g=false;
             
             function draft_fc()
             {
                     if (win_g)
                   {
-                    win_g.close()
+                    win_g.close();
                     win_g=window.open("../../preview/?language={{ language }}", '_blank');
                   }
                   else
@@ -142,14 +142,14 @@
                   }
             }
             
-            $('#view_but').click( function (e) { e.preventDefault()
-            var date = new Date
+            $('#view_but').click( function (e) { e.preventDefault();
+            var date = new Date;
                     $('#{{ opts.module_name }}_form').ajaxSubmit({ success: function(resp,stat,xhr,elem){ $('#res').html('Saved '+date.toLocaleString());setTimeout(draft_fc, 300) } });
 
                     
-            }) 
+            });
             
-            $('#prev_but').click( function (e) { e.preventDefault()
+            $('#prev_but').click( function (e) { e.preventDefault();
             
                     setTimeout(draft_fc, 300);
 

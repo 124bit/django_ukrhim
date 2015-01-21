@@ -38,7 +38,7 @@
                 columns: 2,
                 load_preferences_function: false,
                 save_preferences_function: false
-            }
+            };
             var options = $.extend(defaults, options);
 
             return this.each(function() {
@@ -278,7 +278,7 @@
             preferences = json_str ? JSON.parse(json_str) : {};
         }
         return preferences;
-    }
+    };
 
     var _get_preference = function(options, cat, id, defaultval) {
         try {

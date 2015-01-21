@@ -290,7 +290,7 @@ drag = $special.drag = {
 			if ( type == "dragstart" && !ia.cancelled )
 				callback.update(); 
 		}
-		while ( ++i < len )
+		while ( ++i < len );
 		// restore the original event & type
 		event.type = orig.type;
 		event.originalEvent = orig.event;
@@ -410,8 +410,7 @@ $special.draginit = $special.dragstart = $special.dragend = drag;
 // Updated: 2012-05-21
 // REQUIRES: jquery 1.7.x, event.drag 2.2
 
-;(function($){ // secure $ jQuery alias
-
+(function ($) { // secure $ jQuery alias
 // Events: drop, dropstart, dropend
 
 // add the jquery instance method
@@ -685,7 +684,7 @@ drop = $.event.special.drop = {
 					data.anyactive -= 1;
 				}
 			} while ( ++i < len ); // loop 		
-		} while ( ++x < end ) // loop
+		} while ( ++x < end ); // loop
 		// check if the mouse is still moving or is idle
 		if ( drop.last && xy[0] == drop.last.pageX && xy[1] == drop.last.pageY ) 
 			delete drop.timer; // idle, don't recurse

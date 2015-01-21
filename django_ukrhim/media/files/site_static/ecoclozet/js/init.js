@@ -10,11 +10,11 @@
 	var date = new Date();
 	date.setTime(date.getTime()+1000*60*60*24);
 	var day = date.getDate();
-	var MonthName = new Array('01','02','03','04','05','06','07','08','09','10','11','12');
+	var MonthName = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 	var month = MonthName[date.getMonth()];
-	var year = date.getFullYear()
+	var year = date.getFullYear();
 	
-	$('.yesterday').html(day+'.'+month+'.'+year)
+	$('.yesterday').html(day+'.'+month+'.'+year);
 	//end date
 
   
@@ -31,9 +31,9 @@
 
     }
 
-    carDotWrap.appendTo(carWrap)
+    carDotWrap.appendTo(carWrap);
 
-    $('.carDotItem:last').addClass('cur')
+    $('.carDotItem:last').addClass('cur');
     carWrap.roundabout({
 
         enableDrag: true,
@@ -56,7 +56,7 @@
 		
         $('.carDotItem').eq(cirIndexReverse).addClass('cur').siblings().removeClass('cur');
 
-    })
+    });
      
     $(document).on('click', '.carDotItem', function() {
 
@@ -70,7 +70,7 @@
     });
 }
     
-    )     
+    );
     // toilets
 
     /*
@@ -344,7 +344,7 @@ $('a.hprod').hover(
         href_selector = $("[href='"+ $(this).attr('href') + "']");
         href_selector.filter('a.hprod').not('this').removeClass('hprod_hover');
     }
-)
+);
 
 
             

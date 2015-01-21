@@ -908,7 +908,7 @@ JSC3D.WebGLRenderBackend.prototype.compileMesh = function(mesh, renderMode) {
 			var normals;
 			if(hasTrianglesOnly) {
 				normals = new Float32Array(9 * numOfFaces);
-				var n0, n1, n2
+				var n0, n1, n2;
 				for(var i=0, j=0, faceIndex=0; i<ibuf.length; i+=4, j+=9, faceIndex++) {
 					if(needFlat) {
 						n0 = faceIndex * 3;

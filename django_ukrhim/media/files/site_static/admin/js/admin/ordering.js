@@ -62,15 +62,15 @@ function moveItem(oldIndex, newIndex) {
         hi = oldIndex;
         lo = newIndex;
     }
-    var lis2 = new Array(); // We will build the new order in this array
+    var lis2 = []; // We will build the new order in this array
     for (var i = 0; i < lis.length; i++) {
         if (i < lo || i > hi) {
             // Position of items not between the indexes is unaffected
             lis2[i] = lis[i];
-            continue;
+
         } else if (i == newIndex) {
             lis2[i] = lis[oldIndex];
-            continue;
+
         } else {
             // Item is between the two indexes - move it along 1
             lis2[i] = lis[i - direction];
@@ -110,7 +110,7 @@ function getOrder() {
 
 function setOrder(id_list) {
     /* Set the current order to match the lsit of IDs */
-    var temp_lis = new Array();
+    var temp_lis = [];
     for (var i = 0; i < id_list.length; i++) {
         var id = 'p' + id_list[i];
         temp_lis[temp_lis.length] = document.getElementById(id);

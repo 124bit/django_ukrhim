@@ -76,12 +76,12 @@
                 // if user doesn't want preloader, then just go right to callback
                 callback();
             }
-        }
+        };
 
         // Gets the feature container based on the number
         var getContainer = function(featureNum) {
             return pluginData.featuresArray[featureNum - 1];
-        }
+        };
 
         // get a feature given it's set position (the position that doesn't change)
         var getBySetPos = function(position) {
@@ -89,7 +89,7 @@
                 if ($(this).data().setPosition == position)
                     return $(this);
             });
-        }
+        };
 
         // get previous feature number
         var getPreviousNum = function(num) {
@@ -98,7 +98,7 @@
             } else {
                 return num - 1;
             }
-        }
+        };
 
         // get next feature number
         var getNextNum = function(num) {
@@ -107,7 +107,7 @@
             } else {
                 return num + 1;
             }
-        }
+        };
 
         /**
          * Because there are several options the user can set for the width and height
@@ -150,7 +150,7 @@
                 pluginData.smallFeatureHeight = $firstFeatureImage.height() * options.smallFeatureHeight;
             else
                 pluginData.smallFeatureHeight = $firstFeatureImage.outerHeight() / 2;
-        }
+        };
 
         /**
          * Function to take care of setting up various aspects of the carousel,
@@ -207,7 +207,7 @@
             // Hide story info and set the proper positioning
             pluginData.featuresContainer.find(".carousel-caption")
                 .hide();
-        }
+        };
 
         /**
          * Here all the position data is set for the features.
@@ -255,7 +255,7 @@
                     $(this).find('.carousel-caption p').prepend($numberTag);
                 });
             }
-        }
+        };
 
         /**
          * This function will set up the two different types of trackers used
@@ -298,7 +298,7 @@
                 // Insert into DOM
                 $(pluginData.containerIDTag).append($tracker);
             }
-        }
+        };
 
         // Update the tracker information with the new centered feature
         var updateTracker = function(oldCenter, newCenter) {
@@ -317,7 +317,7 @@
                 var $trackerContainer = pluginData.featuresContainer.find('.tracker-summation-container');
                 $trackerContainer.find('.tracker-summation-current').text(newCenter);
             }
-        }
+        };
 
         /**
          * This function will set the autoplay for the carousel to
@@ -335,7 +335,7 @@
                     (options.autoPlay > 0) ? initiateMove(true, 1) : initiateMove(false, 1);
                 }, autoTime);
             }
-        }
+        };
 
 
         // This is a helper function for the animateFeature function that
@@ -350,7 +350,7 @@
                 }
                 $(this).data('position', newPos);
             });
-        }
+        };
 
         /**
          * This function is used to animate the given feature to the given
@@ -476,7 +476,7 @@
                 options.carouselSpeed,
                 options.animationEasing)
                 .end();
-        }
+        };
 
         /**
          * move the carousel to the left or to the right. The features that
@@ -522,7 +522,7 @@
             if (pluginData.totalFeatureCount > 3) {
                 animateFeature($newHidden, direction);
             }
-        }
+        };
 
         // This is used to relegate carousel movement throughout the plugin
         // It will only initiate a move if the carousel isn't currently moving
@@ -533,7 +533,7 @@
                 pluginData.rotationsRemaining = queue;
                 move(direction);
             }
-        }
+        };
 
         /**
          * This will find the shortest distance to travel the carousel from
@@ -558,7 +558,7 @@
 
             // whichever is shorter
             return (goingToLeft < goingToRight) ? goingToLeft * -1 : goingToRight;
-        }
+        };
 
         // Move to the left if left button clicked
         $(options.leftButtonTag).on('click', function() {
@@ -688,16 +688,16 @@
 
         this.next = function() {
             initiateMove(true, 1);
-        }
+        };
         this.prev = function() {
             initiateMove(false, 1);
-        }
+        };
         this.pause = function() {
             setTimer(true);
-        }
+        };
         this.start = function() {
             setTimer(false);
-        }
+        };
 
         // Initialize the plugin
         return this.initialize();

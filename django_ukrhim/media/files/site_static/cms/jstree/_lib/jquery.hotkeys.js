@@ -102,7 +102,7 @@ Usage:
             this.all[opt.target] = {events:{}};
         }        
         if (!this.all[opt.target].events[opt.type]){
-            this.all[opt.target].events[opt.type] = {callbackMap: {}}
+            this.all[opt.target].events[opt.type] = {callbackMap: {}};
             jQuery.event.add(opt.target, opt.type, inspector);
         }        
         this.all[opt.target].events[opt.type].callbackMap[combi] =  {cb: callback, propagate:opt.propagate};                
@@ -113,7 +113,7 @@ Usage:
         target = opt.target || jQuery('html')[0];
         type = opt.type || 'keydown';
 		exp = exp.toLowerCase();        
-        delete this.all[target].events[type].callbackMap[exp]        
+        delete this.all[target].events[type].callbackMap[exp];
         return jQuery;
 	};
     jQuery.hotkeys = this;

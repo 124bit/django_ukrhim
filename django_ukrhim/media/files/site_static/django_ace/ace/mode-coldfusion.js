@@ -326,7 +326,7 @@ var XmlBehaviour = function () {
         }
     });
     
-}
+};
 oop.inherits(XmlBehaviour, Behaviour);
 
 exports.XmlBehaviour = XmlBehaviour;
@@ -706,7 +706,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             }
             else if (this.voidElements[top.tagName]) {
                 stack.pop();
-                continue;
+
             } else {
                 return null;
             }

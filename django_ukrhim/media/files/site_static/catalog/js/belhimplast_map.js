@@ -18,7 +18,7 @@ function init () {
 	
     var getState = function (point) {
                     return clusterer.getObjectState(point);
-                }
+                };
     
     var openBalloon = function (point) {
                     var state = getState(point),
@@ -57,10 +57,10 @@ function init () {
                             }
                         }
                     });
-                }
+                };
     
-	myMap.controls.add('zoomControl', { right: 5, top: 5 })
-    var clusterer = new ymaps.Clusterer({preset: 'twirl#invertedLightblueClusterIcons'}) // 'twirl#lightblueClusterIcons'
+	myMap.controls.add('zoomControl', { right: 5, top: 5 });
+    var clusterer = new ymaps.Clusterer({preset: 'twirl#invertedLightblueClusterIcons'}); // 'twirl#lightblueClusterIcons'
 	
     // Добавляем кластеризатор на карту.
     myMap.geoObjects.add(clusterer);
@@ -73,7 +73,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }
+        };
     
     var shop={
             iconImageHref: '/media/files/site_static/catalog/img/point_shop.png',
@@ -84,7 +84,7 @@ function init () {
             balloonShadow: false,
             balloonMaxWidth: 300,
             zIndex: 690,
-        }
+        };
         
     var ishop={
             iconImageHref: '/media/files/site_static/catalog/img/point_ishop.png',
@@ -94,7 +94,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }
+        };
 		
 	var office={
             iconImageHref: '/media/files/site_static/catalog/img/point_office.png',
@@ -104,7 +104,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }	
+        };
 	var epicenter={
             iconImageHref: '/media/files/site_static/catalog/img/point_epic.png',
             iconImageSize: [47, 57],
@@ -113,7 +113,7 @@ function init () {
             balloonOffset: [0,-26],
             balloonShadow: false,
             balloonMaxWidth: 300,
-        }	
+        };
         
         
     var placemarks = [];
@@ -155,7 +155,7 @@ function init () {
 					$.scrollTo('#shops_and',{duration:300});
                     myMap.setZoom(12 , { callback: function() {Pan(myPlacemark3);} } )
                     }
-                    )
+                    );
     
     
     
@@ -165,12 +165,12 @@ function init () {
 					e.preventDefault();
 					$.scrollTo('#shops_and',{duration:300});
                     //myMap.setZoom(12 , { callback: function() { Pan(item[1]) } } )
-                    myMap.setZoom(12)
+                    myMap.setZoom(12);
                     Pan(item[1])
                     }
                     )
                     }
-                    )
+                    );
 
     var myPolyline = new ymaps.Polyline([
             [53.978755, 27.577319],

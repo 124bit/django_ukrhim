@@ -2175,10 +2175,10 @@ jQuery.event = {
 			setup: function() {
 				// Make sure the ready event is setup
 				bindReady();
-				return;
+
 			},
 
-			teardown: function() { return; }
+			teardown: function() {  }
 		},
 
 		mouseenter: {
@@ -2910,8 +2910,7 @@ jQuery.extend({
 
 		function add( key, value ){
 			s[ s.length ] = encodeURIComponent(key) + '=' + encodeURIComponent(value);
-		};
-
+		}
 		// If an array was passed in, assume that it is an array
 		// of form elements
 		if ( a.constructor == Array || a.jquery )

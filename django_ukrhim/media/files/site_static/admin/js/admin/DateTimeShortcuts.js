@@ -99,8 +99,8 @@ var DateTimeShortcuts = {
         });
     },
     openClock: function(num) {
-        var clock_box = document.getElementById(DateTimeShortcuts.clockDivName+num)
-        var clock_link = document.getElementById(DateTimeShortcuts.clockLinkName+num)
+        var clock_box = document.getElementById(DateTimeShortcuts.clockDivName+num);
+        var clock_link = document.getElementById(DateTimeShortcuts.clockLinkName+num);
 
         // Recalculate the clockbox position
         // is it left-to-right or right-to-left layout ?
@@ -211,8 +211,8 @@ var DateTimeShortcuts = {
         });
     },
     openCalendar: function(num) {
-        var cal_box = document.getElementById(DateTimeShortcuts.calendarDivName1+num)
-        var cal_link = document.getElementById(DateTimeShortcuts.calendarLinkName+num)
+        var cal_box = document.getElementById(DateTimeShortcuts.calendarDivName1+num);
+        var cal_link = document.getElementById(DateTimeShortcuts.calendarLinkName+num);
         var inp = DateTimeShortcuts.calendarInputs[num];
 
         // Determine if the current value in the input has a valid date.
@@ -273,7 +273,7 @@ var DateTimeShortcuts = {
     },
     handleCalendarQuickLink: function(num, offset) {
        var d = new Date();
-       d.setDate(d.getDate() + offset)
+       d.setDate(d.getDate() + offset);
        DateTimeShortcuts.calendarInputs[num].value = d.strftime(get_format('DATE_INPUT_FORMATS')[0]);
        DateTimeShortcuts.calendarInputs[num].focus();
        DateTimeShortcuts.dismissCalendar(num);
@@ -283,6 +283,6 @@ var DateTimeShortcuts = {
         e.cancelBubble = true;
         if (e.stopPropagation) e.stopPropagation();
     }
-}
+};
 
 addEvent(window, 'load', DateTimeShortcuts.init);
