@@ -2,7 +2,7 @@ BeautifulSoup==3.2.1
 Django==1.5.2
 Pillow==2.6.1
 South==0.8.2
-appy==0.8.5
+appy==0.9.1
 argparse==1.2.1
 chardet==2.1.1
 cmsplugin-htmlsitemap==0.1.3
@@ -39,5 +39,5 @@ pytz==2014.10
 six==1.3.0
 solid-i18n==0.5.1
 stevedore==0.10
-tablib==0.9.11
+tablib==0.10.0
 wsgiref==0.1.2

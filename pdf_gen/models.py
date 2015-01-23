@@ -295,7 +295,7 @@ class PriceTemplate(models.Model):
                     chunk_with_no_blank = chunk.content.replace('    ','').replace('\n','').replace('\r','')
                     chunks_dict[whole_chunk.slug] = self.replace_style_names(chunk_with_no_blank, whole_chunk.slug)
             res_templ, path_to_temp =  self.add_info_to_odt(file_name, file_path, chunks_dict, styles, fonts, images)
-            renderer = Renderer(res_templ, context, res_path,  overwriteExisting=True)
+            renderer = Renderer(res_templ, context, res_path,  overwriteExisting=True, pythonWithUnoPath="/usr/bin/python3")
             
             renderer.run()
             shutil.rmtree(path_to_temp, ignore_errors=False)

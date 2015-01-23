@@ -54,7 +54,7 @@ class LangChunkInline(StackedInline):
 
 def update_price(modeladmin, request, queryset):
     if platform.system() == 'Linux':
-        proc=subprocess.Popen('soffice --invisible --headless "--accept=socket,host=localhost,port=2002;urp;"', shell=True)
+        proc = subprocess.Popen('soffice --invisible --headless "--accept=socket,host=localhost,port=2002;urp;"', shell=True)
         sleep(7)
         
     for price in queryset:
