@@ -1,4 +1,5 @@
 *.log
 *.pyc
 django_ukrhim/media/files/*
+!django_ukrhim/media/files/site_static
 settings_production.py
